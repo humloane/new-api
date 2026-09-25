@@ -20,12 +20,15 @@ import { useQueryClient, type QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
   createRootRouteWithContext,
+  HeadContent,
   Outlet,
   redirect,
   useNavigate,
+  useRouter,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { NavigationProgress } from '@/components/navigation-progress'
 import { Toaster } from '@/components/ui/sonner'
@@ -35,6 +38,7 @@ import { GeneralError } from '@/features/errors/general-error'
 import { NotFoundError } from '@/features/errors/not-found-error'
 import { getSetupStatus } from '@/features/setup/api'
 import { useSystemConfig } from '@/hooks/use-system-config'
+import { toIntlLocale } from '@/i18n/languages'
 import {
   bootstrapAuthentication,
   clearAuthenticatedClientState,
@@ -42,11 +46,20 @@ import {
 } from '@/lib/auth-session'
 import { subscribeAuthSessionEvents } from '@/lib/auth-session-sync'
 import { resolveLegacyRoute } from '@/lib/legacy-route'
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/lib/site-seo'
 import { useAuthStore } from '@/stores/auth-store'
 
 function RootComponent() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const router = useRouter()
+  const { i18n } = useTranslation()
+  const language = i18n.resolvedLanguage || i18n.language
+
+  useEffect(() => {
+    document.documentElement.lang = toIntlLocale(language) || 'en'
+    void router.invalidate()
+  }, [language, router])
 
   // Load system configuration (logo, system name, etc.) from backend
   useSystemConfig({ autoLoad: true })
@@ -94,6 +107,7 @@ function RootComponent() {
 
   return (
     <ThemeCustomizationProvider>
+      <HeadContent />
       <NavigationProgress />
       <Outlet />
       <Toaster closeButton duration={5000} position='top-center' richColors />
@@ -107,12 +121,20 @@ function RootComponent() {
   )
 }
 
+const DEFAULT_TITLE = SITE_TITLE
+const DEFAULT_DESCRIPTION = SITE_DESCRIPTION
+
 // 同一页面会话内避免重复检查；刷新后重新校验当前服务实例。
 let setupStatusChecked = false
-
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
 }>()({
+  head: () => ({
+    meta: [
+      { title: DEFAULT_TITLE },
+      { name: 'description', content: DEFAULT_DESCRIPTION },
+    ],
+  }),
   // 应用初始化与路由解析前统一校验会话
   beforeLoad: async ({ location }) => {
     const legacyTarget = resolveLegacyRoute(location.href)

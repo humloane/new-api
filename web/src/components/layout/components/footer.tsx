@@ -40,6 +40,7 @@ interface FooterProps {
   columns?: FooterColumnProps[]
   copyright?: string
   className?: string
+  appearance?: 'default' | 'landing'
 }
 
 const NEW_API_FOOTER_ATTRIBUTION_KEY = [
@@ -52,6 +53,17 @@ function FooterLinkItem(props: { link: FooterLink }) {
   const { t } = useTranslation()
   const isExternal = props.link.href.startsWith('http')
   const label = t(props.link.text)
+
+  if (props.link.href.startsWith('#')) {
+    return (
+      <a
+        href={props.link.href}
+        className='text-muted-foreground hover:text-foreground text-sm transition-colors'
+      >
+        {label}
+      </a>
+    )
+  }
 
   if (isExternal) {
     return (
@@ -129,12 +141,12 @@ function ProjectAttribution(props: { currentYear: number; inline?: boolean }) {
     <span className='text-muted-foreground/45'>
       &copy; {props.currentYear}{' '}
       <a
-        href='https://github.com/QuantumNous/new-api'
+        href='/'
         target='_blank'
         rel='noopener noreferrer'
         className='text-foreground/70 hover:text-foreground font-medium transition-colors'
       >
-        {t('New API')}
+        {t('AIMOXT 妙信AI')}
       </a>
       . {t(NEW_API_FOOTER_ATTRIBUTION_KEY)}
     </span>
@@ -248,7 +260,11 @@ export function Footer(props: FooterProps) {
 
   return (
     <footer
-      className={cn('border-border/40 relative z-10 border-t', props.className)}
+      className={cn(
+        'border-border/40 relative z-10 border-t',
+        props.appearance === 'landing' && 'aimoxt-footer',
+        props.className
+      )}
     >
       <div className='mx-auto max-w-6xl px-6 py-12 md:py-16'>
         <div className='flex flex-col justify-between gap-10 md:flex-row md:gap-16'>
@@ -270,16 +286,21 @@ export function Footer(props: FooterProps) {
           </div>
 
           {/* Links columns */}
-          {isDemoSiteMode && (
-            <div className='grid grid-cols-3 gap-8 md:gap-16'>
-              {displayColumns.map((column, index) => (
-                <div key={index}>
+          {(isDemoSiteMode || props.appearance === 'landing') && (
+            <div
+              className={cn(
+                'grid grid-cols-3 gap-8 md:gap-16',
+                props.appearance === 'landing' && 'aimoxt-footer-links'
+              )}
+            >
+              {displayColumns.map((column) => (
+                <div key={column.title}>
                   <p className='text-muted-foreground/50 mb-3 text-xs font-medium tracking-wider uppercase'>
                     {t(column.title)}
                   </p>
                   <ul className='space-y-2.5'>
-                    {column.links.map((link, linkIndex) => (
-                      <li key={linkIndex}>
+                    {column.links.map((link) => (
+                      <li key={`${link.href}:${link.text}`}>
                         <FooterLinkItem link={link} />
                       </li>
                     ))}

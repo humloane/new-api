@@ -16,533 +16,182 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import { useState, useEffect, useRef, type ReactNode } from 'react'
+import { Pause, Play, Terminal } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { cn } from '@/lib/utils'
+import { CodeBlockFrame } from '@/components/ai-elements/code-block'
+import { CopyButton } from '@/components/copy-button'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-type AccentTone = 'emerald' | 'amber' | 'blue' | 'violet'
-
-interface ApiDemoConfig {
-  id: string
-  label: string
-  method: 'POST' | 'GET'
-  endpoint: string
-  headers: string[]
-  request: string[]
-  response: string[]
-  responseHighlights: string[]
-  tokens: number
-  latency: number
-  accent: AccentTone
-}
-
-const ACCENT_CLASSES: Record<
-  AccentTone,
+const API_DEMOS = [
   {
-    activeText: string
-    activeBorder: string
-    badge: string
-  }
-> = {
-  emerald: {
-    activeText: 'text-emerald-600 dark:text-emerald-400',
-    activeBorder: 'border-emerald-500 dark:border-emerald-400',
-    badge:
-      'bg-emerald-500/10 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400',
-  },
-  amber: {
-    activeText: 'text-amber-600 dark:text-amber-400',
-    activeBorder: 'border-amber-500 dark:border-amber-400',
-    badge:
-      'bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400',
-  },
-  blue: {
-    activeText: 'text-blue-600 dark:text-blue-400',
-    activeBorder: 'border-blue-500 dark:border-blue-400',
-    badge:
-      'bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400',
-  },
-  violet: {
-    activeText: 'text-violet-600 dark:text-violet-400',
-    activeBorder: 'border-violet-500 dark:border-violet-400',
-    badge:
-      'bg-violet-500/10 text-violet-600 dark:bg-violet-400/10 dark:text-violet-400',
-  },
-}
-
-const API_DEMOS: ApiDemoConfig[] = [
-  {
-    id: 'gpt-chat',
+    id: 'chat',
     label: 'Chat',
-    method: 'POST',
     endpoint: '/v1/chat/completions',
-    headers: ['"Authorization: Bearer sk-••••"'],
-    request: [
-      '"model": "your-model",',
-      '"messages": [',
-      '  { "role": "user", "content": "..." }',
-      ']',
-    ],
-    response: [
-      '{',
-      '  "choices": [{ "message": { "content": <text> } }],',
-      '  "usage": { "total_tokens": <tokens> }',
-      '}',
-    ],
-    responseHighlights: ['<text>', '<tokens>'],
-    tokens: 27,
-    latency: 142,
-    accent: 'emerald',
+    header: 'Authorization: Bearer $API_KEY',
+    body: '{"model":"YOUR_MODEL_ID","messages":[{"role":"user","content":"Hello"}]}',
   },
   {
     id: 'responses',
     label: 'Responses',
-    method: 'POST',
     endpoint: '/v1/responses',
-    headers: ['"Authorization: Bearer sk-••••"'],
-    request: ['"model": "your-model",', '"input": "..."'],
-    response: [
-      '{',
-      '  "output": [{ "type": "output_text", "text": <text> }],',
-      '  "usage": { "total_tokens": <tokens> }',
-      '}',
-    ],
-    responseHighlights: ['<text>', '<tokens>'],
-    tokens: 31,
-    latency: 168,
-    accent: 'amber',
+    header: 'Authorization: Bearer $API_KEY',
+    body: '{"model":"YOUR_MODEL_ID","input":"Hello"}',
   },
   {
-    id: 'claude',
+    id: 'messages',
     label: 'Claude',
-    method: 'POST',
     endpoint: '/v1/messages',
-    headers: ['"x-api-key: sk-••••"', '"anthropic-version: 2023-06-01"'],
-    request: [
-      '"model": "your-model",',
-      '"max_tokens": 1024,',
-      '"messages": [',
-      '  { "role": "user", "content": "..." }',
-      ']',
-    ],
-    response: [
-      '{',
-      '  "content": [{ "type": "text", "text": <text> }],',
-      '  "usage": { "input_tokens": <in>, "output_tokens": <out> }',
-      '}',
-    ],
-    responseHighlights: ['<text>', '<in>', '<out>'],
-    tokens: 29,
-    latency: 156,
-    accent: 'blue',
+    header: 'x-api-key: $API_KEY',
+    extraHeader: 'anthropic-version: 2023-06-01',
+    body: '{"model":"YOUR_MODEL_ID","max_tokens":1024,"messages":[{"role":"user","content":"Hello"}]}',
   },
   {
     id: 'gemini',
     label: 'Gemini',
-    method: 'POST',
-    endpoint: '/v1beta/models/{model}:generateContent',
-    headers: ['"x-goog-api-key: sk-••••"'],
-    request: [
-      '"contents": [',
-      '  { "role": "user",',
-      '    "parts": [{ "text": "..." }] }',
-      ']',
-    ],
-    response: [
-      '{',
-      '  "candidates": [{ "content": { "parts": [{ "text": <text> }] } }],',
-      '  "usageMetadata": { "totalTokenCount": <tokens> }',
-      '}',
-    ],
-    responseHighlights: ['<text>', '<tokens>'],
-    tokens: 25,
-    latency: 93,
-    accent: 'violet',
+    endpoint: '/v1beta/models/YOUR_MODEL_ID:generateContent',
+    header: 'x-goog-api-key: $API_KEY',
+    body: '{"contents":[{"parts":[{"text":"Hello"}]}]}',
   },
-]
-
-const CYCLE_INTERVAL = 4500
-const TRANSITION_MS = 220
+] as const
 
 interface HeroTerminalDemoProps {
-  className?: string
+  serverAddress: string
 }
 
 export function HeroTerminalDemo(props: HeroTerminalDemoProps) {
+  const { t } = useTranslation()
   const [activeIndex, setActiveIndex] = useState(0)
-  const [transitioning, setTransitioning] = useState(false)
-  const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const [paused, setPaused] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
 
   useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (mq.matches) return
-
-    intervalRef.current = setInterval(() => {
-      setTransitioning(true)
-      timeoutRef.current = setTimeout(() => {
-        setActiveIndex((prev) => (prev + 1) % API_DEMOS.length)
-        setTransitioning(false)
-      }, TRANSITION_MS)
-    }, CYCLE_INTERVAL)
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    }
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const syncMotion = () => setReducedMotion(media.matches)
+    syncMotion()
+    media.addEventListener('change', syncMotion)
+    return () => media.removeEventListener('change', syncMotion)
   }, [])
 
-  const handleSelect = (index: number) => {
-    if (index === activeIndex) return
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    setTransitioning(true)
-    timeoutRef.current = setTimeout(() => {
-      setActiveIndex(index)
-      setTransitioning(false)
-    }, TRANSITION_MS)
-  }
-
-  const demo = API_DEMOS[activeIndex]
-  const accent = ACCENT_CLASSES[demo.accent]
+  useEffect(() => {
+    if (paused || reducedMotion) return
+    const interval = window.setInterval(() => {
+      setActiveIndex((index) => (index + 1) % API_DEMOS.length)
+    }, 4500)
+    return () => window.clearInterval(interval)
+  }, [paused, reducedMotion])
 
   return (
-    <div className={cn('mx-auto w-full max-w-2xl', props.className)}>
-      <div
-        className={cn(
-          'overflow-hidden rounded-2xl border backdrop-blur-sm',
-          'border-border/60 bg-white/95 shadow-[0_20px_50px_-25px_rgba(15,23,42,0.18)]',
-          'dark:border-white/[0.06] dark:bg-[#0b0f17]/95 dark:shadow-[0_20px_60px_-25px_rgba(0,0,0,0.7)]'
-        )}
+    <div className='bg-background min-w-0 rounded-2xl border border-blue-500/15 shadow-xl shadow-blue-950/10 dark:bg-slate-950/60 dark:shadow-black/20'>
+      <div className='border-border/60 flex items-center justify-between gap-3 border-b px-5 py-4'>
+        <div className='flex items-center gap-2 text-xs font-medium'>
+          <Terminal
+            aria-hidden='true'
+            className='size-4 text-blue-600 dark:text-blue-400'
+          />
+          {t('Your first API call')}
+        </div>
+        <span className='text-muted-foreground rounded-full border px-2 py-1 text-[10px]'>
+          {t('Code example')}
+        </span>
+      </div>
+      <Tabs
+        value={API_DEMOS[activeIndex].id}
+        onValueChange={(value) => {
+          const index = API_DEMOS.findIndex((demo) => demo.id === value)
+          if (index < 0) return
+          setActiveIndex(index)
+          setPaused(true)
+        }}
+        className='gap-0'
       >
-        {/* Tab strip */}
-        <div
-          className={cn(
-            'flex items-center gap-1 border-b px-2 sm:gap-1.5 sm:px-3',
-            'border-border/50 dark:border-white/[0.05]'
-          )}
-        >
-          {API_DEMOS.map((item, index) => {
-            const tone = ACCENT_CLASSES[item.accent]
-            const isActive = index === activeIndex
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleSelect(index)}
-                className={cn(
-                  'relative -mb-px flex items-center gap-1.5 border-b-2 px-2.5 py-2.5 text-[11px] font-medium tracking-wide transition-colors sm:px-3 sm:text-xs',
-                  isActive
-                    ? `${tone.activeBorder} ${tone.activeText}`
-                    : 'text-foreground/40 hover:text-foreground/70 border-transparent'
-                )}
+        <div className='bg-muted/20 flex items-center gap-1 border-b px-3 py-2'>
+          <TabsList
+            aria-label={t('API protocol')}
+            variant='line'
+            className='min-w-0 flex-1'
+            onFocusCapture={() => setPaused(true)}
+          >
+            {API_DEMOS.map((demo) => (
+              <TabsTrigger
+                key={demo.id}
+                value={demo.id}
+                className='px-2 text-xs'
               >
-                {item.label}
-              </button>
-            )
-          })}
-          <div className='ml-auto flex items-center gap-2 pr-2 sm:pr-3'>
-            <span className='inline-block size-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.45)]' />
-            <span className='text-foreground/40 font-mono text-[10px] tracking-wider uppercase'>
-              200 ok
-            </span>
-          </div>
-        </div>
-
-        {/* Endpoint row */}
-        <div
-          className={cn(
-            'flex items-center gap-2.5 border-b px-5 py-3',
-            'border-border/40 dark:border-white/[0.04]'
+                {demo.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {!reducedMotion && (
+            <Button
+              size='icon'
+              variant='ghost'
+              className='size-8 shrink-0'
+              onClick={() => setPaused(!paused)}
+              aria-label={paused ? t('Resume examples') : t('Pause examples')}
+            >
+              {paused ? (
+                <Play aria-hidden='true' className='size-3.5' />
+              ) : (
+                <Pause aria-hidden='true' className='size-3.5' />
+              )}
+            </Button>
           )}
-        >
-          <span
-            className={cn(
-              'rounded-md px-1.5 py-0.5 font-mono text-[10px] font-semibold tracking-wider',
-              accent.badge
-            )}
-          >
-            {demo.method}
-          </span>
-          <code
-            className={cn(
-              'text-foreground/75 truncate font-mono text-[12.5px] transition-opacity duration-200',
-              transitioning ? 'opacity-0' : 'opacity-100'
-            )}
-          >
-            {demo.endpoint}
-          </code>
         </div>
-
-        {/* Body — fixed rows so neither block shifts when switching demos */}
-        <div className='grid h-[400px] grid-rows-[235px_minmax(0,1fr)] font-mono text-[12.5px] leading-[1.55]'>
-          {/* Request */}
-          <RequestBlock demo={demo} transitioning={transitioning} />
-
-          {/* Response */}
-          <ResponseBlock demo={demo} transitioning={transitioning} />
-        </div>
-
-        {/* Footer metrics */}
-        <div
-          className={cn(
-            'flex items-center justify-between border-t px-5 py-2.5',
-            'border-border/40 bg-muted/30 dark:border-white/[0.05] dark:bg-white/[0.02]'
-          )}
-        >
-          <div className='text-foreground/40 flex items-center gap-3 text-[10px] tabular-nums'>
-            <span className='flex items-center gap-1'>
-              <span className='font-mono'>{demo.latency}</span>
-              <span className='tracking-wider uppercase'>ms</span>
-            </span>
-            <span className='bg-foreground/15 size-1 rounded-full' />
-            <span className='flex items-center gap-1'>
-              <span className='font-mono'>{demo.tokens}</span>
-              <span className='tracking-wider uppercase'>tokens</span>
-            </span>
-            <span className='bg-foreground/15 size-1 rounded-full' />
-            <span className='flex items-center gap-1'>
-              <span className='tracking-wider uppercase'>cost</span>
-              <span className='font-mono'>
-                ${(demo.tokens * 0.00003).toFixed(5)}
-              </span>
-            </span>
-          </div>
-          <span className='text-foreground/30 font-mono text-[10px] tracking-wider uppercase'>
-            stream · sse
-          </span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function RequestBlock(props: { demo: ApiDemoConfig; transitioning: boolean }) {
-  const { demo, transitioning } = props
-
-  return (
-    <div className='relative px-5 py-4'>
-      <SectionLabel>Request</SectionLabel>
-      <div
-        className={cn(
-          'mt-2 transition-opacity duration-200',
-          transitioning ? 'opacity-0' : 'opacity-100'
+        {API_DEMOS.map((demo) => {
+          const address = props.serverAddress
+            .replace(/\/+$/, '')
+            .replaceAll("'", "'\"'\"'")
+          const command = [
+            `API_BASE_URL='${address}'`,
+            '',
+            `curl "\${API_BASE_URL}${demo.endpoint}" \\`,
+            `  -H "${demo.header}" \\`,
+            ...('extraHeader' in demo ? [`  -H "${demo.extraHeader}" \\`] : []),
+            '  -H "Content-Type: application/json" \\',
+            `  -d '${JSON.stringify(JSON.parse(demo.body), null, 2)}'`,
+          ].join('\n')
+          return (
+            <TabsContent
+              key={demo.id}
+              value={demo.id}
+              className='min-w-0 px-4 pt-4 pb-3'
+              onFocusCapture={() => setPaused(true)}
+              onMouseEnter={() => setPaused(true)}
+            >
+              <CodeBlockFrame
+                showToolbar
+                title='cURL'
+                className='m-0 rounded-xl shadow-none'
+                bodyClassName='h-64 p-4'
+                endActions={
+                  <CopyButton
+                    value={command}
+                    size='sm'
+                    tooltip={t('Copy code')}
+                    aria-label={t('Copy code')}
+                  />
+                }
+              >
+                <pre
+                  className='min-w-0 font-mono text-xs leading-6 text-blue-900 dark:text-blue-100'
+                  tabIndex={0}
+                  aria-label={t('Code example')}
+                >
+                  <code>{command}</code>
+                </pre>
+              </CodeBlockFrame>
+            </TabsContent>
+          )
+        })}
+      </Tabs>
+      <p className='text-muted-foreground px-5 pb-5 text-xs leading-5'>
+        {t(
+          'Set API_KEY in your environment and replace YOUR_MODEL_ID with a model from the catalog. Examples do not send requests.'
         )}
-      >
-        <CodeLine>
-          <Command>curl</Command> <Flag>-X</Flag> <Flag>POST</Flag>{' '}
-          <StringText>&quot;{demo.endpoint}&quot;</StringText>{' '}
-          <Muted>{'\\'}</Muted>
-        </CodeLine>
-        {demo.headers.map((header) => (
-          <CodeLine key={header} indent={2}>
-            <Flag>-H</Flag> <StringText>{header}</StringText>{' '}
-            <Muted>{'\\'}</Muted>
-          </CodeLine>
-        ))}
-        <CodeLine indent={2}>
-          <Flag>-d</Flag> <StringText>&apos;{'{'}</StringText>
-        </CodeLine>
-        {demo.request.map((line, i) => (
-          <CodeLine key={i} indent={4}>
-            {renderJsonLine(line)}
-          </CodeLine>
-        ))}
-        <CodeLine indent={2}>
-          <StringText>{'}'}&apos;</StringText>
-        </CodeLine>
-      </div>
+      </p>
     </div>
-  )
-}
-
-function ResponseBlock(props: { demo: ApiDemoConfig; transitioning: boolean }) {
-  const { demo, transitioning } = props
-
-  return (
-    <div
-      className={cn(
-        'relative border-t px-5 py-4',
-        'border-border/40 bg-muted/20 dark:border-white/[0.05] dark:bg-white/[0.015]'
-      )}
-    >
-      <SectionLabel>Response</SectionLabel>
-      <div
-        className={cn(
-          'mt-2 transition-opacity duration-200',
-          transitioning ? 'opacity-0' : 'opacity-100'
-        )}
-      >
-        {demo.response.map((line, i) => (
-          <CodeLine key={i}>{renderResponseLine(line, demo)}</CodeLine>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function SectionLabel(props: { children: ReactNode }) {
-  return (
-    <span className='text-foreground/30 font-sans text-[10px] font-semibold tracking-[0.18em] uppercase'>
-      {props.children}
-    </span>
-  )
-}
-
-const STRING_RE = /"[^"]*"/g
-const PLACEHOLDER_RE = /<[a-z]+>/gi
-
-function renderJsonLine(line: string): ReactNode {
-  if (!line.trim()) return <Muted> </Muted>
-  return tokenize(line)
-}
-
-function renderResponseLine(line: string, demo: ApiDemoConfig): ReactNode {
-  if (!line.trim()) return <Muted> </Muted>
-
-  const segments: ReactNode[] = []
-  let cursor = 0
-  const matches = [...line.matchAll(PLACEHOLDER_RE)]
-
-  if (matches.length === 0) return tokenize(line)
-
-  matches.forEach((match, idx) => {
-    const start = match.index ?? 0
-    if (start > cursor) {
-      segments.push(
-        <span key={`pre-${idx}`}>{tokenize(line.slice(cursor, start))}</span>
-      )
-    }
-    const placeholder = match[0]
-    if (placeholder === '<text>') {
-      segments.push(
-        <Accent key={`ph-${idx}`} accent={demo.accent}>
-          {`"${truncateResponse(demo)}"`}
-        </Accent>
-      )
-    } else if (placeholder === '<tokens>') {
-      segments.push(<NumberText key={`ph-${idx}`}>{demo.tokens}</NumberText>)
-    } else if (placeholder === '<in>') {
-      segments.push(
-        <NumberText key={`ph-${idx}`}>
-          {Math.floor(demo.tokens * 0.4)}
-        </NumberText>
-      )
-    } else if (placeholder === '<out>') {
-      segments.push(
-        <NumberText key={`ph-${idx}`}>
-          {Math.ceil(demo.tokens * 0.6)}
-        </NumberText>
-      )
-    } else {
-      segments.push(<Muted key={`ph-${idx}`}>{placeholder}</Muted>)
-    }
-    cursor = start + placeholder.length
-  })
-
-  if (cursor < line.length) {
-    segments.push(<span key='tail'>{tokenize(line.slice(cursor))}</span>)
-  }
-
-  return segments
-}
-
-function truncateResponse(demo: ApiDemoConfig): string {
-  const map: Record<string, string> = {
-    'gpt-chat': 'Chat request routed.',
-    responses: 'Response workflow ready.',
-    claude: 'Claude message routed.',
-    gemini: 'Gemini request served.',
-  }
-  return map[demo.id] ?? '...'
-}
-
-function tokenize(input: string): ReactNode {
-  // Split string into "..." string runs and the rest, then color keys/punct.
-  const segments: ReactNode[] = []
-  let cursor = 0
-  const matches = [...input.matchAll(STRING_RE)]
-
-  matches.forEach((match, idx) => {
-    const start = match.index ?? 0
-    if (start > cursor) {
-      segments.push(
-        <Muted key={`m-${idx}`}>{input.slice(cursor, start)}</Muted>
-      )
-    }
-    const text = match[0]
-    const after = input.slice(start + text.length).trimStart()
-    const isKey = after.startsWith(':')
-    if (isKey) {
-      segments.push(<Key key={`k-${idx}`}>{text}</Key>)
-    } else {
-      segments.push(<StringText key={`s-${idx}`}>{text}</StringText>)
-    }
-    cursor = start + text.length
-  })
-
-  if (cursor < input.length) {
-    segments.push(<Muted key='tail'>{input.slice(cursor)}</Muted>)
-  }
-
-  return segments
-}
-
-function CodeLine(props: { children: ReactNode; indent?: number }) {
-  return (
-    <div className='break-words whitespace-pre-wrap'>
-      {props.indent ? (
-        <span
-          aria-hidden
-          className='inline-block'
-          style={{ width: `${props.indent}ch` }}
-        />
-      ) : null}
-      {props.children}
-    </div>
-  )
-}
-
-function Command(props: { children: ReactNode }) {
-  return (
-    <span className='font-medium text-emerald-600 dark:text-emerald-400'>
-      {props.children}
-    </span>
-  )
-}
-
-function Flag(props: { children: ReactNode }) {
-  return (
-    <span className='text-blue-600 dark:text-blue-400'>{props.children}</span>
-  )
-}
-
-function Key(props: { children: ReactNode }) {
-  return (
-    <span className='text-sky-700 dark:text-sky-300'>{props.children}</span>
-  )
-}
-
-function StringText(props: { children: ReactNode }) {
-  return (
-    <span className='text-amber-700 dark:text-amber-300'>{props.children}</span>
-  )
-}
-
-function NumberText(props: { children: ReactNode }) {
-  return (
-    <span className='font-medium text-violet-600 dark:text-violet-300'>
-      {props.children}
-    </span>
-  )
-}
-
-function Muted(props: { children: ReactNode }) {
-  return <span className='text-foreground/55'>{props.children}</span>
-}
-
-function Accent(props: { children: ReactNode; accent: AccentTone }) {
-  const tone = ACCENT_CLASSES[props.accent]
-  return (
-    <span className={cn('font-medium', tone.activeText)}>{props.children}</span>
   )
 }

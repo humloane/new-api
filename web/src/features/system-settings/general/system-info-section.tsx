@@ -318,7 +318,7 @@ export function SystemInfoSection({ defaultValues }: SystemInfoSectionProps) {
                       </FormControl>
                       <FormDescription>
                         {t(
-                          'Content displayed on the home page (supports Markdown)'
+                          'Leave empty to use the built-in landing page. Markdown, HTML, or a full URL replaces the entire home page.'
                         )}
                       </FormDescription>
                       <FormMessage />
