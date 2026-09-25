@@ -23,18 +23,34 @@ import { PublicLayout } from '@/components/layout'
 import { Footer } from '@/components/layout/components/footer'
 import { RichContent } from '@/components/rich-content'
 import { useTheme } from '@/context/theme-provider'
+import { useStatus } from '@/hooks/use-status'
+import { useSystemConfig } from '@/hooks/use-system-config'
+import { toIntlLocale } from '@/i18n/languages'
 import { isLikelyHtml } from '@/lib/content-format'
+import { parseHeaderNavModulesFromStatus } from '@/lib/nav-modules'
+import { createWebsiteSchema, parseSiteOrigin } from '@/lib/site-seo'
 import { useAuthStore } from '@/stores/auth-store'
 
 import { CTA, Features, Hero, HowItWorks, Stats } from './components'
+import { EcosystemTiles, PlatformBar } from './components/landing-illustrations'
+
+import '@/styles/landing.css'
+import {
+  IntegrationGuide,
+  LandingFAQ,
+  ProtocolGuide,
+  UseCases,
+} from './components/sections/developer-guide'
 import { useHomePageContent } from './hooks'
+import type { LandingActions } from './types'
 
 export function Home() {
   const { i18n, t } = useTranslation()
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const { resolvedTheme } = useTheme()
-  const { auth } = useAuthStore()
-  const isAuthenticated = !!auth.user
+  const isAuthenticated = useAuthStore((state) => !!state.auth.user)
+  const { status } = useStatus()
+  const { systemName } = useSystemConfig()
   const { content, isLoaded, isUrl } = useHomePageContent()
 
   const syncIframePreferences = useCallback(() => {
@@ -120,14 +136,106 @@ export function Home() {
     )
   }
 
+  const modules = parseHeaderNavModulesFromStatus(status)
+  const actions: LandingActions = {
+    isAuthenticated,
+    registrationEnabled: status?.register_enabled !== false,
+    pricingEnabled: modules.pricing.enabled,
+    pricingRequiresAuth: modules.pricing.requireAuth && !isAuthenticated,
+    docsUrl: modules.docs
+      ? (typeof status?.docs_link === 'string' && status.docs_link.trim()) ||
+        'https://docs.newapi.pro'
+      : undefined,
+  }
+  const serverAddress =
+    (typeof status?.server_address === 'string' &&
+      status.server_address.trim()) ||
+    window.location.origin
+
+  const schema = createWebsiteSchema(
+    parseSiteOrigin(import.meta.env.VITE_PUBLIC_SITE_URL),
+    systemName,
+    toIntlLocale(i18n.resolvedLanguage || i18n.language) || 'en'
+  )
+
   return (
-    <PublicLayout showMainContainer={false}>
-      <Hero isAuthenticated={isAuthenticated} />
-      <Stats />
-      <Features />
-      <HowItWorks />
-      <CTA isAuthenticated={isAuthenticated} />
-      <Footer />
+    <PublicLayout
+      showMainContainer={false}
+      headerProps={{ appearance: 'landing' }}
+    >
+      {schema && <script type='application/ld+json'>{schema}</script>}
+      <main className='aimoxt-landing'>
+        <Hero actions={actions} serverAddress={serverAddress} />
+        <PlatformBar />
+        <UseCases />
+        <EcosystemTiles />
+        <Features />
+        <HowItWorks />
+        <ProtocolGuide />
+        <IntegrationGuide serverAddress={serverAddress} />
+        <LandingFAQ />
+        <CTA actions={actions} />
+        <Stats />
+      </main>
+      <Footer
+        appearance='landing'
+        columns={[
+          {
+            title: t('Compatible ecosystems'),
+            links: [
+              { text: 'OpenAI', href: '#protocols' },
+              { text: 'Claude', href: '#protocols' },
+              { text: 'Gemini', href: '#protocols' },
+              { text: 'DeepSeek', href: '#protocols' },
+            ],
+          },
+          {
+            title: t('Integration guide'),
+            links: [
+              {
+                text: t('Three steps to get started'),
+                href: '#getting-started',
+              },
+              { text: 'Base URL', href: '#integration' },
+              { text: 'API Key', href: '#integration' },
+              { text: t('Model ID'), href: '#integration' },
+            ],
+          },
+          {
+            title: t('FAQ'),
+            links: [
+              { text: t('FAQ'), href: '#faq' },
+              { text: t('Use cases'), href: '#use-cases' },
+              ...(actions.docsUrl
+                ? [{ text: t('Docs'), href: actions.docsUrl }]
+                : []),
+              ...(actions.pricingEnabled
+                ? [
+                    {
+                      text: actions.pricingRequiresAuth
+                        ? t('Sign in to view pricing')
+                        : t('Models & pricing'),
+                      href: '/pricing',
+                    },
+                  ]
+                : []),
+            ],
+          },
+          {
+            title: t('AIMOXT妙信AI'),
+            links: [
+              {
+                text: 'GitHub',
+                href: '/',
+              },
+              {
+                text: t('footer.columns.about.links.aboutProject'),
+                href: 'https://docs.newapi.pro/wiki/project-introduction/',
+              },
+            ],
+          },
+        ]}
+      />
     </PublicLayout>
   )
 }

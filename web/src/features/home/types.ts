@@ -37,3 +37,11 @@ export interface HomePageContentResult {
   isLoaded: boolean
   isUrl: boolean
 }
+
+export interface LandingActions {
+  isAuthenticated: boolean
+  registrationEnabled: boolean
+  pricingEnabled: boolean
+  pricingRequiresAuth: boolean
+  docsUrl?: string
+}

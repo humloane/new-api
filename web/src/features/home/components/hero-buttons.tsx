@@ -17,37 +17,70 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, BookOpen } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 
-interface HeroButtonsProps {
-  isAuthenticated: boolean
-}
+import type { LandingActions } from '../types'
 
-/**
- * Hero section action buttons
- */
-export function HeroButtons({ isAuthenticated }: HeroButtonsProps) {
+export function HeroButtons(props: LandingActions) {
   const { t } = useTranslation()
-  if (isAuthenticated) {
-    return (
-      <Button size='lg' render={<Link to='/dashboard' />}>
-        {t('Go to Dashboard')} <ArrowRight className='ml-2 h-5 w-5' />
-      </Button>
-    )
+  let primaryHref = '/sign-in'
+  let primaryLabel = t('Sign in')
+  if (props.isAuthenticated) {
+    primaryHref = '/dashboard'
+    primaryLabel = t('Go to Dashboard')
+  } else if (props.registrationEnabled) {
+    primaryHref = '/sign-up'
+    primaryLabel = t('Get API access')
   }
 
   return (
     <>
-      <Button size='lg' render={<Link to='/sign-up' />}>
-        {t('Get Started')}
-        <ArrowRight className='ml-2 h-5 w-5' />
+      <Button
+        role='link'
+        size='lg'
+        className='landing-primary-action h-12 rounded-lg bg-violet-700 px-6 text-white hover:bg-violet-800 dark:bg-violet-400 dark:text-slate-950 dark:hover:bg-violet-300'
+        render={<Link to={primaryHref} />}
+      >
+        {primaryLabel}
+        <ArrowRight aria-hidden='true' className='size-4' />
       </Button>
-      <Button size='lg' variant='outline' render={<Link to='/sign-in' />}>
-        {t('Sign In')}
-      </Button>
+      {props.pricingEnabled && (
+        <Button
+          role='link'
+          size='lg'
+          variant='outline'
+          className='h-12 rounded-lg px-5'
+          render={<Link to='/pricing' />}
+        >
+          {props.pricingRequiresAuth
+            ? t('Sign in to view pricing')
+            : t('Models & pricing')}
+        </Button>
+      )}
+      {props.docsUrl && (
+        <Button
+          role='link'
+          variant='ghost'
+          className='h-11 rounded-xl'
+          render={
+            props.docsUrl.startsWith('http') ? (
+              <a
+                href={props.docsUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+              />
+            ) : (
+              <Link to={props.docsUrl} />
+            )
+          }
+        >
+          <BookOpen aria-hidden='true' className='size-4' />
+          {t('Docs')}
+        </Button>
+      )}
     </>
   )
 }

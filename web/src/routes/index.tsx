@@ -17,9 +17,32 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { createFileRoute } from '@tanstack/react-router'
+import { t } from 'i18next'
 
 import { Home } from '@/features/home'
+import { parseSiteOrigin, SITE_TITLE } from '@/lib/site-seo'
 
 export const Route = createFileRoute('/')({
+  head: () => {
+    const title = `${SITE_TITLE} — ${t('AI model APIs, one integration')}`
+    const description = t(
+      'Explore AI API protocols, choose a model, configure your application and monitor usage with AIMOXT.'
+    )
+    const origin = parseSiteOrigin(import.meta.env.VITE_PUBLIC_SITE_URL)
+    return {
+      links: origin ? [{ rel: 'canonical', href: `${origin}/` }] : [],
+      meta: [
+        { title },
+        { name: 'description', content: description },
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: description },
+        { property: 'og:type', content: 'website' },
+        ...(origin ? [{ property: 'og:url', content: `${origin}/` }] : []),
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:description', content: description },
+      ],
+    }
+  },
   component: Home,
 })
