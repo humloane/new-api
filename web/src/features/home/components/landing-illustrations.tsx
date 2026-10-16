@@ -32,31 +32,9 @@ const ECOSYSTEMS = [
 ]
 
 export function ModelIllustration() {
-  const { systemName } = useSystemConfig()
   return (
     <div className='landing-model-art' aria-hidden='true'>
-      <div className='landing-orbit landing-orbit-outer' />
-      <div className='landing-orbit landing-orbit-inner' />
-      <div className='landing-art-core'>
-        <Braces />
-        <strong>妙信AI</strong>
-        <span>{systemName}</span>
-      </div>
-      {ECOSYSTEMS.slice(0, 5).map((model, index) => (
-        <div
-          className={`landing-model-node landing-model-node-${index}`}
-          key={model.name}
-        >
-          {getLobeIcon(model.icon, 38)}
-          <span>{model.name}</span>
-        </div>
-      ))}
-      <div className='landing-art-code'>
-        <Code2 />
-        <code>model: YOUR_MODEL_ID</code>
-      </div>
-      <span className='landing-art-spark landing-art-spark-one'>✦</span>
-      <span className='landing-art-spark landing-art-spark-two'>✦</span>
+      <img src='/hero.png' alt='' loading='eager' decoding='async' />
     </div>
   )
 }

@@ -89,7 +89,7 @@ export function HeroTerminalDemo(props: HeroTerminalDemoProps) {
         <div className='flex items-center gap-2 text-xs font-medium'>
           <Terminal
             aria-hidden='true'
-            className='size-4 text-blue-600 dark:text-blue-400'
+            className='size-4 text-blue-400'
           />
           {t('Your first API call')}
         </div>
@@ -176,7 +176,7 @@ export function HeroTerminalDemo(props: HeroTerminalDemoProps) {
                 }
               >
                 <pre
-                  className='min-w-0 font-mono text-xs leading-6 text-blue-900 dark:text-blue-100'
+                  className='min-w-0 font-mono text-xs leading-6 text-blue-100'
                   tabIndex={0}
                   aria-label={t('Code example')}
                 >

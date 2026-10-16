@@ -116,7 +116,7 @@ export function UseCases() {
   const cases = [
     {
       icon: MessagesSquare,
-      color: 'bg-blue-500/10 text-blue-700 dark:text-blue-300',
+      color: 'bg-blue-500/10 text-blue-300',
       title: t('Product conversations'),
       body: t(
         'Build an assistant into your application. Evaluate conversation quality, context limits and streaming behavior with representative prompts before release.'
@@ -124,7 +124,7 @@ export function UseCases() {
     },
     {
       icon: FileText,
-      color: 'bg-violet-500/10 text-violet-700 dark:text-violet-300',
+      color: 'bg-violet-500/10 text-violet-300',
       title: t('Content workflows'),
       body: t(
         'Summarize, classify and rewrite content with a model that fits the task. Validate structured output and handle incomplete or unexpected responses in your application.'
@@ -132,7 +132,7 @@ export function UseCases() {
     },
     {
       icon: Code2,
-      color: 'bg-cyan-500/10 text-cyan-800 dark:text-cyan-300',
+      color: 'bg-cyan-500/10 text-cyan-300',
       title: t('Developer tools'),
       body: t(
         'Connect tools that accept a custom API endpoint. Match their protocol and model settings; support for one endpoint does not guarantee compatibility with every agent or IDE.'
@@ -140,7 +140,7 @@ export function UseCases() {
     },
     {
       icon: BookOpen,
-      color: 'bg-amber-500/10 text-amber-800 dark:text-amber-300',
+      color: 'bg-amber-500/10 text-amber-300',
       title: t('Knowledge applications'),
       body: t(
         'Combine retrieval with model generation in your own application. Check embedding and generation model availability separately, and keep document access controls in your system.'

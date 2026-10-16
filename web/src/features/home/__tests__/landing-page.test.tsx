@@ -119,8 +119,13 @@ it('renders the complete default landing when custom content is empty', async ()
       name: 'Your next idea starts with an API call.',
     })
   ).toBeVisible()
+  expect(
+    main.queryByText(/200 ok|142|\$0\.000/)
+  ).not.toBeInTheDocument()
+  // Fork branding: operator branding replaces the header/hero copy, but the
+  // built-in footer must still render the protected upstream attribution
+  // (copyright line + project link).
   expect(screen.getByRole('contentinfo')).toHaveTextContent('New API')
-  expect(main.queryByText(/200 ok|142|\$0\.000/)).not.toBeInTheDocument()
 })
 
 it('presents the getting-started steps in order with mobile stacking and header clearance', async () => {
@@ -194,7 +199,9 @@ it('shows real footer destinations without enabling demo-site behavior', async (
     'href',
     status.docs_link
   )
-  expect(footer.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
+  // Fork branding: the footer reaches the upstream repository through the
+  // protected attribution link rather than a dedicated "GitHub" entry.
+  expect(footer.getByRole('link', { name: 'New API' })).toHaveAttribute(
     'href',
     'https://github.com/QuantumNous/new-api'
   )
@@ -514,8 +521,10 @@ it('updates the heading and actions when the interface language changes', async 
   await act(async () => {
     await i18next.changeLanguage('zhCN')
   })
+  // Fork branding: zh copy is "各大模型 API，一站式集成" (zh.json), not the
+  // original upstream heading.
   expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-    '大模型 API，一次接入。'
+    /各大模型 API，一站式集成/,
   )
   expect(
     within(screen.getByRole('main')).getAllByRole('link', { name: '立即接入' })
