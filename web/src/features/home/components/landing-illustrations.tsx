@@ -19,7 +19,6 @@ For commercial licensing, please contact support@quantumnous.com
 import { Braces, Code2, KeyRound, Layers, MessagesSquare } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { useSystemConfig } from '@/hooks/use-system-config'
 import { getLobeIcon } from '@/lib/lobe-icon'
 
 const ECOSYSTEMS = [
@@ -34,7 +33,10 @@ const ECOSYSTEMS = [
 export function ModelIllustration() {
   return (
     <div className='landing-model-art' aria-hidden='true'>
-      <img src='/hero.png' alt='' loading='eager' decoding='async' />
+      <picture>
+        <source type='image/webp' srcSet='/hero.webp' />
+        <img src='/hero.png' alt='' loading='eager' decoding='async' />
+      </picture>
     </div>
   )
 }
@@ -150,7 +152,6 @@ export function LaptopIllustration() {
 }
 
 export function RoutingIllustration() {
-  const { systemName } = useSystemConfig()
   const { t } = useTranslation()
   return (
     <div className='landing-routing-art' aria-hidden='true'>
@@ -161,9 +162,7 @@ export function RoutingIllustration() {
       </div>
       <div className='landing-routing-wire' />
       <div className='landing-routing-gateway'>
-        <Braces />
-        <strong>{systemName}</strong>
-        <span>API</span>
+        <img src='/logo.png' alt='' />
       </div>
       <div className='landing-routing-wire' />
       <div className='landing-routing-models'>

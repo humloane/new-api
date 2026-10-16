@@ -102,7 +102,7 @@ For commercial licensing, please contact support@quantumnous.com
 }
 .aimoxt-landing .landing-hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
   align-items: center;
   gap: 24px;
   min-height: 370px;
@@ -167,10 +167,17 @@ For commercial licensing, please contact support@quantumnous.com
   width: 100%;
   overflow: hidden;
 }
+.aimoxt-landing .landing-model-art picture {
+  display: block;
+  width: 100%;
+}
 .aimoxt-landing .landing-model-art img {
   display: block;
   width: 100%;
   height: auto;
+  /* Magnify the central orbit and crop the dark edge margins so the art
+     fills its column; edge pixels are unchanged, so the seam stays gone. */
+  transform: scale(1.06);
 }
 .aimoxt-landing .landing-platform-wrap {
   position: relative;
@@ -519,28 +526,13 @@ For commercial licensing, please contact support@quantumnous.com
 }
 .aimoxt-landing .landing-routing-gateway {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  background: var(--landing-accent);
-  color: var(--landing-surface);
-  padding: 25px 16px;
-  border-radius: 22px;
-  width: 128px;
-  box-shadow: 0 15px 25px #39235920;
+  flex-shrink: 0;
+  padding: 0 14px;
 }
-.aimoxt-landing .landing-routing-gateway strong {
-  font-size: 12px;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.aimoxt-landing .landing-routing-gateway > svg {
-  width: 38px;
-  height: 38px;
-}
-.aimoxt-landing .landing-routing-gateway > span {
-  font-size: 10px;
+.aimoxt-landing .landing-routing-gateway img {
+  width: 122px;
+  height: auto;
 }
 .aimoxt-landing .landing-routing-models {
   display: grid;
@@ -673,6 +665,9 @@ For commercial licensing, please contact support@quantumnous.com
   .aimoxt-landing .landing-ecosystems li {
     flex-direction: column;
   }
+  .aimoxt-landing .landing-routing-gateway img {
+    width: 100px;
+  }
   .aimoxt-landing .landing-use-case {
     padding: 18px;
   }
@@ -769,8 +764,10 @@ For commercial licensing, please contact support@quantumnous.com
     min-height: 280px;
   }
   .aimoxt-landing .landing-routing-gateway {
-    width: 105px;
-    padding-inline: 10px;
+    padding-inline: 6px;
+  }
+  .aimoxt-landing .landing-routing-gateway img {
+    width: 84px;
   }
   .aimoxt-landing .landing-routing-models > span {
     padding: 12px 8px;
