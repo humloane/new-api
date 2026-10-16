@@ -20,7 +20,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { t } from 'i18next'
 
 import { Home } from '@/features/home'
-import { parseSiteOrigin, SITE_TITLE } from '@/lib/site-seo'
+import {
+  OG_IMAGE_PATH,
+  parseSiteOrigin,
+  resolveSiteOrigin,
+  SITE_TITLE,
+} from '@/lib/site-seo'
 
 export const Route = createFileRoute('/')({
   head: () => {
@@ -28,7 +33,9 @@ export const Route = createFileRoute('/')({
     const description = t(
       'Explore AI API protocols, choose a model, configure your application and monitor usage with AIMOXT.'
     )
-    const origin = parseSiteOrigin(import.meta.env.VITE_PUBLIC_SITE_URL)
+    const origin = resolveSiteOrigin(
+      parseSiteOrigin(import.meta.env.VITE_PUBLIC_SITE_URL)
+    )
     return {
       links: origin ? [{ rel: 'canonical', href: `${origin}/` }] : [],
       meta: [
@@ -37,10 +44,18 @@ export const Route = createFileRoute('/')({
         { property: 'og:title', content: title },
         { property: 'og:description', content: description },
         { property: 'og:type', content: 'website' },
-        ...(origin ? [{ property: 'og:url', content: `${origin}/` }] : []),
-        { name: 'twitter:card', content: 'summary' },
+        ...(origin
+          ? [
+              { property: 'og:url', content: `${origin}/` },
+              { property: 'og:image', content: `${origin}${OG_IMAGE_PATH}` },
+            ]
+          : []),
+        { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: title },
         { name: 'twitter:description', content: description },
+        ...(origin
+          ? [{ name: 'twitter:image', content: `${origin}${OG_IMAGE_PATH}` }]
+          : []),
       ],
     }
   },

@@ -2,6 +2,7 @@ package router
 
 import (
 	"embed"
+	"io/fs"
 	"net/http"
 	"strings"
 
@@ -21,6 +22,24 @@ type WebAssets struct {
 
 func SetWebRouter(router *gin.Engine, assets WebAssets, pluginDispatcher gin.HandlerFunc) {
 	frontendFS := common.EmbedFolder(assets.BuildFS, "web/dist")
+	distFS, err := fs.Sub(assets.BuildFS, "web/dist")
+	if err != nil {
+		// web/dist 由 go:embed 保证存在，这里的错误只可能是代码错误。
+		panic(err)
+	}
+
+	webMiddleware := []gin.HandlerFunc{
+		pluginDispatcher,
+		middleware.RouteTag("web"),
+		gzip.Gzip(gzip.DefaultCompression),
+		middleware.AccessTokenAudit(),
+		middleware.GlobalWebRateLimit(),
+		middleware.Cache(),
+	}
+	// robots.txt / sitemap.xml 显式注册：后台"服务器地址"可用时动态生成（单一事实源），
+	// 否则回退到构建期内嵌的静态文件。显式路由优先于下方 NoRoute 的静态服务。
+	router.GET("/robots.txt", append(webMiddleware, controller.ServeRobotsTxt(distFS))...)
+	router.GET("/sitemap.xml", append(webMiddleware, controller.ServeSitemap(distFS))...)
 
 	router.NoRoute(
 		pluginDispatcher,

@@ -28,7 +28,11 @@ import { useSystemConfig } from '@/hooks/use-system-config'
 import { toIntlLocale } from '@/i18n/languages'
 import { isLikelyHtml } from '@/lib/content-format'
 import { parseHeaderNavModulesFromStatus } from '@/lib/nav-modules'
-import { createWebsiteSchema, parseSiteOrigin } from '@/lib/site-seo'
+import {
+  createWebsiteSchema,
+  parseSiteOrigin,
+  resolveSiteOrigin,
+} from '@/lib/site-seo'
 import { useAuthStore } from '@/stores/auth-store'
 
 import { CTA, Features, Hero, HowItWorks, Stats } from './components'
@@ -153,7 +157,7 @@ export function Home() {
     window.location.origin
 
   const schema = createWebsiteSchema(
-    parseSiteOrigin(import.meta.env.VITE_PUBLIC_SITE_URL),
+    resolveSiteOrigin(parseSiteOrigin(import.meta.env.VITE_PUBLIC_SITE_URL)),
     systemName,
     toIntlLocale(i18n.resolvedLanguage || i18n.language) || 'en'
   )

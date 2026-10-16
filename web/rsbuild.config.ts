@@ -12,9 +12,24 @@ import { pluginTailwindcss } from '@rsbuild/plugin-tailwindcss'
 import { tanstackRouter } from '@tanstack/router-plugin/rspack'
 
 import siteConfig from './site.config.json'
-import { createSeoAssets, parseSiteOrigin } from './src/lib/site-seo'
+import {
+  createSeoAssets,
+  OG_IMAGE_PATH,
+  parseSiteOrigin,
+} from './src/lib/site-seo'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+// 构建期把社交分享 meta 注入 index.html，未执行 JS 的爬虫/分享抓取器也能拿到
+// 绝对 URL 的 og:image 与 twitter 卡片，域名取自构建期站点配置（见下方注释）。
+function injectSocialMetaTags(html: string, siteOrigin: string): string {
+  const metas = [
+    `<meta property="og:image" content="${siteOrigin}${OG_IMAGE_PATH}" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:image" content="${siteOrigin}${OG_IMAGE_PATH}" />`,
+  ].join('\n    ')
+  return html.replace('</head>', `    ${metas}\n  </head>`)
+}
 
 export default defineConfig(({ envMode }) => {
   const env = loadEnv({ mode: envMode, prefixes: ['VITE_'] })
@@ -28,6 +43,10 @@ export default defineConfig(({ envMode }) => {
       env.rawPublicVars.VITE_PUBLIC_SITE_URL ||
       siteConfig.publicSiteUrl
   )
+  // 域名双源约定：构建期域名（canonical / og / JSON-LD / 静态 robots、sitemap
+  // 回退文件）来自上面的配置；运行时 controller/seo_assets.go 用后台
+  // "服务器地址"动态生成 robots.txt / sitemap.xml。生产部署两个域名必须
+  // 保持一致；后台改域名只影响 robots/sitemap，页面 meta 需重新构建。
   const seoAssets = createSeoAssets(siteOrigin)
   if (envMode === 'production' && !siteOrigin) {
     console.warn(
@@ -49,6 +68,9 @@ export default defineConfig(({ envMode }) => {
       {
         name: 'site-seo-assets',
         setup(api) {
+          if (siteOrigin) {
+            api.modifyHTML((html) => injectSocialMetaTags(html, siteOrigin))
+          }
           api.modifyRspackConfig((config, { rspack }) => {
             config.plugins ||= []
             config.plugins.push({
