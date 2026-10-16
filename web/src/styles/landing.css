@@ -29,7 +29,7 @@ For commercial licensing, please contact support@quantumnous.com
   --landing-panel: #13112a;
   --landing-surface: #070512;
   --landing-line: #292449;
-  --background: #070512;
+  --background: #000000;
   --foreground: #f2f1fb;
   --card: #0c0a1c;
   --muted: #13112a;
@@ -40,14 +40,10 @@ For commercial licensing, please contact support@quantumnous.com
   --secondary-foreground: #f2f1fb;
   --ring: #ff4fa5;
   color: var(--landing-ink);
-  /* Page background continues the nebula tones sampled from the hero image
-     edges (base ≈ #070613, warm galaxy mid-left, blue haze on the right)
-     so the cosmic field carries across every section. */
-  background:
-    radial-gradient(900px 520px at 12% 6%, #14102666, transparent 68%),
-    radial-gradient(820px 480px at 97% 24%, #0a11244d, transparent 68%),
-    radial-gradient(980px 560px at 55% 104%, #120e2466, transparent 70%),
-    linear-gradient(180deg, #080714 0%, #05040d 58%, #060512 100%);
+  /* Pure black page background: the hero visual's feathered perimeter fades
+     to near-black space, so black is the only backdrop that dissolves the
+     image edge seamlessly on every viewport and device. */
+  background: #000;
 }
 .aimoxt-landing .landing-container {
   width: min(1040px, calc(100% - 48px));
@@ -83,7 +79,7 @@ For commercial licensing, please contact support@quantumnous.com
   outline-offset: 5px;
 }
 .aimoxt-header {
-  --background: #070512;
+  --background: #000000;
   --foreground: #f2f1fb;
   --card: #0c0a1c;
   --popover: #0c0a1c;
@@ -97,7 +93,7 @@ For commercial licensing, please contact support@quantumnous.com
   --primary: #ff4fa5;
   --primary-foreground: #ffffff;
   --ring: #ff4fa5;
-  background: #070512f0;
+  background: #000000f0;
   backdrop-filter: blur(16px);
 }
 .aimoxt-header > div {
@@ -109,15 +105,8 @@ For commercial licensing, please contact support@quantumnous.com
 .aimoxt-landing .landing-hero {
   position: relative;
   padding: 112px 0 94px;
-  /* Nebula washes aligned to the hero image's sampled edge glows (mid-left
-     galaxy, bottom-center, bottom-right, top-center) so the picture fades
-     into the section instead of sitting on a flat backdrop. */
-  background:
-    radial-gradient(480px 380px at 42% 56%, #16112c, transparent 62%),
-    radial-gradient(560px 300px at 62% 84%, #100e24, transparent 62%),
-    radial-gradient(420px 340px at 77% 80%, #0d0b1c, transparent 60%),
-    radial-gradient(620px 240px at 60% 16%, #0d0a1e, transparent 60%),
-    linear-gradient(105deg, #080614 0%, #070714 55%, #05040e 100%);
+  /* Stays on the pure black page background: the feathered hero image edge
+     dissolves into black with no visible seam. */
 }
 /* The hero carries the large feathered visual, so it gets a wider container
    than the 1040px reading width used by the rest of the landing. */
@@ -664,7 +653,7 @@ For commercial licensing, please contact support@quantumnous.com
   --muted-foreground: #a5adc6;
   --muted: #13112a;
   --border: #292449;
-  background: #070512;
+  background: #000000;
 }
 .aimoxt-footer > div {
   max-width: 1088px;
