@@ -198,11 +198,10 @@ For commercial licensing, please contact support@quantumnous.com
   display: block;
   width: 100%;
   height: auto;
-  /* The feathered elliptical fade is baked into the hero image's alpha
-     channel: the central orb, orbit and the six model cards stay fully
-     opaque while the outer perimeter dissolves to fully transparent, so
-     the rectangular boundary is gone at the pixel level and no CSS mask
-     is needed. */
+  /* A narrow feathered band is baked into the hero image's alpha channel:
+     everything beyond ~52px from the canvas edge (measured at 1280px width)
+     dissolves to fully transparent, while the six model cards sit farther
+     in and stay fully opaque. No CSS mask is needed. */
 }
 .aimoxt-landing .landing-platform-wrap {
   position: relative;
@@ -578,7 +577,7 @@ For commercial licensing, please contact support@quantumnous.com
 }
 .aimoxt-landing .landing-faq {
   padding-block: 62px 74px;
-  background: var(--landing-panel);
+  background: #000000;
 }
 .aimoxt-landing .landing-faq-grid {
   display: grid;
@@ -604,7 +603,7 @@ For commercial licensing, please contact support@quantumnous.com
   border-radius: 50%;
   background: var(--landing-accent);
   color: var(--landing-surface);
-  box-shadow: 0 0 0 6px var(--landing-panel);
+  box-shadow: 0 0 0 6px #000000;
 }
 .aimoxt-landing .landing-faq-card > h3 {
   text-align: center;
@@ -613,11 +612,7 @@ For commercial licensing, please contact support@quantumnous.com
   margin-bottom: 12px;
 }
 .aimoxt-landing .landing-cta {
-  background-color: var(--landing-pale);
-  background-image: linear-gradient(135deg, #ff4fa5 0%, #21b4f2 100%);
-  background-size: 50% 100%;
-  background-position: 100% 0;
-  background-repeat: no-repeat;
+  background: #000000;
 }
 .aimoxt-landing .landing-cta-grid {
   display: grid;
@@ -633,6 +628,9 @@ For commercial licensing, please contact support@quantumnous.com
   gap: 38px 22px;
   padding: 48px 0 48px 50px;
   color: #fff;
+  /* Gradient panel on the capabilities column only, so it stays inside
+     the landing container instead of bleeding across the viewport. */
+  background: linear-gradient(135deg, #ff4fa5 0%, #21b4f2 100%);
 }
 .aimoxt-landing .landing-cta-capabilities li {
   display: flex;
@@ -817,9 +815,6 @@ For commercial licensing, please contact support@quantumnous.com
     min-height: 0;
     padding-inline: 24px;
   }
-  .aimoxt-landing .landing-cta {
-    background: var(--landing-pale);
-  }
   .aimoxt-landing .landing-cta-grid {
     grid-template-columns: 1fr;
     width: 100%;
@@ -829,7 +824,6 @@ For commercial licensing, please contact support@quantumnous.com
   }
   .aimoxt-landing .landing-cta-capabilities {
     padding: 44px 20px;
-    background: linear-gradient(135deg, #ff4fa5 0%, #21b4f2 100%);
   }
   .aimoxt-footer .aimoxt-footer-links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
