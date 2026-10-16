@@ -119,11 +119,16 @@ For commercial licensing, please contact support@quantumnous.com
     radial-gradient(620px 240px at 60% 16%, #0d0a1e, transparent 60%),
     linear-gradient(105deg, #080614 0%, #070714 55%, #05040e 100%);
 }
+/* The hero carries the large feathered visual, so it gets a wider container
+   than the 1040px reading width used by the rest of the landing. */
+.aimoxt-landing .landing-hero .landing-container {
+  width: min(1240px, calc(100% - 56px));
+}
 .aimoxt-landing .landing-hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   align-items: center;
-  gap: 24px;
+  gap: 32px;
   min-height: 370px;
 }
 .aimoxt-landing .landing-hero-copy {
@@ -195,10 +200,6 @@ For commercial licensing, please contact support@quantumnous.com
 .aimoxt-landing .landing-model-art {
   position: relative;
   width: 100%;
-  overflow: hidden;
-  /* Faint aura behind the art so the feathered edges float in a lit space
-     instead of sitting on the flat section backdrop. */
-  background: radial-gradient(62% 56% at 50% 48%, #1a143340, transparent 72%);
 }
 .aimoxt-landing .landing-model-art picture {
   display: block;
@@ -208,27 +209,11 @@ For commercial licensing, please contact support@quantumnous.com
   display: block;
   width: 100%;
   height: auto;
-  /* Magnify the central orbit and crop the dark edge margins. The elliptical
-     mask (default farthest-corner) keeps the center, orb and orbit cards at
-     full opacity, feathers to ~50% across the visible edge and to zero at
-     the corners, dissolving the rectangular boundary into the nebula backdrop. */
-  transform: scale(1.06);
-  -webkit-mask-image: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 1) 45%,
-    rgba(0, 0, 0, 0.96) 58%,
-    rgba(0, 0, 0, 0.75) 72%,
-    rgba(0, 0, 0, 0.35) 86%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 1) 45%,
-    rgba(0, 0, 0, 0.96) 58%,
-    rgba(0, 0, 0, 0.75) 72%,
-    rgba(0, 0, 0, 0.35) 86%,
-    transparent 100%
-  );
+  /* The feathered elliptical fade is baked into the hero image's alpha
+     channel: the central orb, orbit and the six model cards stay fully
+     opaque while the outer perimeter dissolves to fully transparent, so
+     the rectangular boundary is gone at the pixel level and no CSS mask
+     is needed. */
 }
 .aimoxt-landing .landing-platform-wrap {
   position: relative;
@@ -747,6 +732,9 @@ For commercial licensing, please contact support@quantumnous.com
   .aimoxt-landing .landing-container {
     width: calc(100% - 32px);
   }
+  .aimoxt-landing .landing-hero .landing-container {
+    width: calc(100% - 32px);
+  }
   .aimoxt-landing .landing-hero {
     padding: 98px 0 72px;
   }
@@ -758,7 +746,7 @@ For commercial licensing, please contact support@quantumnous.com
     font-size: clamp(2.25rem, 8vw, 3.5rem);
   }
   .aimoxt-landing .landing-model-art {
-    max-width: 440px;
+    max-width: 560px;
     margin-inline: auto;
   }
   .aimoxt-landing .landing-platform-bar {
