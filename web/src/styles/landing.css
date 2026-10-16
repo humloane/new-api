@@ -196,6 +196,9 @@ For commercial licensing, please contact support@quantumnous.com
   position: relative;
   width: 100%;
   overflow: hidden;
+  /* Faint aura behind the art so the feathered edges float in a lit space
+     instead of sitting on the flat section backdrop. */
+  background: radial-gradient(62% 56% at 50% 48%, #1a143340, transparent 72%);
 }
 .aimoxt-landing .landing-model-art picture {
   display: block;
@@ -205,12 +208,27 @@ For commercial licensing, please contact support@quantumnous.com
   display: block;
   width: 100%;
   height: auto;
-  /* Magnify the central orbit and crop the dark edge margins; the soft
-     ellipse mask dissolves the picture boundary into the matched nebula
-     backdrop so no rectangular outline remains. */
+  /* Magnify the central orbit and crop the dark edge margins. The elliptical
+     mask (default farthest-corner) keeps the center, orb and orbit cards at
+     full opacity, feathers to ~50% across the visible edge and to zero at
+     the corners, dissolving the rectangular boundary into the nebula backdrop. */
   transform: scale(1.06);
-  -webkit-mask-image: radial-gradient(ellipse 74% 84% at 50% 50%, #000 76%, transparent 100%);
-  mask-image: radial-gradient(ellipse 74% 84% at 50% 50%, #000 76%, transparent 100%);
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 1) 45%,
+    rgba(0, 0, 0, 0.96) 58%,
+    rgba(0, 0, 0, 0.75) 72%,
+    rgba(0, 0, 0, 0.35) 86%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 1) 45%,
+    rgba(0, 0, 0, 0.96) 58%,
+    rgba(0, 0, 0, 0.75) 72%,
+    rgba(0, 0, 0, 0.35) 86%,
+    transparent 100%
+  );
 }
 .aimoxt-landing .landing-platform-wrap {
   position: relative;
