@@ -124,7 +124,7 @@ export function UseCases() {
     },
     {
       icon: FileText,
-      color: 'bg-violet-500/10 text-violet-300',
+      color: 'bg-pink-500/10 text-pink-300',
       title: t('Content workflows'),
       body: t(
         'Summarize, classify and rewrite content with a model that fits the task. Validate structured output and handle incomplete or unexpected responses in your application.'

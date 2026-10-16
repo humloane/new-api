@@ -41,7 +41,7 @@ export function HeroButtons(props: LandingActions) {
       <Button
         role='link'
         size='lg'
-        className='landing-primary-action h-12 rounded-lg bg-violet-500 px-6 text-white hover:bg-violet-400'
+        className='landing-primary-action h-12 rounded-lg px-6 text-white'
         render={<Link to={primaryHref} />}
       >
         {primaryLabel}
