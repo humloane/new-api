@@ -19,7 +19,41 @@ For commercial licensing, please contact support@quantumnous.com
 /* The landing follows the app theme. The hero visual is a transparent PNG, so
    it sits on whatever the active theme paints behind it — no blending needed.
    Light values are the base; `.dark` (applied to <html>) overrides to the
-   cosmic dark palette. Accent tokens follow the /logo.png gradient. */
+   cosmic dark palette. Accent tokens follow the /logo.png gradient.
+   The header, page, and footer are siblings in the layout, so they share one
+   token set: it keeps the shadcn components inside them (buttons, borders,
+   focus rings) in the landing palette. --landing-* tokens are section-level
+   colors used only inside the page. */
+.aimoxt-header,
+.aimoxt-landing,
+.aimoxt-footer {
+  --background: #ffffff;
+  --foreground: #171331;
+  --primary: #e0218a;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f1fb;
+  --secondary-foreground: #171331;
+  --muted: #f4f1fb;
+  --muted-foreground: #565073;
+  --border: #e7e2f3;
+  --input: #e7e2f3;
+  --ring: #e0218a;
+}
+.dark .aimoxt-header,
+.dark .aimoxt-landing,
+.dark .aimoxt-footer {
+  --background: #000000;
+  --foreground: #f2f1fb;
+  --primary: #ff4fa5;
+  --primary-foreground: #ffffff;
+  --secondary: #13112a;
+  --secondary-foreground: #f2f1fb;
+  --muted: #13112a;
+  --muted-foreground: #a5adc6;
+  --border: #292449;
+  --input: #292449;
+  --ring: #ff4fa5;
+}
 .aimoxt-landing {
   --landing-ink: #171331;
   --landing-muted: #565073;
@@ -34,18 +68,8 @@ For commercial licensing, please contact support@quantumnous.com
   --landing-use-2: #e5f1fb;
   --landing-use-3: #fbe6f1;
   --landing-use-4: #e4f5ee;
-  --background: #ffffff;
-  --foreground: #171331;
-  --card: #ffffff;
-  --muted: #f4f1fb;
-  --muted-foreground: #565073;
-  --border: #e7e2f3;
-  --input: #e7e2f3;
-  --secondary: #f4f1fb;
-  --secondary-foreground: #171331;
-  --ring: #e0218a;
   color: var(--landing-ink);
-  background: #ffffff;
+  background: var(--background);
 }
 .dark .aimoxt-landing {
   --landing-ink: #f2f1fb;
@@ -61,17 +85,6 @@ For commercial licensing, please contact support@quantumnous.com
   --landing-use-2: #101b2e;
   --landing-use-3: #251327;
   --landing-use-4: #0f211a;
-  --background: #000000;
-  --foreground: #f2f1fb;
-  --card: #0c0a1c;
-  --muted: #13112a;
-  --muted-foreground: #a5adc6;
-  --border: #292449;
-  --input: #292449;
-  --secondary: #13112a;
-  --secondary-foreground: #f2f1fb;
-  --ring: #ff4fa5;
-  background: #000;
 }
 .aimoxt-landing .landing-container {
   width: min(1040px, calc(100% - 48px));
@@ -107,39 +120,9 @@ For commercial licensing, please contact support@quantumnous.com
   outline-offset: 5px;
 }
 .aimoxt-header {
-  --background: #ffffff;
-  --foreground: #171331;
-  --card: #ffffff;
-  --popover: #ffffff;
-  --popover-foreground: #171331;
-  --muted: #f4f1fb;
-  --muted-foreground: #565073;
-  --border: #e7e2f3;
-  --input: #e7e2f3;
-  --secondary: #f4f1fb;
-  --secondary-foreground: #171331;
-  --primary: #e0218a;
-  --primary-foreground: #ffffff;
-  --ring: #e0218a;
-  background: #ffffffe6;
+  /* Translucent page color + blur reads as solid in both themes. */
+  background: color-mix(in srgb, var(--background) 90%, transparent);
   backdrop-filter: blur(16px);
-}
-.dark .aimoxt-header {
-  --background: #000000;
-  --foreground: #f2f1fb;
-  --card: #0c0a1c;
-  --popover: #0c0a1c;
-  --popover-foreground: #f2f1fb;
-  --muted: #13112a;
-  --muted-foreground: #a5adc6;
-  --border: #292449;
-  --input: #292449;
-  --secondary: #13112a;
-  --secondary-foreground: #f2f1fb;
-  --primary: #ff4fa5;
-  --primary-foreground: #ffffff;
-  --ring: #ff4fa5;
-  background: #000000f0;
 }
 .aimoxt-header > div {
   max-width: 1088px;
@@ -151,16 +134,17 @@ For commercial licensing, please contact support@quantumnous.com
   position: relative;
   padding: 112px 0 94px;
 }
-/* The hero carries the large feathered visual, so it gets a wider container
-   than the 1040px reading width used by the rest of the landing. */
+/* The hero carries the large visual, so it gets a wider container than the
+   1040px reading width used by the rest of the landing. The copy column stays
+   narrow so the visual sits close to the text. */
 .aimoxt-landing .landing-hero .landing-container {
-  width: min(1240px, calc(100% - 56px));
+  width: min(1200px, calc(100% - 56px));
 }
 .aimoxt-landing .landing-hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
   align-items: center;
-  gap: 32px;
+  gap: 36px;
   min-height: 370px;
 }
 .aimoxt-landing .landing-hero-copy {
@@ -173,13 +157,15 @@ For commercial licensing, please contact support@quantumnous.com
   font-weight: 800;
 }
 .aimoxt-landing h1 span {
-  background: linear-gradient(92deg, #f5821f 0%, #e0218a 55%, #1495d6 110%);
+  /* background-image, not the background shorthand: the shorthand resets
+     background-clip to border-box and paints the gradient as a solid block. */
+  background-image: linear-gradient(92deg, #f5821f 0%, #e0218a 55%, #1495d6 110%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 .dark .aimoxt-landing h1 span {
-  background: linear-gradient(92deg, #ffb13d 0%, #ff4fa5 55%, #21b4f2 110%);
+  background-image: linear-gradient(92deg, #ffb13d 0%, #ff4fa5 55%, #21b4f2 110%);
 }
 .aimoxt-landing .landing-hero-description {
   font-size: 15px;
@@ -685,18 +671,7 @@ For commercial licensing, please contact support@quantumnous.com
   stroke-width: 1.4;
 }
 .aimoxt-footer {
-  --foreground: #171331;
-  --muted-foreground: #565073;
-  --muted: #f4f1fb;
-  --border: #e7e2f3;
-  background: #ffffff;
-}
-.dark .aimoxt-footer {
-  --foreground: #f2f1fb;
-  --muted-foreground: #a5adc6;
-  --muted: #13112a;
-  --border: #292449;
-  background: #000000;
+  background: var(--background);
 }
 .aimoxt-footer > div {
   max-width: 1088px;
