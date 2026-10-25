@@ -86,10 +86,15 @@ export function useTopNavLinks(): TopNavLink[] {
     links.push({ title: t('Rankings'), href: '/rankings', requiresAuth })
   }
 
-  // Docs (supports external links)
+  // Docs (supports external links and internal /tutorial)
   if (modules?.docs !== false) {
     if (docsLink) {
-      links.push({ title: t('Docs'), href: docsLink, external: true })
+      const isExternal = /^https?:\/\//i.test(docsLink)
+      links.push({
+        title: t('Docs'),
+        href: docsLink,
+        external: isExternal,
+      })
     } else {
       links.push({ title: t('Docs'), href: '/docs' })
     }
