@@ -86,6 +86,9 @@ export function useTopNavLinks(): TopNavLink[] {
     links.push({ title: t('Rankings'), href: '/rankings', requiresAuth })
   }
 
+  // Tutorial is a first-class product page, independent of the legacy docs flag.
+  links.push({ title: t('Tutorial'), href: '/tutorial' })
+
   // Docs (supports external links and internal /tutorial)
   if (modules?.docs !== false) {
     if (docsLink) {
