@@ -21,22 +21,30 @@ import { useTranslation } from 'react-i18next'
 
 import { getLobeIcon } from '@/lib/lobe-icon'
 
+// Only list models that are actually published in this site's catalog.
+// When new upstreams are enabled, extend this list together with the catalog.
 const ECOSYSTEMS = [
   { name: 'OpenAI', icon: 'OpenAI' },
-  { name: 'Claude', icon: 'Claude.Color' },
-  { name: 'Gemini', icon: 'Gemini.Color' },
-  { name: 'Grok', icon: 'Grok' },
-  { name: 'DeepSeek', icon: 'DeepSeek.Color' },
-  { name: 'Qwen', icon: 'Qwen.Color' },
+  { name: 'GPT-5.5', icon: 'OpenAI' },
+  { name: 'GPT-5.6', icon: 'OpenAI' },
+  { name: 'GPT-Image', icon: 'OpenAI' },
 ]
 
 export function ModelIllustration() {
   return (
-    <div className='landing-model-art' aria-hidden='true'>
-      <picture>
-        <source type='image/webp' srcSet='/hero.webp' />
-        <img src='/hero.png' alt='' loading='eager' decoding='async' />
-      </picture>
+    <div className='landing-model-art landing-hero-gateway' aria-hidden='true'>
+      <div className='landing-hero-halo' />
+      <div className='landing-hero-orbit landing-hero-orbit-a' />
+      <div className='landing-hero-orbit landing-hero-orbit-b' />
+      <div className='landing-hero-orbit landing-hero-orbit-c' />
+      <div className='landing-hero-core'>
+        <img src='/logo.png' alt='' loading='eager' decoding='async' />
+      </div>
+      <span className='landing-hero-chip landing-hero-chip-a'>GPT-5.5</span>
+      <span className='landing-hero-chip landing-hero-chip-b'>GPT-5.6</span>
+      <span className='landing-hero-chip landing-hero-chip-c'>GPT-Image</span>
+      <span className='landing-hero-chip landing-hero-chip-d'>OpenAI API</span>
+      <span className='landing-hero-chip landing-hero-chip-e'>API Key</span>
     </div>
   )
 }

@@ -43,11 +43,6 @@ interface FooterProps {
   appearance?: 'default' | 'landing'
 }
 
-const NEW_API_FOOTER_ATTRIBUTION_KEY = [
-  'footer',
-  'new' + 'api',
-  'projectAttributionSuffix',
-].join('.')
 
 function FooterLinkItem(props: { link: FooterLink }) {
   const { t } = useTranslation()
@@ -136,10 +131,10 @@ function LegalLinks(props: { leadingSeparator?: boolean }) {
 // inline=true returns just the inner span for composition in a parent flex
 // row. inline=false wraps in a centered/right-aligned div (default).
 function ProjectAttribution(props: { currentYear: number; inline?: boolean }) {
-  const { t } = useTranslation()
+  const { systemName } = useSystemConfig()
   const content = (
     <span className='text-muted-foreground/45'>
-      &copy; {props.currentYear}{' '}
+      &copy; {props.currentYear} {systemName || 'AIMOXT'} ·{' '}
       <a
         href='https://github.com/QuantumNous/new-api'
         target='_blank'
@@ -147,8 +142,8 @@ function ProjectAttribution(props: { currentYear: number; inline?: boolean }) {
         className='text-foreground/70 hover:text-foreground font-medium transition-colors'
       >
         New API
-      </a>
-      . {t(NEW_API_FOOTER_ATTRIBUTION_KEY)}
+      </a>{' '}
+      (AGPL-3.0)
     </span>
   )
   if (props.inline) {
@@ -182,15 +177,15 @@ export function Footer(props: FooterProps) {
         links: [
           {
             text: t('footer.columns.about.links.aboutProject'),
-            href: 'https://docs.newapi.pro/wiki/project-introduction/',
+            href: '/about',
           },
           {
             text: t('footer.columns.about.links.contact'),
-            href: 'https://docs.newapi.pro/support/community-interaction/',
+            href: 'https://t.me/moiusr',
           },
           {
             text: t('footer.columns.about.links.features'),
-            href: 'https://docs.newapi.pro/wiki/features-introduction/',
+            href: '/pricing',
           },
         ],
       },
@@ -199,15 +194,15 @@ export function Footer(props: FooterProps) {
         links: [
           {
             text: t('footer.columns.docs.links.quickStart'),
-            href: 'https://docs.newapi.pro/getting-started/',
+            href: '/#integration',
           },
           {
             text: t('footer.columns.docs.links.installation'),
-            href: 'https://docs.newapi.pro/installation/',
+            href: '/#getting-started',
           },
           {
             text: t('footer.columns.docs.links.apiDocs'),
-            href: 'https://docs.newapi.pro/api/',
+            href: '/#protocols',
           },
         ],
       },

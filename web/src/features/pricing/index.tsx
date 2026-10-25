@@ -21,6 +21,8 @@ import { useTranslation } from 'react-i18next'
 
 import { PublicLayout } from '@/components/layout'
 import { PageTransition } from '@/components/page-transition'
+import { ROLE } from '@/lib/roles'
+import { useAuthStore } from '@/stores/auth-store'
 
 import {
   LoadingSkeleton,
@@ -41,6 +43,8 @@ export function Pricing() {
   const [selectedModelName, setSelectedModelName] = useState<string | null>(
     null
   )
+  const currentUser = useAuthStore((state) => state.auth.user)
+  const isAdmin = (currentUser?.role ?? 0) >= ROLE.ADMIN
 
   const {
     models,
@@ -53,6 +57,19 @@ export function Pricing() {
     priceRate,
     usdExchangeRate,
   } = usePricingData()
+
+  // Public pricing must not expose internal groups (svip/vip/渠道代理).
+  // Signed-in users only see the group they actually belong to; admins keep
+  // the full matrix for operations.
+  const visibleModels = useMemo(() => {
+    if (isAdmin) return models || []
+    const allowed = new Set<string>(['注册用户'])
+    if (currentUser?.group) allowed.add(currentUser.group)
+    return (models || []).map((model) => ({
+      ...model,
+      enable_groups: (model.enable_groups || []).filter((g) => allowed.has(g)),
+    }))
+  }, [models, isAdmin, currentUser?.group])
 
   const {
     searchInput,
@@ -81,7 +98,7 @@ export function Pricing() {
     availableTags,
     clearFilters,
     clearSearch,
-  } = useFilters(models || [])
+  } = useFilters(visibleModels)
 
   const handleModelClick = useCallback((modelName: string) => {
     setSelectedModelName(modelName)
@@ -97,13 +114,18 @@ export function Pricing() {
     [models, selectedModelName]
   )
 
-  const availableGroups = useMemo(
-    () =>
-      Object.keys(usableGroup || {}).filter(
+  const availableGroups = useMemo(() => {
+    const allowed = new Set<string>(['注册用户'])
+    if (isAdmin) {
+      return Object.keys(usableGroup || {}).filter(
         (g) => !EXCLUDED_GROUPS.includes(g)
-      ),
-    [usableGroup]
-  )
+      )
+    }
+    if (currentUser?.group) allowed.add(currentUser.group)
+    return Object.keys(usableGroup || {}).filter(
+      (g) => !EXCLUDED_GROUPS.includes(g) && allowed.has(g)
+    )
+  }, [usableGroup, isAdmin, currentUser?.group])
 
   const handleClearAll = useCallback(() => {
     clearFilters()

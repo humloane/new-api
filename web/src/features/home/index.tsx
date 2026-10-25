@@ -188,9 +188,9 @@ export function Home() {
             title: t('Compatible ecosystems'),
             links: [
               { text: 'OpenAI', href: '#protocols' },
-              { text: 'Claude', href: '#protocols' },
-              { text: 'Gemini', href: '#protocols' },
-              { text: 'DeepSeek', href: '#protocols' },
+              { text: 'GPT-5.5', href: '#protocols' },
+              { text: 'GPT-5.6', href: '#protocols' },
+              { text: 'GPT-Image', href: '#protocols' },
             ],
           },
           {
@@ -210,9 +210,6 @@ export function Home() {
             links: [
               { text: t('FAQ'), href: '#faq' },
               { text: t('Use cases'), href: '#use-cases' },
-              ...(actions.docsUrl
-                ? [{ text: t('Docs'), href: actions.docsUrl }]
-                : []),
               ...(actions.pricingEnabled
                 ? [
                     {
@@ -228,14 +225,8 @@ export function Home() {
           {
             title: t('AIMOXT妙信AI'),
             links: [
-              {
-                text: 'GitHub',
-                href: '/',
-              },
-              {
-                text: t('footer.columns.about.links.aboutProject'),
-                href: 'https://docs.newapi.pro/wiki/project-introduction/',
-              },
+              { text: t('About us'), href: '/about' },
+              { text: t('Contact support'), href: 'https://t.me/moiusr' },
             ],
           },
         ]}
