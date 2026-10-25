@@ -22,8 +22,8 @@ var seoSitemapPaths = []string{
 	"/about",
 	"/privacy-policy",
 	"/user-agreement",
-	"/rankings",
 	"/pricing",
+	"/tutorial",
 }
 
 // seoDisallowedPaths 是禁止收录的内部页面与接口路径。

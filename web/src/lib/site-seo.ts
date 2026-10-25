@@ -35,8 +35,8 @@ const SITE_PATHS = [
   '/about',
   '/privacy-policy',
   '/user-agreement',
-  '/rankings',
   '/pricing',
+  '/tutorial',
 ] as const
 
 /** 禁止收录的内部页面与接口路径。 */

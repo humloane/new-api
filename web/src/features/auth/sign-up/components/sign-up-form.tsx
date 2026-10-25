@@ -382,6 +382,12 @@ export function SignUpForm({
           {t('Create account')}
         </Button>
 
+        {oauthRegisterEnabled && requiresLegalConsent && !agreedToLegal && (
+          <p className='text-muted-foreground text-center text-xs'>
+            {t('Please agree to the User Agreement and Privacy Policy first')}
+          </p>
+        )}
+
         {oauthRegisterEnabled && (
           <OAuthProviders
             status={status}
