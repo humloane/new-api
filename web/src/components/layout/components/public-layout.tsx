@@ -17,6 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import type { TopNavLink } from '../types'
+import { ChatwootWidget } from '@/components/chatwoot-widget'
 import { PublicHeader, type PublicHeaderProps } from './public-header'
 
 type PublicLayoutProps = {
@@ -45,6 +46,7 @@ export function PublicLayout(props: PublicLayoutProps) {
         siteName={props.siteName}
         {...props.headerProps}
       />
+      <ChatwootWidget />
 
       {props.showMainContainer !== false ? (
         <main className='container px-4 py-6 pt-20 md:px-4'>
