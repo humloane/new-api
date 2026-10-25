@@ -56,20 +56,6 @@ export function ProtocolGuide() {
         'A separate request and response format for supported models. Chat Completions parameters are not interchangeable with Responses parameters.'
       ),
     },
-    {
-      name: 'Anthropic Messages',
-      path: '/v1/messages',
-      body: t(
-        'Use the Messages request format and API-key header. Model access and advanced features depend on the configured channel.'
-      ),
-    },
-    {
-      name: 'Gemini',
-      path: '/v1beta/models/{model}:generateContent',
-      body: t(
-        'Use the contents format and choose the correct model in the URL. Verify supported input types and streaming methods before integration.'
-      ),
-    },
   ]
   return (
     <section

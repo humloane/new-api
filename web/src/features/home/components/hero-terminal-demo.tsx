@@ -40,21 +40,6 @@ const API_DEMOS = [
     header: 'Authorization: Bearer $API_KEY',
     body: '{"model":"YOUR_MODEL_ID","input":"Hello"}',
   },
-  {
-    id: 'messages',
-    label: 'Claude',
-    endpoint: '/v1/messages',
-    header: 'x-api-key: $API_KEY',
-    extraHeader: 'anthropic-version: 2023-06-01',
-    body: '{"model":"YOUR_MODEL_ID","max_tokens":1024,"messages":[{"role":"user","content":"Hello"}]}',
-  },
-  {
-    id: 'gemini',
-    label: 'Gemini',
-    endpoint: '/v1beta/models/YOUR_MODEL_ID:generateContent',
-    header: 'x-goog-api-key: $API_KEY',
-    body: '{"contents":[{"parts":[{"text":"Hello"}]}]}',
-  },
 ] as const
 
 interface HeroTerminalDemoProps {

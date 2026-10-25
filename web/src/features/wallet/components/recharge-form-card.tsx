@@ -306,7 +306,7 @@ export function RechargeFormCard({
                       <Skeleton className='h-5 w-16' />
                     ) : (
                       <span className='text-sm font-semibold'>
-                        {formatCurrency(paymentAmount)}
+                        ¥{formatCurrency(paymentAmount)}
                       </span>
                     )}
                   </div>
@@ -331,7 +331,7 @@ export function RechargeFormCard({
                           })
                         : undefined
                       const disabledLabel = disabled
-                        ? `${t('Minimum:')} ${minTopup}`
+                        ? `${t('Minimum:')} $${minTopup}`
                         : undefined
 
                       const button = (
@@ -414,7 +414,7 @@ export function RechargeFormCard({
                             })
                           : undefined
                         const disabledLabel = belowMin
-                          ? `${t('Minimum:')} ${waffoMin}`
+                          ? `${t('Minimum:')} $${waffoMin}`
                           : undefined
 
                         let methodIcon = getPaymentIcon('waffo')
