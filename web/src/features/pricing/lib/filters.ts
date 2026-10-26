@@ -112,6 +112,38 @@ function getModelPrice(model: PricingModel): number {
   return model.quota_type === 0 ? model.model_ratio : model.model_price || 0
 }
 
+const DOMESTIC_VENDOR_HINTS = [
+  'deepseek',
+  'kimi',
+  'moonshot',
+  'glm',
+  'zhipu',
+  'z.ai',
+  'minimax',
+  'qwen',
+  'alibaba',
+  'mimo',
+  'xiaomi',
+]
+
+const DOMESTIC_MODEL_PREFIXES = [
+  'deepseek',
+  'kimi',
+  'glm',
+  'minimax',
+  'qwen',
+  'mimo',
+]
+
+function isDomesticModel(model: PricingModel): boolean {
+  const vendor = (model.vendor_name || '').toLowerCase()
+  if (DOMESTIC_VENDOR_HINTS.some((hint) => vendor.includes(hint))) {
+    return true
+  }
+  const name = (model.model_name || '').toLowerCase()
+  return DOMESTIC_MODEL_PREFIXES.some((prefix) => name.startsWith(prefix))
+}
+
 /**
  * Sort models by specified option
  */
@@ -122,6 +154,16 @@ export function sortModels(
   const sorted = [...models]
 
   switch (sortBy) {
+    case SORT_OPTIONS.DOMESTIC_FIRST:
+      sorted.sort((a, b) => {
+        const rankA = isDomesticModel(a) ? 0 : 1
+        const rankB = isDomesticModel(b) ? 0 : 1
+        if (rankA !== rankB) {
+          return rankA - rankB
+        }
+        return (a.model_name || '').localeCompare(b.model_name || '')
+      })
+      break
     case SORT_OPTIONS.NAME:
       sorted.sort((a, b) =>
         (a.model_name || '').localeCompare(b.model_name || '')

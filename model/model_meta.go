@@ -502,7 +502,8 @@ func SearchModels(keyword string, vendor string, status string, syncOfficial str
 	if err := db.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}
-	if err := db.Order("models.id DESC").Offset(offset).Limit(limit).Find(&models).Error; err != nil {
+	domesticRank := "CASE WHEN LOWER(models.model_name) LIKE 'deepseek%' OR LOWER(models.model_name) LIKE 'kimi%' OR LOWER(models.model_name) LIKE 'glm%' OR LOWER(models.model_name) LIKE 'minimax%' OR LOWER(models.model_name) LIKE 'qwen%' OR LOWER(models.model_name) LIKE 'mimo%' THEN 0 ELSE 1 END"
+	if err := db.Order(domesticRank).Order("models.id DESC").Offset(offset).Limit(limit).Find(&models).Error; err != nil {
 		return nil, 0, err
 	}
 	return models, total, nil

@@ -212,6 +212,7 @@ export const STATIC_I18N_KEYS = [
   'Drawing task polling',
 
   // Pricing constants
+  'Domestic first',
   'Name',
   'Price: Low to High',
   'Price: High to Low',

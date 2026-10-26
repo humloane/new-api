@@ -4515,6 +4515,7 @@
     "price_xxx": "price_xxx",
     "Price:": "Price:",
     "Price: High to Low": "Price: High to Low",
+    "Domestic first": "Domestic first",
     "Price: Low to High": "Price: Low to High",
     "Prices are in {{currency}}, with units shown below. Use USD when editing expressions directly.": "Prices are in {{currency}}, with units shown below. Use USD when editing expressions directly.",
     "Prices changed while preparing the conversion. Try again.": "Prices changed while preparing the conversion. Try again.",
