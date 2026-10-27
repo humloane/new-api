@@ -37,6 +37,7 @@ import { useAuthStore } from '@/stores/auth-store'
 
 import { CTA, Features, Hero, HowItWorks, Stats } from './components'
 import { EcosystemTiles, PlatformBar } from './components/landing-illustrations'
+import { ModelPrices } from './components/sections/model-prices'
 
 import '@/styles/landing.css'
 import {
@@ -171,6 +172,7 @@ export function Home() {
       <main className='aimoxt-landing'>
         <Hero actions={actions} serverAddress={serverAddress} />
         <PlatformBar />
+        <ModelPrices />
         <UseCases />
         <EcosystemTiles />
         <Features />
@@ -187,10 +189,11 @@ export function Home() {
           {
             title: t('Compatible ecosystems'),
             links: [
-              { text: 'OpenAI', href: '#protocols' },
-              { text: 'GPT-5.5', href: '#protocols' },
-              { text: 'GPT-5.6', href: '#protocols' },
-              { text: 'GPT-Image', href: '#protocols' },
+              { text: 'OpenAI GPT', href: '/pricing' },
+              { text: 'Claude', href: '/pricing' },
+              { text: 'DeepSeek', href: '/pricing' },
+              { text: 'GLM / Kimi / Qwen', href: '/pricing' },
+              { text: 'MiniMax', href: '/pricing' },
             ],
           },
           {

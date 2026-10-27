@@ -21,6 +21,7 @@ import { Fragment, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useStatus } from '@/hooks/use-status'
+import { ServiceStatusLink } from '@/components/service-status-link'
 import { DEFAULT_LOGO } from '@/lib/constants'
 import { useSystemConfig } from '@/hooks/use-system-config'
 import { cn } from '@/lib/utils'
@@ -245,6 +246,7 @@ export function Footer(props: FooterProps) {
               dangerouslySetInnerHTML={{ __html: footerHtml }}
             />
             <div className='border-border/60 text-muted-foreground/45 flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t pt-4 text-xs sm:w-auto sm:justify-end sm:border-t-0 sm:border-l sm:pt-0 sm:pl-5'>
+              <ServiceStatusLink />
               <LegalLinks />
               <ProjectAttribution currentYear={currentYear} inline />
             </div>
@@ -315,6 +317,7 @@ export function Footer(props: FooterProps) {
               &copy; {currentYear} {displayName}.{' '}
               {props.copyright ?? t('footer.defaultCopyright')}
             </span>
+            <ServiceStatusLink />
             <LegalLinks leadingSeparator />
           </div>
           <ProjectAttribution currentYear={currentYear} />

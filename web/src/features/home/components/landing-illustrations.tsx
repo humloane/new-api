@@ -25,10 +25,13 @@ import { DEFAULT_LOGO } from '@/lib/constants'
 // Only list models that are actually published in this site's catalog.
 // When new upstreams are enabled, extend this list together with the catalog.
 const ECOSYSTEMS = [
-  { name: 'OpenAI', icon: 'OpenAI' },
-  { name: 'GPT-5.5', icon: 'OpenAI' },
-  { name: 'GPT-5.6', icon: 'OpenAI' },
-  { name: 'GPT-Image', icon: 'OpenAI' },
+  { name: 'OpenAI GPT', icon: 'OpenAI' },
+  { name: 'Claude', icon: 'Claude.Color' },
+  { name: 'DeepSeek', icon: 'DeepSeek.Color' },
+  { name: 'GLM', icon: 'Zhipu.Color' },
+  { name: 'Kimi', icon: 'Moonshot.Color' },
+  { name: 'Qwen', icon: 'Qwen.Color' },
+  { name: 'MiniMax', icon: 'Minimax.Color' },
 ]
 
 export function ModelIllustration() {

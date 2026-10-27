@@ -38,6 +38,7 @@ import { StaticDataTable } from '@/components/data-table'
 import { sideDrawerContentClassName } from '@/components/drawer-layout'
 import { GroupBadge } from '@/components/group-badge'
 import { PublicLayout } from '@/components/layout'
+import { ServiceStatusLink } from '@/components/service-status-link'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -1696,6 +1697,9 @@ export function ModelDetails() {
             >) || {}
           }
         />
+        <div className='mt-6 border-t border-border/50 pt-4'>
+          <ServiceStatusLink />
+        </div>
       </div>
     </PublicLayout>
   )

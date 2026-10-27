@@ -18,7 +18,7 @@ For commercial licensing, please contact support@quantumnous.com
 */
 export const SITE_TITLE = 'AIMOXT|妙信AI - AI大模型API聚合平台'
 export const SITE_DESCRIPTION =
-  'AIMOXT 妙信AI提供高速、稳定、兼容 OpenAI API 的大模型接口服务，聚合 GPT、Claude、Gemini、DeepSeek 等主流 AI 模型，支持 API 中转、模型聚合、按量计费和高并发调用。'
+  'AIMOXT 妙信AI提供高速、稳定、兼容 OpenAI API 的大模型接口服务，聚合 GPT、Claude、DeepSeek、GLM、Kimi、Qwen、MiniMax 等主流 AI 模型，支持 API 中转、模型聚合、按量计费和高并发调用。'
 
 /** 社交分享图（1200x630）的路径，文件位于 web/public/og-image.png。 */
 export const OG_IMAGE_PATH = '/og-image.png'
@@ -46,7 +46,21 @@ const DISALLOWED_PATHS = [
   '/v1beta/',
   '/dashboard',
   '/keys',
+  '/wallet',
+  '/usage-logs',
+  '/playground',
+  '/profile',
+  '/security',
+  '/subscriptions',
+  '/redemption-codes',
+  '/channels',
+  '/models',
+  '/users',
   '/system-settings',
+  '/system-info',
+  '/task-plugins',
+  '/chat',
+  '/chat2link',
   '/_authenticated/',
   '/sign-in',
   '/sign-up',
