@@ -25,13 +25,13 @@ import { DEFAULT_LOGO } from '@/lib/constants'
 // Only list models that are actually published in this site's catalog.
 // When new upstreams are enabled, extend this list together with the catalog.
 const ECOSYSTEMS = [
-  { name: 'OpenAI GPT', icon: 'OpenAI' },
-  { name: 'Claude', icon: 'Claude.Color' },
-  { name: 'DeepSeek', icon: 'DeepSeek.Color' },
-  { name: 'GLM', icon: 'Zhipu.Color' },
-  { name: 'Kimi', icon: 'Moonshot.Color' },
-  { name: 'Qwen', icon: 'Qwen.Color' },
-  { name: 'MiniMax', icon: 'Minimax.Color' },
+  { name: 'OpenAI GPT', icon: 'OpenAI', href: '/pricing?search=gpt' },
+  { name: 'Claude', icon: 'Claude.Color', href: '/pricing?search=claude' },
+  { name: 'DeepSeek', icon: 'DeepSeek.Color', href: '/pricing?search=deepseek' },
+  { name: 'GLM', icon: 'Zhipu.Color', href: '/pricing?search=glm' },
+  { name: 'Kimi', icon: 'Moonshot.Color', href: '/pricing?search=kimi' },
+  { name: 'Qwen', icon: 'Qwen.Color', href: '/pricing?search=qwen' },
+  { name: 'MiniMax', icon: 'Minimax.Color', href: '/pricing?search=minimax' },
 ]
 
 export function ModelIllustration() {
@@ -54,8 +54,10 @@ export function PlatformBar() {
         <ul aria-label={t('Compatible ecosystems')}>
           {ECOSYSTEMS.slice(0, 5).map((model) => (
             <li key={model.name}>
-              <span aria-hidden='true'>{getLobeIcon(model.icon, 25)}</span>
-              <span>{model.name}</span>
+              <a href={model.href}>
+                <span aria-hidden='true'>{getLobeIcon(model.icon, 25)}</span>
+                <span>{model.name}</span>
+              </a>
             </li>
           ))}
           <li>
@@ -78,8 +80,10 @@ export function EcosystemTiles() {
       <ul>
         {ECOSYSTEMS.map((model) => (
           <li key={model.name}>
-            <span aria-hidden='true'>{getLobeIcon(model.icon, 32)}</span>
-            <span>{model.name}</span>
+            <a href={model.href}>
+              <span aria-hidden='true'>{getLobeIcon(model.icon, 32)}</span>
+              <span>{model.name}</span>
+            </a>
           </li>
         ))}
       </ul>
@@ -171,10 +175,10 @@ export function RoutingIllustration() {
       <div className='landing-routing-wire' />
       <div className='landing-routing-models'>
         {ECOSYSTEMS.slice(0, 3).map((model) => (
-          <span key={model.name}>
+          <a key={model.name} href={model.href}>
             {getLobeIcon(model.icon, 25)}
             {model.name}
-          </span>
+          </a>
         ))}
       </div>
     </div>

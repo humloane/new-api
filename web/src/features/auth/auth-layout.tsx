@@ -38,14 +38,14 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         to='/'
         className='absolute top-4 left-4 z-10 flex items-center gap-2 transition-opacity hover:opacity-80 sm:top-8 sm:left-8'
       >
-        <div className='relative h-10 w-auto max-w-[160px]'>
+        <div className='relative size-12'>
           {loading ? (
             <Skeleton className='absolute inset-0 rounded-full' />
           ) : (
             <img
               src={logo}
               alt={t('Logo')}
-              className='h-10 w-auto max-w-[160px] rounded-lg object-contain'
+              className='size-12 rounded-xl object-contain'
             />
           )}
         </div>

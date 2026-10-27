@@ -5,7 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	pathpkg "path"
 	"strconv"
+	"strings"
 
 	"github.com/QuantumNous/new-api/common"
 	"github.com/QuantumNous/new-api/logger"
@@ -157,9 +159,34 @@ func rateLimitFactory(maxRequestNum int, duration int64, mark string) func(c *gi
 	}
 }
 
+func isStaticWebAsset(path string) bool {
+	if strings.HasPrefix(path, "/static/") || strings.HasPrefix(path, "/assets/") {
+		return true
+	}
+	switch path {
+	case "/favicon.ico", "/logo.png", "/og-image.png", "/robots.txt", "/sitemap.xml", "/hero.png", "/hero.webp":
+		return true
+	}
+	switch strings.ToLower(pathpkg.Ext(path)) {
+	case ".js", ".css", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico", ".woff", ".woff2", ".ttf", ".map":
+		return true
+	default:
+		return false
+	}
+}
+
 func GlobalWebRateLimit() func(c *gin.Context) {
 	if common.GlobalWebRateLimitEnable {
-		return rateLimitFactory(common.GlobalWebRateLimitNum, common.GlobalWebRateLimitDuration, "GW")
+		limited := rateLimitFactory(common.GlobalWebRateLimitNum, common.GlobalWebRateLimitDuration, "GW")
+		return func(c *gin.Context) {
+			// Static assets are cacheable and are requested in large bursts by
+			// a single page load. Do not spend the page/API IP budget on them.
+			if isStaticWebAsset(c.Request.URL.Path) {
+				c.Next()
+				return
+			}
+			limited(c)
+		}
 	}
 	return defNext
 }

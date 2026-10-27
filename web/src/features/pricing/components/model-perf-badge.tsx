@@ -46,6 +46,17 @@ export const ModelPerfBadge = memo(function ModelPerfBadge(
   props: ModelPerfBadgeProps
 ) {
   const { t } = useTranslation()
+  if (
+    !props.perf ||
+    ((!Number.isFinite(props.perf.avg_latency_ms) ||
+      props.perf.avg_latency_ms <= 0) &&
+      (!Number.isFinite(props.perf.avg_tps) || props.perf.avg_tps <= 0) &&
+      (props.perf.success_rate == null ||
+        !Number.isFinite(props.perf.success_rate) ||
+        props.perf.success_rate <= 0))
+  ) {
+    return null
+  }
   const latencyText = formatLatency(props.perf?.avg_latency_ms ?? 0)
   const throughputText = formatThroughput(props.perf?.avg_tps ?? 0).replace(
     ' t/s',
@@ -57,6 +68,14 @@ export const ModelPerfBadge = memo(function ModelPerfBadge(
     Number.isFinite(successRate) &&
     successRate >= 0 &&
     successRate <= 100
+  const hasLatency =
+    props.perf != null &&
+    Number.isFinite(props.perf.avg_latency_ms) &&
+    props.perf.avg_latency_ms > 0
+  const hasThroughput =
+    props.perf != null &&
+    Number.isFinite(props.perf.avg_tps) &&
+    props.perf.avg_tps > 0
   // Hourly points use the server window, including the current partial hour.
   // Hours without traffic stay gray. Slot 23 is the current, partial hour.
   const statusRates = useMemo(() => {
@@ -123,22 +142,24 @@ export const ModelPerfBadge = memo(function ModelPerfBadge(
             })}
           </dd>
         </div>
-        <div title={t('Average latency')} className='shrink-0'>
-          <dt className='text-muted-foreground text-[11px] leading-4'>
-            {t('Latency short')}
-          </dt>
-          <dd className='mt-1 font-mono whitespace-nowrap'>
-            {latencyText === '—' ? '—s' : latencyText}
-          </dd>
-        </div>
-        <div title={t('Throughput')} className='shrink-0'>
-          <dt className='text-muted-foreground text-[11px] leading-4'>
-            {t('Throughput short')}
-          </dt>
-          <dd className='mt-1 font-mono whitespace-nowrap'>
-            {throughputText === '—' ? '—t/s' : throughputText}
-          </dd>
-        </div>
+        {hasLatency && (
+          <div title={t('Average latency')} className='shrink-0'>
+            <dt className='text-muted-foreground text-[11px] leading-4'>
+              {t('Latency short')}
+            </dt>
+            <dd className='mt-1 font-mono whitespace-nowrap'>{latencyText}</dd>
+          </div>
+        )}
+        {hasThroughput && (
+          <div title={t('Throughput')} className='shrink-0'>
+            <dt className='text-muted-foreground text-[11px] leading-4'>
+              {t('Throughput short')}
+            </dt>
+            <dd className='mt-1 font-mono whitespace-nowrap'>
+              {throughputText}
+            </dd>
+          </div>
+        )}
       </dl>
       {props.children}
     </div>

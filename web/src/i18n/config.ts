@@ -22,22 +22,43 @@ import { initReactI18next } from 'react-i18next'
 
 import { convertDetectedLanguage } from './languages'
 import en from './locales/en.json'
-import fr from './locales/fr.json'
-import ja from './locales/ja.json'
-import ru from './locales/ru.json'
-import vi from './locales/vi.json'
-import zhTW from './locales/zh-TW.json'
 import zhCN from './locales/zh.json'
+
+// Keep the two highest-traffic locales in the initial bundle. The other
+// locales are loaded only when the visitor actually switches to them; bundling
+// every translation file here adds roughly 4 MB to the public first load.
+const lazyLocaleLoaders = {
+  fr: () => import('./locales/fr.json'),
+  ru: () => import('./locales/ru.json'),
+  ja: () => import('./locales/ja.json'),
+  vi: () => import('./locales/vi.json'),
+  zhTW: () => import('./locales/zh-TW.json'),
+} as const
+
+const loadedLocales = new Set<string>(['en', 'zhCN'])
 
 export const resources = {
   en,
   zhCN,
-  fr,
-  ru,
-  ja,
-  vi,
-  zhTW,
 } as const
+
+export async function ensureLocale(language: string): Promise<void> {
+  if (loadedLocales.has(language)) return
+  const loader = lazyLocaleLoaders[language as keyof typeof lazyLocaleLoaders]
+  if (!loader) return
+  const module = await loader()
+  i18n.addResourceBundle(
+    language,
+    'translation',
+    module.default.translation,
+    true,
+    true
+  )
+  loadedLocales.add(language)
+  // addResourceBundle does not emit languageChanged on every i18next version;
+  // notify subscribed React components once the requested bundle is present.
+  i18n.emit('languageChanged', language)
+}
 
 i18n
   .use(LanguageDetector)
@@ -60,5 +81,13 @@ i18n
       convertDetectedLanguage,
     },
   })
+  .then(() => ensureLocale(i18n.language))
+  .catch(() => {
+    /* empty */
+  })
+
+i18n.on('languageChanged', (language) => {
+  void ensureLocale(language)
+})
 
 export default i18n
