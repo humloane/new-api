@@ -46,6 +46,7 @@ import {
 } from '@/lib/auth-session'
 import { subscribeAuthSessionEvents } from '@/lib/auth-session-sync'
 import { resolveLegacyRoute } from '@/lib/legacy-route'
+import { scheduleRouteChunkPrefetch } from '@/lib/route-prefetch'
 import { SITE_DESCRIPTION, SITE_TITLE } from '@/lib/site-seo'
 import { useAuthStore } from '@/stores/auth-store'
 
@@ -60,6 +61,12 @@ function RootComponent() {
     document.documentElement.lang = toIntlLocale(language) || 'en'
     void router.invalidate()
   }, [language, router])
+
+  useEffect(() => {
+    scheduleRouteChunkPrefetch(router, {
+      isAuthenticated: () => Boolean(useAuthStore.getState().auth.user),
+    })
+  }, [router])
 
   // Load system configuration (logo, system name, etc.) from backend
   useSystemConfig({ autoLoad: true })

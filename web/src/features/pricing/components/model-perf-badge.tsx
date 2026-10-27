@@ -46,7 +46,9 @@ export const ModelPerfBadge = memo(function ModelPerfBadge(
   props: ModelPerfBadgeProps
 ) {
   const { t } = useTranslation()
-  if (
+  // Keep the early return below every hook so the hook order stays stable when
+  // performance data arrives after the first render.
+  const isEmpty =
     !props.perf ||
     ((!Number.isFinite(props.perf.avg_latency_ms) ||
       props.perf.avg_latency_ms <= 0) &&
@@ -54,9 +56,6 @@ export const ModelPerfBadge = memo(function ModelPerfBadge(
       (props.perf.success_rate == null ||
         !Number.isFinite(props.perf.success_rate) ||
         props.perf.success_rate <= 0))
-  ) {
-    return null
-  }
   const latencyText = formatLatency(props.perf?.avg_latency_ms ?? 0)
   const throughputText = formatThroughput(props.perf?.avg_tps ?? 0).replace(
     ' t/s',
@@ -90,6 +89,8 @@ export const ModelPerfBadge = memo(function ModelPerfBadge(
       return ratesByHour.get(hourStart)
     })
   }, [props.perf?.recent_success_series, props.perf?.window_start])
+
+  if (isEmpty) return null
 
   return (
     <div

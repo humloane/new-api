@@ -51,7 +51,11 @@ const queryClient = createAppQueryClient(() => {
 const router = createRouter({
   routeTree,
   context: { queryClient },
-  defaultPreload: 'intent',
+  // Route chunks are warmed during idle time in `route-prefetch.ts`. Hover
+  // preloading is disabled because it runs `beforeLoad` for protected routes,
+  // where a redirect thrown during preload can leave the match in a broken
+  // pending state and make the following click feel unresponsive.
+  defaultPreload: false,
   defaultPreloadStaleTime: 0,
 })
 

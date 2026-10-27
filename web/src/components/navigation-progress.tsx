@@ -22,22 +22,17 @@ import LoadingBar, { type LoadingBarRef } from 'react-top-loading-bar'
 
 export function NavigationProgress() {
   const ref = useRef<LoadingBarRef>(null)
-  const state = useRouterState()
+  const status = useRouterState({ select: (state) => state.status })
 
   useEffect(() => {
-    if (state.status === 'pending') {
+    if (status === 'pending') {
       ref.current?.continuousStart()
     } else {
       ref.current?.complete()
     }
-  }, [state.status])
+  }, [status])
 
   return (
-    <LoadingBar
-      color='var(--muted-foreground)'
-      ref={ref}
-      shadow={true}
-      height={2}
-    />
+    <LoadingBar color='var(--primary)' ref={ref} shadow={false} height={3} />
   )
 }
