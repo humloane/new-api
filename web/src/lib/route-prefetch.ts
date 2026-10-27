@@ -68,6 +68,57 @@ function whenIdle(callback: () => void): void {
 }
 
 /**
+ * Load the chunks a link points at as soon as the pointer touches it.
+ *
+ * This deliberately does not call `preloadRoute`: that also runs `beforeLoad`,
+ * and a redirect thrown there during preload can leave the match pending and
+ * make the following click look dead. Loading the chunk alone only needs the
+ * match tree.
+ */
+export function installRouteChunkHoverPrefetch(router: AnyRouter): () => void {
+  if (!shouldPrefetch()) return () => undefined
+
+  const seen = new Set<string>()
+
+  const handlePointerOver = (event: Event) => {
+    const target = event.target
+    if (!(target instanceof Element)) return
+    const anchor = target.closest('a[href]')
+    if (!(anchor instanceof HTMLAnchorElement)) return
+    if (anchor.target && anchor.target !== '_self') return
+    if (anchor.hasAttribute('download')) return
+
+    const url = new URL(anchor.href, window.location.href)
+    if (url.origin !== window.location.origin) return
+    if (url.pathname === window.location.pathname) return
+    if (seen.has(url.pathname)) return
+    seen.add(url.pathname)
+
+    try {
+      const matches = router.matchRoutes(url.pathname)
+      const routesById = router.routesById as Record<
+        string,
+        AnyRoute | undefined
+      >
+      for (const match of matches ?? []) {
+        const route = routesById[match.routeId]
+        if (!route) continue
+        void Promise.resolve(router.loadRouteChunk(route)).catch(
+          () => undefined
+        )
+      }
+    } catch {
+      // A link that does not resolve to a route is not this listener's problem.
+    }
+  }
+
+  window.addEventListener('pointerover', handlePointerOver, {
+    passive: true,
+  })
+  return () => window.removeEventListener('pointerover', handlePointerOver)
+}
+
+/**
  * Queue chunk downloads one at a time so prefetching never competes with the
  * page the visitor is currently looking at.
  */
