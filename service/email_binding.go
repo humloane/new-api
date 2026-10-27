@@ -12,6 +12,7 @@ import (
 
 	"github.com/QuantumNous/new-api/common"
 	"github.com/QuantumNous/new-api/model"
+	"github.com/QuantumNous/new-api/setting/system_setting"
 )
 
 var (
@@ -178,13 +179,25 @@ func generateEmailBindingCodes(requireOld bool) (emailBindingCodes, error) {
 }
 
 func sendEmailBindingCodes(state model.EmailBindingState, codes emailBindingCodes) error {
-	subject := common.SystemName + " — Confirm your email address"
-	content := fmt.Sprintf("<p>Confirm linking this email address to your account.</p><p>Verification code: <strong>%s</strong></p><p>This code expires in 10 minutes. If you did not request this change, do not share this code.</p>", html.EscapeString(codes.New))
+	subject := common.SystemName + " — 确认邮箱地址"
+	content := common.BuildEmailHTML(common.EmailTemplateOptions{
+		Title:   "确认邮箱地址",
+		Intro:   "请确认将此邮箱地址绑定到您的账户。",
+		Body:    fmt.Sprintf(`<div style="font-size:28px;font-weight:700;letter-spacing:6px;color:#111827;background:#f3f4f6;border-radius:8px;padding:14px 0;text-align:center;">%s</div>`, html.EscapeString(codes.New)),
+		Note:    "验证码 10 分钟内有效。如果不是本人操作，请不要泄露验证码。",
+		SiteURL: system_setting.ServerAddress,
+	})
 	if err := common.SendEmail(subject, state.Email, content); err != nil {
 		return err
 	}
 	if codes.Old != "" {
-		content = fmt.Sprintf("<p>A change to your account email address was requested. Confirm replacing your current address.</p><p>Verification code: <strong>%s</strong></p><p>This code expires in 10 minutes. If you did not request this change, do not share this code and contact your administrator.</p>", html.EscapeString(codes.Old))
+		content = common.BuildEmailHTML(common.EmailTemplateOptions{
+			Title:   "更换邮箱地址",
+			Intro:   "有人请求更换您账户的邮箱地址，请确认替换当前地址。",
+			Body:    fmt.Sprintf(`<div style="font-size:28px;font-weight:700;letter-spacing:6px;color:#111827;background:#f3f4f6;border-radius:8px;padding:14px 0;text-align:center;">%s</div>`, html.EscapeString(codes.Old)),
+			Note:    "验证码 10 分钟内有效。如果不是本人操作，请不要泄露验证码并联系管理员。",
+			SiteURL: system_setting.ServerAddress,
+		})
 		return common.SendEmail(subject, state.CurrentEmail, content)
 	}
 	return nil

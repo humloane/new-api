@@ -231,29 +231,13 @@ func SendEmailVerification(c *gin.Context) {
 	common.RegisterVerificationCodeWithKey(email, code, common.EmailVerificationPurpose)
 	subject := fmt.Sprintf("【%s】邮箱验证码", common.SystemName)
 	siteURL := "https://" + c.Request.Host
-	content := fmt.Sprintf(
-		`<div style="background:#f6f7f9;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'PingFang SC','Microsoft YaHei',sans-serif;">`+
-			`<table role="presentation" width="100%%" cellpadding="0" cellspacing="0" style="max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;">`+
-			`<tr><td style="padding:24px 28px 6px;">`+
-			`<div style="font-size:16px;font-weight:600;color:#111827;">%s</div>`+
-			`<div style="font-size:12px;color:#6b7280;margin-top:2px;">AI 大模型 API 聚合平台</div>`+
-			`</td></tr>`+
-			`<tr><td style="padding:10px 28px 0;">`+
-			`<p style="margin:0 0 12px;font-size:14px;color:#374151;">您好，您正在验证邮箱地址。</p>`+
-			`<p style="margin:0 0 8px;font-size:14px;color:#374151;">您的验证码：</p>`+
-			`<div style="font-size:30px;font-weight:700;letter-spacing:6px;color:#111827;background:#f3f4f6;border-radius:8px;padding:14px 0;text-align:center;">%s</div>`+
-			`<p style="margin:14px 0 0;font-size:13px;line-height:1.6;color:#6b7280;">验证码 %d 分钟内有效。如果不是本人操作，请忽略本邮件。</p>`+
-			`</td></tr>`+
-			`<tr><td style="padding:20px 28px 24px;">`+
-			`<hr style="border:none;border-top:1px solid #e5e7eb;margin:0 0 12px;">`+
-			`<p style="margin:0;font-size:12px;color:#9ca3af;">%s · <a href="%s" style="color:#6b7280;text-decoration:none;">%s</a></p>`+
-			`<p style="margin:4px 0 0;font-size:12px;color:#9ca3af;">客服邮箱：%s</p>`+
-			`</td></tr>`+
-			`</table>`+
-			`</div>`,
-		common.SystemName, code, common.VerificationValidMinutes,
-		common.SystemName, siteURL, siteURL, common.SMTPFrom,
-	)
+	content := common.BuildEmailHTML(common.EmailTemplateOptions{
+		Title:   "邮箱验证码",
+		Intro:   fmt.Sprintf("您好，您正在验证 %s 的邮箱地址。", common.SystemName),
+		Body:    fmt.Sprintf(`<div style="font-size:30px;font-weight:700;letter-spacing:6px;color:#111827;background:#f3f4f6;border-radius:8px;padding:14px 0;text-align:center;">%s</div>`, code),
+		Note:    fmt.Sprintf("验证码 %d 分钟内有效。如果不是本人操作，请忽略本邮件。", common.VerificationValidMinutes),
+		SiteURL: siteURL,
+	})
 	err = common.SendEmail(subject, email, content)
 	if err != nil {
 		common.ApiError(c, err)
@@ -277,10 +261,13 @@ func SendPasswordResetEmail(c *gin.Context) {
 		common.RegisterVerificationCodeWithKey(email, code, common.PasswordResetPurpose)
 		link := fmt.Sprintf("%s/user/reset?email=%s&token=%s", system_setting.ServerAddress, email, code)
 		subject := fmt.Sprintf("%s密码重置", common.SystemName)
-		content := fmt.Sprintf("<p>您好，你正在进行%s密码重置。</p>"+
-			"<p>点击 <a href='%s'>此处</a> 进行密码重置。</p>"+
-			"<p>如果链接无法点击，请尝试点击下面的链接或将其复制到浏览器中打开：<br> %s </p>"+
-			"<p>重置链接 %d 分钟内有效，如果不是本人操作，请忽略。</p>", common.SystemName, link, link, common.VerificationValidMinutes)
+		content := common.BuildEmailHTML(common.EmailTemplateOptions{
+			Title:   "重置密码",
+			Intro:   fmt.Sprintf("您好，您正在重置 %s 的登录密码。", common.SystemName),
+			Body:    fmt.Sprintf(`<p style="margin:0 0 16px;"><a href="%s" style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;font-size:14px;padding:10px 18px;border-radius:8px;">重置密码</a></p><p style="margin:0;font-size:12px;line-height:1.6;color:#6b7280;word-break:break-all;">如果按钮无法点击，请复制此链接到浏览器打开：<br>%s</p>`, link, link),
+			Note:    fmt.Sprintf("重置链接 %d 分钟内有效。如果不是本人操作，请忽略本邮件。", common.VerificationValidMinutes),
+			SiteURL: system_setting.ServerAddress,
+		})
 		err := common.SendEmail(subject, email, content)
 		if err != nil {
 			logger.LogError(c.Request.Context(), fmt.Sprintf("failed to send password reset email to %s: %s", email, err.Error()))
