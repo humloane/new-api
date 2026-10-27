@@ -23,13 +23,14 @@ declare global {
 export function ChatwootWidget() {
   useEffect(() => {
     if (typeof window === 'undefined') return
-    if (document.querySelector('script[data-aimoxt-chatwoot]')) return
 
     window.chatwootSettings = {
       position: 'right',
-      type: 'expanded',
-      launcherTitle: '在线客服',
+      type: 'standard',
+      launcherTitle: '',
     }
+
+    if (document.querySelector('script[data-aimoxt-chatwoot]')) return
 
     const script = document.createElement('script')
     script.src = `${CHATWOOT_BASE_URL}/packs/js/sdk.js`

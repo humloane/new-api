@@ -18,6 +18,7 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import type { TopNavLink } from '../types'
 import { ChatwootWidget } from '@/components/chatwoot-widget'
+import { UmamiAnalytics } from '@/components/umami-analytics'
 import { PublicHeader, type PublicHeaderProps } from './public-header'
 
 type PublicLayoutProps = {
@@ -46,6 +47,7 @@ export function PublicLayout(props: PublicLayoutProps) {
         siteName={props.siteName}
         {...props.headerProps}
       />
+      <UmamiAnalytics />
       <ChatwootWidget />
 
       {props.showMainContainer !== false ? (
