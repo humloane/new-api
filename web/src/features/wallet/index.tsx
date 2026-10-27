@@ -16,7 +16,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import { lazy, Suspense, useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { SectionPageLayout } from '@/components/layout'
@@ -25,12 +25,7 @@ import { useSystemConfig } from '@/hooks/use-system-config'
 import { getSelf } from '@/lib/api'
 
 import { AffiliateRewardsCard } from './components/affiliate-rewards-card'
-import { BillingHistoryDialog } from './components/dialogs/billing-history-dialog'
-import { CreemConfirmDialog } from './components/dialogs/creem-confirm-dialog'
-import { PaymentConfirmDialog } from './components/dialogs/payment-confirm-dialog'
-import { TransferDialog } from './components/dialogs/transfer-dialog'
 import { RechargeFormCard } from './components/recharge-form-card'
-import { SubscriptionPlansCard } from './components/subscription-plans-card'
 import { WalletStatsCard } from './components/wallet-stats-card'
 import { DEFAULT_DISCOUNT_RATE, PAYMENT_TYPES } from './constants'
 import {
@@ -54,6 +49,32 @@ import type {
   CreemProduct,
   WaffoPayMethod,
 } from './types'
+
+const BillingHistoryDialog = lazy(() =>
+  import('./components/dialogs/billing-history-dialog').then((m) => ({
+    default: m.BillingHistoryDialog,
+  }))
+)
+const CreemConfirmDialog = lazy(() =>
+  import('./components/dialogs/creem-confirm-dialog').then((m) => ({
+    default: m.CreemConfirmDialog,
+  }))
+)
+const PaymentConfirmDialog = lazy(() =>
+  import('./components/dialogs/payment-confirm-dialog').then((m) => ({
+    default: m.PaymentConfirmDialog,
+  }))
+)
+const TransferDialog = lazy(() =>
+  import('./components/dialogs/transfer-dialog').then((m) => ({
+    default: m.TransferDialog,
+  }))
+)
+const SubscriptionPlansCard = lazy(() =>
+  import('./components/subscription-plans-card').then((m) => ({
+    default: m.SubscriptionPlansCard,
+  }))
+)
 
 interface WalletProps {
   initialShowHistory?: boolean
@@ -331,12 +352,14 @@ export function Wallet(props: WalletProps) {
                 />
               </div>
 
-              <SubscriptionPlansCard
-                topupInfo={topupInfo}
-                onAvailabilityChange={handleSubscriptionAvailabilityChange}
-                userQuota={user?.quota}
-                onPurchaseSuccess={fetchUser}
-              />
+              <Suspense fallback={<div className='min-h-44 rounded-xl border border-border/50 bg-muted/20' />}>
+                <SubscriptionPlansCard
+                  topupInfo={topupInfo}
+                  onAvailabilityChange={handleSubscriptionAvailabilityChange}
+                  userQuota={user?.quota}
+                  onPurchaseSuccess={fetchUser}
+                />
+              </Suspense>
             </div>
 
             <AffiliateRewardsCard
@@ -352,39 +375,55 @@ export function Wallet(props: WalletProps) {
         </SectionPageLayout.Content>
       </SectionPageLayout>
 
-      <PaymentConfirmDialog
-        open={confirmDialogOpen}
-        onOpenChange={setConfirmDialogOpen}
-        onConfirm={handlePaymentConfirm}
-        topupAmount={topupAmount}
-        paymentAmount={paymentAmount}
-        paymentMethod={selectedPaymentMethod}
-        calculating={calculating}
-        processing={processing || waffoProcessing || pancakeProcessing}
-        discountRate={getDiscountRate()}
-        usdExchangeRate={effectiveUsdExchangeRate}
-      />
+      {confirmDialogOpen && (
+        <Suspense fallback={null}>
+          <PaymentConfirmDialog
+            open
+            onOpenChange={setConfirmDialogOpen}
+            onConfirm={handlePaymentConfirm}
+            topupAmount={topupAmount}
+            paymentAmount={paymentAmount}
+            paymentMethod={selectedPaymentMethod}
+            calculating={calculating}
+            processing={processing || waffoProcessing || pancakeProcessing}
+            discountRate={getDiscountRate()}
+            usdExchangeRate={effectiveUsdExchangeRate}
+          />
+        </Suspense>
+      )}
 
-      <TransferDialog
-        open={transferDialogOpen}
-        onOpenChange={setTransferDialogOpen}
-        onConfirm={handleTransfer}
-        availableQuota={user?.aff_quota ?? 0}
-        transferring={transferring}
-      />
+      {transferDialogOpen && (
+        <Suspense fallback={null}>
+          <TransferDialog
+            open
+            onOpenChange={setTransferDialogOpen}
+            onConfirm={handleTransfer}
+            availableQuota={user?.aff_quota ?? 0}
+            transferring={transferring}
+          />
+        </Suspense>
+      )}
 
-      <BillingHistoryDialog
-        open={billingDialogOpen}
-        onOpenChange={setBillingDialogOpen}
-      />
+      {billingDialogOpen && (
+        <Suspense fallback={null}>
+          <BillingHistoryDialog
+            open
+            onOpenChange={setBillingDialogOpen}
+          />
+        </Suspense>
+      )}
 
-      <CreemConfirmDialog
-        open={creemDialogOpen}
-        onOpenChange={setCreemDialogOpen}
-        onConfirm={handleCreemConfirm}
-        product={selectedCreemProduct}
-        processing={creemProcessing}
-      />
+      {creemDialogOpen && (
+        <Suspense fallback={null}>
+          <CreemConfirmDialog
+            open
+            onOpenChange={setCreemDialogOpen}
+            onConfirm={handleCreemConfirm}
+            product={selectedCreemProduct}
+            processing={creemProcessing}
+          />
+        </Suspense>
+      )}
     </>
   )
 }

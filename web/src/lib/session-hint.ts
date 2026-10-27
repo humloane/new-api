@@ -60,3 +60,10 @@ export function hasSessionHint(): boolean {
     readCookie(document.cookie, SESSION_HINT_COOKIE_NAME) !== null
   )
 }
+
+
+/** Clear the non-HttpOnly hint after the server rejects a refresh. */
+export function clearSessionHint(): void {
+  if (typeof document === 'undefined') return
+  document.cookie = `${SESSION_HINT_COOKIE_NAME}=; Max-Age=0; path=/; SameSite=Lax`
+}

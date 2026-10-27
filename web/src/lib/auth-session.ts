@@ -21,7 +21,7 @@ import axios from 'axios'
 import { t } from 'i18next'
 
 import { publishAuthSessionEvent } from '@/lib/auth-session-sync'
-import { hasSessionHint } from '@/lib/session-hint'
+import { clearSessionHint, hasSessionHint } from '@/lib/session-hint'
 import {
   useAuthStore,
   type AuthBootstrapState,
@@ -189,6 +189,7 @@ export function clearAuthentication(
   bootstrapState: AuthBootstrapState = 'complete'
 ): void {
   const sid = useAuthStore.getState().auth.session?.sid
+  clearSessionHint()
   authEpoch += 1
   useAuthStore.getState().auth.reset(bootstrapState)
   if (synchronizeTabs && sid) {
