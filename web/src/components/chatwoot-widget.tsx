@@ -32,18 +32,46 @@ export function ChatwootWidget() {
 
     if (document.querySelector('script[data-aimoxt-chatwoot]')) return
 
-    const script = document.createElement('script')
-    script.src = `${CHATWOOT_BASE_URL}/packs/js/sdk.js`
-    script.async = true
-    script.defer = true
-    script.dataset.aimoxtChatwoot = 'true'
-    script.onload = () => {
-      window.chatwootSDK?.run({
-        websiteToken: CHATWOOT_WEBSITE_TOKEN,
-        baseUrl: CHATWOOT_BASE_URL,
-      })
+    let cancelled = false
+    const load = () => {
+      if (cancelled) return
+      const script = document.createElement('script')
+      script.src = `${CHATWOOT_BASE_URL}/packs/js/sdk.js`
+      script.async = true
+      script.defer = true
+      script.dataset.aimoxtChatwoot = 'true'
+      script.onload = () => {
+        window.chatwootSDK?.run({
+          websiteToken: CHATWOOT_WEBSITE_TOKEN,
+          baseUrl: CHATWOOT_BASE_URL,
+        })
+      }
+      document.body.appendChild(script)
     }
-    document.body.appendChild(script)
+
+    // The support widget is not needed for the first paint. Loading it during
+    // idle time keeps its SDK, iframe and websocket from competing with the
+    // page the visitor is waiting for.
+    const idleWindow = window as Window & {
+      requestIdleCallback?: (
+        callback: () => void,
+        options?: { timeout: number }
+      ) => number
+      cancelIdleCallback?: (handle: number) => void
+    }
+    if (idleWindow.requestIdleCallback) {
+      const handle = idleWindow.requestIdleCallback(load, { timeout: 3000 })
+      return () => {
+        cancelled = true
+        idleWindow.cancelIdleCallback?.(handle)
+      }
+    }
+
+    const timer = window.setTimeout(load, 2500)
+    return () => {
+      cancelled = true
+      window.clearTimeout(timer)
+    }
   }, [])
 
   return null

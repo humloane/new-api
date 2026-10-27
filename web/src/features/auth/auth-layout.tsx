@@ -19,7 +19,6 @@ For commercial licensing, please contact support@quantumnous.com
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
-import { ChatwootWidget } from '@/components/chatwoot-widget'
 import { UmamiAnalytics } from '@/components/umami-analytics'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useSystemConfig } from '@/hooks/use-system-config'
@@ -61,7 +60,6 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         </div>
       </div>
       <UmamiAnalytics />
-      <ChatwootWidget />
     </div>
   )
 }
