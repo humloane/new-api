@@ -851,3 +851,88 @@ For commercial licensing, please contact support@quantumnous.com
     gap: 30px;
   }
 }
+
+/* Model price comparison on the landing page */
+.aimoxt-landing .landing-model-prices {
+  padding-block: 24px 12px;
+}
+.aimoxt-landing .landing-model-prices-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+.aimoxt-landing .landing-model-prices-head .landing-body {
+  max-width: 720px;
+}
+.aimoxt-landing .landing-model-prices-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  color: var(--landing-accent);
+  font-size: 13px;
+  font-weight: 650;
+}
+.aimoxt-landing .landing-model-prices-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--landing-line);
+  border-radius: 18px;
+  background: var(--landing-panel);
+}
+.aimoxt-landing .landing-model-prices-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.aimoxt-landing .landing-model-prices-table th,
+.aimoxt-landing .landing-model-prices-table td {
+  padding: 13px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--landing-line);
+  white-space: nowrap;
+}
+.aimoxt-landing .landing-model-prices-table thead th {
+  color: var(--landing-muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+}
+.aimoxt-landing .landing-model-prices-table tbody th {
+  font-weight: 600;
+}
+.aimoxt-landing .landing-model-prices-table tbody tr:last-child th,
+.aimoxt-landing .landing-model-prices-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.aimoxt-landing .landing-model-prices-name {
+  display: block;
+  color: var(--landing-ink);
+}
+.aimoxt-landing .landing-model-prices-tag {
+  display: block;
+  margin-top: 3px;
+  color: var(--landing-muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+.aimoxt-landing .landing-model-prices-price {
+  color: var(--landing-accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.aimoxt-landing .landing-model-prices-note {
+  margin-top: 12px;
+  color: var(--landing-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+@media (max-width: 720px) {
+  .aimoxt-landing .landing-model-prices-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
