@@ -20,6 +20,7 @@ import { Braces, Code2, KeyRound, Layers, MessagesSquare } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { getLobeIcon } from '@/lib/lobe-icon'
+import { DEFAULT_LOGO } from '@/lib/constants'
 
 // Only list models that are actually published in this site's catalog.
 // When new upstreams are enabled, extend this list together with the catalog.
@@ -162,7 +163,7 @@ export function RoutingIllustration() {
       </div>
       <div className='landing-routing-wire' />
       <div className='landing-routing-gateway'>
-        <img src='/logo.png' alt='' />
+        <img src={DEFAULT_LOGO} alt='' />
       </div>
       <div className='landing-routing-wire' />
       <div className='landing-routing-models'>
