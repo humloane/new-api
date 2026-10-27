@@ -11,6 +11,25 @@
       content="AIMOXT 妙信AI提供高速、稳定、兼容 OpenAI API 的大模型接口服务，聚合 GPT、Claude、DeepSeek、GLM、Kimi、Qwen、MiniMax 等主流 AI 模型，支持 API 中转、模型聚合、按量计费和高并发调用。"
     />
     <meta name="generator" content="New API — QuantumNous" />
+
+    <meta name="theme-color" content="#fff" />
+    <!-- Resolve the theme before first paint so the page never flashes light
+         and one-shot detectors (e.g. Dark Reader) see the real theme.
+         Keep in sync with ThemeProvider and THEME_STORAGE_KEYS.mode. -->
+    <script>
+      ;(function () {
+        var theme = 'system'
+        try {
+          theme = localStorage.getItem('newapi:theme:v1:mode') || 'system'
+        } catch (e) {}
+        if (theme !== 'dark' && theme !== 'light') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light'
+        }
+        document.documentElement.classList.add(theme)
+      })()
+    </script>
     <!--umami-->
     <!--Google Analytics-->
   </head>

@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/QuantumNous/new-api/common"
+	"github.com/QuantumNous/new-api/i18n"
 	"github.com/QuantumNous/new-api/model"
 	"github.com/QuantumNous/new-api/setting/system_setting"
 )
@@ -54,7 +55,7 @@ func ValidateAccountEmail(email string) (string, error) {
 	return email, nil
 }
 
-func StartEmailBinding(identity AuthIdentity, authorization *model.AuthFlowAuthorization, email string) (*EmailBindingData, error) {
+func StartEmailBinding(identity AuthIdentity, authorization *model.AuthFlowAuthorization, email string, lang string) (*EmailBindingData, error) {
 	email, err := ValidateAccountEmail(email)
 	if err != nil {
 		return nil, err
@@ -81,19 +82,19 @@ func StartEmailBinding(identity AuthIdentity, authorization *model.AuthFlowAutho
 	if err != nil {
 		return nil, err
 	}
-	if err := sendEmailBindingCodes(state, codes); err != nil {
+	if err := sendEmailBindingCodes(lang, state, codes); err != nil {
 		// A partially delivered pair must not leave a usable change request.
 		_, _ = model.ConsumeAuthFlow(token, model.AuthFlowMatch{Purpose: model.AuthFlowPurposeEmailBinding, UserId: identity.UserID, SessionId: identity.SessionID})
 		return nil, ErrEmailBindingDelivery
 	}
 	data := emailBindingData(token, flow, &state)
 	if state.CurrentEmail != "" && !requireOld {
-		data.NotificationWarning = NotifyAccountSecurityChange(state.CurrentEmail, "A change of your email address was requested") != nil
+		data.NotificationWarning = NotifyAccountSecurityChange(lang, state.CurrentEmail, i18n.MsgSecurityEventEmailChangeRequested) != nil
 	}
 	return data, nil
 }
 
-func ResendAccountEmailBinding(identity AuthIdentity, token string) (*EmailBindingData, error) {
+func ResendAccountEmailBinding(identity AuthIdentity, token string, lang string) (*EmailBindingData, error) {
 	_, state, err := model.GetEmailBinding(identity, token)
 	if err != nil {
 		return nil, err
@@ -119,7 +120,7 @@ func ResendAccountEmailBinding(identity AuthIdentity, token string) (*EmailBindi
 	if err != nil {
 		return nil, err
 	}
-	if err := sendEmailBindingCodes(*state, codes); err != nil {
+	if err := sendEmailBindingCodes(lang, *state, codes); err != nil {
 		_, _ = model.ConsumeAuthFlow(token, model.AuthFlowMatch{Purpose: model.AuthFlowPurposeEmailBinding, UserId: identity.UserID, SessionId: identity.SessionID})
 		return nil, ErrEmailBindingDelivery
 	}
@@ -178,13 +179,14 @@ func generateEmailBindingCodes(requireOld bool) (emailBindingCodes, error) {
 	return codes, nil
 }
 
-func sendEmailBindingCodes(state model.EmailBindingState, codes emailBindingCodes) error {
-	subject := common.SystemName + " — 确认邮箱地址"
+func sendEmailBindingCodes(lang string, state model.EmailBindingState, codes emailBindingCodes) error {
+	subject := i18n.Translate(lang, i18n.MsgEmailBindingSubject, map[string]any{"SystemName": common.SystemName})
+	minutes := map[string]any{"Minutes": int(model.EmailBindingTTL / time.Minute)}
 	content := common.BuildEmailHTML(common.EmailTemplateOptions{
-		Title:   "确认邮箱地址",
-		Intro:   "请确认将此邮箱地址绑定到您的账户。",
-		Body:    fmt.Sprintf(`<div style="font-size:28px;font-weight:700;letter-spacing:6px;color:#111827;background:#f3f4f6;border-radius:8px;padding:14px 0;text-align:center;">%s</div>`, html.EscapeString(codes.New)),
-		Note:    "验证码 10 分钟内有效。如果不是本人操作，请不要泄露验证码。",
+		Title:   i18n.Translate(lang, i18n.MsgEmailBindingSubject, map[string]any{"SystemName": common.SystemName}),
+		Intro:   i18n.Translate(lang, i18n.MsgEmailBindingNewIntro),
+		Body:    i18n.Translate(lang, i18n.MsgEmailBindingCode, map[string]any{"Code": html.EscapeString(codes.New)}),
+		Note:    i18n.Translate(lang, i18n.MsgEmailBindingNewValidity, minutes),
 		SiteURL: system_setting.ServerAddress,
 	})
 	if err := common.SendEmail(subject, state.Email, content); err != nil {
@@ -192,10 +194,10 @@ func sendEmailBindingCodes(state model.EmailBindingState, codes emailBindingCode
 	}
 	if codes.Old != "" {
 		content = common.BuildEmailHTML(common.EmailTemplateOptions{
-			Title:   "更换邮箱地址",
-			Intro:   "有人请求更换您账户的邮箱地址，请确认替换当前地址。",
-			Body:    fmt.Sprintf(`<div style="font-size:28px;font-weight:700;letter-spacing:6px;color:#111827;background:#f3f4f6;border-radius:8px;padding:14px 0;text-align:center;">%s</div>`, html.EscapeString(codes.Old)),
-			Note:    "验证码 10 分钟内有效。如果不是本人操作，请不要泄露验证码并联系管理员。",
+			Title:   i18n.Translate(lang, i18n.MsgEmailBindingSubject, map[string]any{"SystemName": common.SystemName}),
+			Intro:   i18n.Translate(lang, i18n.MsgEmailBindingOldIntro),
+			Body:    i18n.Translate(lang, i18n.MsgEmailBindingCode, map[string]any{"Code": html.EscapeString(codes.Old)}),
+			Note:    i18n.Translate(lang, i18n.MsgEmailBindingOldValidity, minutes),
 			SiteURL: system_setting.ServerAddress,
 		})
 		return common.SendEmail(subject, state.CurrentEmail, content)
