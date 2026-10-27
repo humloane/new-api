@@ -229,10 +229,31 @@ func SendEmailVerification(c *gin.Context) {
 	}
 	code := common.GenerateVerificationCode(6)
 	common.RegisterVerificationCodeWithKey(email, code, common.EmailVerificationPurpose)
-	subject := fmt.Sprintf("%s邮箱验证邮件", common.SystemName)
-	content := fmt.Sprintf("<p>您好，你正在进行%s邮箱验证。</p>"+
-		"<p>您的验证码为: <strong>%s</strong></p>"+
-		"<p>验证码 %d 分钟内有效，如果不是本人操作，请忽略。</p>", common.SystemName, code, common.VerificationValidMinutes)
+	subject := fmt.Sprintf("【%s】邮箱验证码", common.SystemName)
+	siteURL := "https://" + c.Request.Host
+	content := fmt.Sprintf(
+		`<div style="background:#f6f7f9;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'PingFang SC','Microsoft YaHei',sans-serif;">`+
+			`<table role="presentation" width="100%%" cellpadding="0" cellspacing="0" style="max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;">`+
+			`<tr><td style="padding:24px 28px 6px;">`+
+			`<div style="font-size:16px;font-weight:600;color:#111827;">%s</div>`+
+			`<div style="font-size:12px;color:#6b7280;margin-top:2px;">AI 大模型 API 聚合平台</div>`+
+			`</td></tr>`+
+			`<tr><td style="padding:10px 28px 0;">`+
+			`<p style="margin:0 0 12px;font-size:14px;color:#374151;">您好，您正在验证邮箱地址。</p>`+
+			`<p style="margin:0 0 8px;font-size:14px;color:#374151;">您的验证码：</p>`+
+			`<div style="font-size:30px;font-weight:700;letter-spacing:6px;color:#111827;background:#f3f4f6;border-radius:8px;padding:14px 0;text-align:center;">%s</div>`+
+			`<p style="margin:14px 0 0;font-size:13px;line-height:1.6;color:#6b7280;">验证码 %d 分钟内有效。如果不是本人操作，请忽略本邮件。</p>`+
+			`</td></tr>`+
+			`<tr><td style="padding:20px 28px 24px;">`+
+			`<hr style="border:none;border-top:1px solid #e5e7eb;margin:0 0 12px;">`+
+			`<p style="margin:0;font-size:12px;color:#9ca3af;">%s · <a href="%s" style="color:#6b7280;text-decoration:none;">%s</a></p>`+
+			`<p style="margin:4px 0 0;font-size:12px;color:#9ca3af;">客服邮箱：%s</p>`+
+			`</td></tr>`+
+			`</table>`+
+			`</div>`,
+		common.SystemName, code, common.VerificationValidMinutes,
+		common.SystemName, siteURL, siteURL, common.SMTPFrom,
+	)
 	err = common.SendEmail(subject, email, content)
 	if err != nil {
 		common.ApiError(c, err)
