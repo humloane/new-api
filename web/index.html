@@ -12,6 +12,18 @@
     />
     <meta name="generator" content="New API — QuantumNous" />
 
+    <script>
+      ;(function () {
+        try {
+          var v = new URLSearchParams(location.search).get('bd_vid')
+          if (v) {
+            localStorage.setItem('bd_vid', v)
+            sessionStorage.setItem('bd_vid', v)
+          }
+        } catch (e) {}
+      })()
+    </script>
+
     <link rel="icon" href="/brand/favicon.svg?v=3" type="image/svg+xml" />
     <link rel="icon" href="/brand/favicon.ico?v=3" sizes="any" />
     <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png?v=3" />

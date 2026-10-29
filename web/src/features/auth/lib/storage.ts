@@ -27,11 +27,24 @@ For commercial licensing, please contact support@quantumnous.com
 const STORAGE_KEYS = {
   AFFILIATE: 'aff',
   STATUS: 'status',
+  BD_VID: 'bd_vid',
 } as const
 
 // ============================================================================
 // Affiliate Code Storage
 // ============================================================================
+
+/**
+ * Get Baidu promotion click id (bd_vid) from localStorage
+ */
+export function getBdVid(): string {
+  if (typeof window === 'undefined') return ''
+  try {
+    return window.localStorage.getItem(STORAGE_KEYS.BD_VID) ?? ''
+  } catch (error) {
+    return ''
+  }
+}
 
 /**
  * Get affiliate code from localStorage

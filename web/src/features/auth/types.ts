@@ -43,6 +43,7 @@ export interface RegisterPayload {
   verification_code?: string
   aff_code?: string
   turnstile?: string
+  bd_vid?: string
 }
 
 export interface PasswordResetPayload {

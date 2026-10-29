@@ -47,6 +47,7 @@ import { useEmailVerification } from '@/features/auth/hooks/use-email-verificati
 import { useTurnstile } from '@/features/auth/hooks/use-turnstile'
 import {
   getAffiliateCode,
+  getBdVid,
   saveAffiliateCode,
 } from '@/features/auth/lib/storage'
 import { useStatus } from '@/hooks/use-status'
@@ -168,6 +169,7 @@ export function SignUpForm({
         verification_code: verificationCode || undefined,
         aff_code: getAffiliateCode(),
         turnstile: turnstileToken,
+        bd_vid: getBdVid() || undefined,
       })
 
       if (res?.success) {

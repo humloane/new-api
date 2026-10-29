@@ -223,11 +223,18 @@ func Register(c *gin.Context) {
 		common.ApiErrorT(c, "Password registration has been disabled by administrator, please use third-party account verification")
 		return
 	}
-	var user model.User
-	err := common.DecodeJson(c.Request.Body, &user)
-	if err != nil {
+	var payload struct {
+		model.User
+		BdVid string `json:"bd_vid"`
+	}
+	if err := common.DecodeJson(c.Request.Body, &payload); err != nil {
 		common.ApiErrorT(c, "Invalid parameters")
 		return
+	}
+	user := payload.User
+	user.BdVid = strings.TrimSpace(payload.BdVid)
+	if len(user.BdVid) > 128 {
+		user.BdVid = user.BdVid[:128]
 	}
 	user.Username = strings.TrimSpace(user.Username)
 	user.Email = model.NormalizeEmail(user.Email)
@@ -279,6 +286,7 @@ func Register(c *gin.Context) {
 		DisplayName: user.Username,
 		InviterId:   inviterId,
 		Role:        common.RoleCommonUser, // 明确设置角色为普通用户
+		BdVid:       user.BdVid,
 	}
 	if common.EmailVerificationEnabled {
 		cleanUser.Email = user.Email
