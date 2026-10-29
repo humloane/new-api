@@ -19,6 +19,7 @@ For commercial licensing, please contact support@quantumnous.com
 import {
   Activity,
   Box,
+  CircleDollarSign,
   ClipboardList,
   CreditCard,
   FileText,
@@ -82,6 +83,11 @@ export function useSidebarData(): SidebarData {
             title: t('Dashboard'),
             url: '/dashboard/models',
             icon: LayoutDashboard,
+          },
+          {
+            title: t('Model Prices'),
+            url: '/pricing',
+            icon: CircleDollarSign,
           },
           {
             title: t('API Keys'),

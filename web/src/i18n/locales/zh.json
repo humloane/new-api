@@ -3821,6 +3821,7 @@
     "Model prices": "模型价格",
     "Model prices reset successfully": "模型价格重置成功",
     "Model Pricing": "模型定价",
+    "Model Prices": "模型价格",
     "Model pricing is managed by a super administrator.": "模型定价由超级管理员管理。",
     "Model pricing saved": "模型定价已保存",
     "Model pull failed: {{msg}}": "模型拉取失败：{{msg}}",
