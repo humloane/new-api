@@ -25,6 +25,7 @@ import { PaymentSettingsSection } from '../integrations/payment-settings-section
 import { RatioSettingsCard } from '../models/ratio-settings-card'
 import type { BillingSettings } from '../types'
 import { createSectionRegistry } from '../utils/section-registry'
+import { BILLING_SECTIONS as sectionMetadata } from './section-metadata'
 
 const getModelDefaults = (settings: BillingSettings) => ({
   ModelPrice: settings.ModelPrice,
@@ -55,8 +56,7 @@ const getGroupDefaults = (settings: BillingSettings) => ({
 
 const BILLING_SECTIONS = [
   {
-    id: 'quota',
-    titleKey: 'Quota Settings',
+    ...sectionMetadata[0],
     build: (settings: BillingSettings) => (
       <QuotaSettingsSection
         defaultValues={{
@@ -80,8 +80,7 @@ const BILLING_SECTIONS = [
     ),
   },
   {
-    id: 'currency',
-    titleKey: 'Currency & Display',
+    ...sectionMetadata[1],
     build: (settings: BillingSettings) => (
       <PricingSection
         defaultValues={{
@@ -103,8 +102,7 @@ const BILLING_SECTIONS = [
     ),
   },
   {
-    id: 'model-pricing',
-    titleKey: 'Model Pricing',
+    ...sectionMetadata[2],
     build: (settings: BillingSettings) => (
       <RatioSettingsCard
         titleKey='Model Pricing'
@@ -116,8 +114,7 @@ const BILLING_SECTIONS = [
     ),
   },
   {
-    id: 'group-pricing',
-    titleKey: 'Group Pricing',
+    ...sectionMetadata[3],
     build: (settings: BillingSettings) => (
       <RatioSettingsCard
         titleKey='Group Pricing'
@@ -129,8 +126,7 @@ const BILLING_SECTIONS = [
     ),
   },
   {
-    id: 'payment',
-    titleKey: 'Payment Gateway',
+    ...sectionMetadata[4],
     build: (settings: BillingSettings) => (
       <PaymentSettingsSection
         defaultValues={{
@@ -189,8 +185,7 @@ const BILLING_SECTIONS = [
     ),
   },
   {
-    id: 'checkin',
-    titleKey: 'Check-in Rewards',
+    ...sectionMetadata[5],
     build: (settings: BillingSettings) => (
       <CheckinSettingsSection
         defaultValues={{
@@ -215,8 +210,11 @@ const billingRegistry = createSectionRegistry<
   urlStyle: 'path',
 })
 
-export const BILLING_SECTION_IDS = billingRegistry.sectionIds
-export const BILLING_DEFAULT_SECTION = billingRegistry.defaultSection
-export const getBillingSectionNavItems = billingRegistry.getSectionNavItems
 export const getBillingSectionContent = billingRegistry.getSectionContent
 export const getBillingSectionMeta = billingRegistry.getSectionMeta
+
+export {
+  BILLING_SECTION_IDS,
+  BILLING_DEFAULT_SECTION,
+  getBillingSectionNavItems,
+} from './section-metadata'

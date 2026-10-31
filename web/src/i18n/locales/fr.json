@@ -7675,6 +7675,20 @@
     "Canvas recovery failed. Autosave is paused to protect the existing document.": "La restauration du canevas a échoué. La sauvegarde automatique est suspendue pour protéger le document existant.",
     "Start a new canvas": "Créer un canevas",
     "Replace the previous canvas?": "Remplacer le canevas précédent ?",
-    "The previous document could not be restored. Starting a new canvas will replace its local save.": "Le document précédent n’a pas pu être restauré. Créer un canevas remplacera sa sauvegarde locale."
+    "The previous document could not be restored. Starting a new canvas will replace its local save.": "Le document précédent n’a pas pu être restauré. Créer un canevas remplacera sa sauvegarde locale.",
+    "API request error": "Erreur de requête API",
+    "Sign in to see your available routes and models. You can prepare a draft first.": "Connectez-vous pour voir les routes et modèles disponibles pour votre compte. Vous pouvez préparer un brouillon au préalable.",
+    "Choose a route and model to start chatting. Your draft is ready when you are.": "Choisissez une route et un modèle pour commencer à discuter. Votre brouillon est conservé jusqu’à ce que vous soyez prêt.",
+    "This conversation contains images. Choose a model with explicit image input support, or start a new conversation. Nothing has been sent.": "Cette conversation contient des images. Choisissez un modèle prenant explicitement en charge les images en entrée, ou démarrez une nouvelle conversation. Rien n’a été envoyé.",
+    "Reading attachments...": "Lecture des pièces jointes…",
+    "Attach PNG, JPEG, WebP or UTF-8 text files. Images require explicit model support. Attachments stay in this page and are cleared when your account changes.": "Joignez des images PNG, JPEG ou WebP, ou des fichiers texte UTF-8. Les images nécessitent une prise en charge explicite par le modèle. Les pièces jointes restent sur cette page et sont effacées lorsque vous changez de compte.",
+    "Limited-time promotion": "Offre à durée limitée",
+    "New users get ¥5 credit on sign-up": "Les nouveaux utilisateurs reçoivent ¥5 de crédit à l’inscription",
+    "Sign in to see your available image routes and models. You can prepare a prompt first.": "Connectez-vous pour voir les routes et modèles d’image disponibles pour votre compte. Vous pouvez préparer une description au préalable.",
+    "Choose up to 4 PNG, JPEG, WebP or text files. Images must be under 5 MB and text files under 256 KB.": "Choisissez jusqu’à 4 fichiers PNG, JPEG, WebP ou texte. Les images doivent faire moins de 5 Mo et les fichiers texte moins de 256 Ko.",
+    "Could not read the attachment. Please try again.": "Impossible de lire la pièce jointe. Veuillez réessayer.",
+    "Text attachments must contain valid UTF-8 text.": "Les pièces jointes texte doivent contenir du texte UTF-8 valide.",
+    "Text files are supported. This model has not declared image input support; choose a supported model before sending images.": "Les fichiers texte sont pris en charge. Ce modèle n’a pas déclaré prendre en charge les images en entrée ; choisissez un modèle compatible avant d’envoyer des images.",
+    "Attachments added before sign-in must be added again afterward.": "Les pièces jointes ajoutées avant la connexion doivent être ajoutées à nouveau après celle-ci."
   }
 }

@@ -27,7 +27,7 @@ import {
   Sparkles,
   WandSparkles,
 } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
@@ -45,13 +45,16 @@ import {
   useChatHandler,
   usePlaygroundConversation,
 } from '@/features/playground/hooks'
+import { appendUserMessagePair } from '@/features/playground/lib'
 import type { Message, ParameterEnabled } from '@/features/playground/types'
 import { getPricing } from '@/features/pricing/api'
 import { requireServerSuccess } from '@/lib/server-error-message'
 import { useAuthStore } from '@/stores/auth-store'
 
 import { WorkbenchAuthGate } from './auth-gate'
+import { getChatAttachmentText, type ChatAttachment } from './chat-attachments'
 import { ChatComposer } from './chat-composer'
+import { buildWorkbenchChatPayload } from './chat-request'
 import {
   getRetailCatalog,
   getRecommendedSelection,
@@ -62,6 +65,7 @@ import {
   restoreChatDraft,
   type ChatSelection,
 } from './selection'
+import { useImageChat } from './use-image-chat'
 import { WorkbenchShell } from './workbench-shell'
 
 // Let the selected model use its provider defaults, without unsupported tuning.
@@ -98,6 +102,14 @@ function WorkbenchChatSession() {
     !user || Boolean(selection.model)
   )
   const [messages, updateMessages] = useState<Message[]>([])
+  const messageAttachments = useRef(new Map<string, ChatAttachment[]>())
+  const [attachmentNotice, setAttachmentNotice] = useState(false)
+  useEffect(() => {
+    const keys = new Set(messages.map((message) => message.key))
+    for (const key of messageAttachments.current.keys()) {
+      if (!keys.has(key)) messageAttachments.current.delete(key)
+    }
+  }, [messages])
   const [authOpen, setAuthOpen] = useState(false)
   const [selectionNotice, setSelectionNotice] = useState(false)
   const pricing = useQuery({
@@ -206,12 +218,30 @@ function WorkbenchChatSession() {
     !userModels.isFetching &&
     userGroups.isSuccess &&
     !userGroups.isFetching
-  const config = { ...DEFAULT_CONFIG, ...selection }
-  const { sendChat, stopGeneration, isGenerating } = useChatHandler({
+  const config = useMemo(
+    () => ({ ...DEFAULT_CONFIG, ...selection }),
+    [selection]
+  )
+  const {
+    sendChat,
+    stopGeneration,
+    isGenerating: isTextGenerating,
+  } = useChatHandler({
     config,
     parameterEnabled: PARAMETERS,
     onMessageUpdate: updateMessages,
   })
+  const imageChat = useImageChat(updateMessages)
+  const sendImageChat = imageChat.send
+  const isGenerating = isTextGenerating || imageChat.isGenerating
+  const supportsImages =
+    pricing.data?.data.some(
+      (model) =>
+        model.model_name === selection.model &&
+        model.enable_groups?.includes(selection.group) &&
+        (model.input_modalities?.includes('image') ||
+          model.capabilities?.includes('vision'))
+    ) === true
   const guardedSend = useCallback(
     (nextMessages: Message[]) => {
       if (useAuthStore.getState().auth.user?.id !== owner || owner === null) {
@@ -222,9 +252,37 @@ function WorkbenchChatSession() {
         setSelectionNotice(true)
         return
       }
-      sendChat(nextMessages)
+      const hasImages = nextMessages.some((message) =>
+        messageAttachments.current
+          .get(message.key)
+          ?.some((file) => file.mediaType.startsWith('image/'))
+      )
+      if (hasImages) {
+        if (!supportsImages) {
+          setAttachmentNotice(true)
+          return
+        }
+        sendImageChat(
+          buildWorkbenchChatPayload(
+            nextMessages,
+            config,
+            PARAMETERS,
+            messageAttachments.current
+          )
+        )
+      } else {
+        sendChat(nextMessages)
+      }
     },
-    [canSend, isGenerating, sendChat, owner]
+    [
+      canSend,
+      isGenerating,
+      sendChat,
+      owner,
+      supportsImages,
+      sendImageChat,
+      config,
+    ]
   )
   const conversation = usePlaygroundConversation({
     messages,
@@ -237,20 +295,45 @@ function WorkbenchChatSession() {
     preserveChatDraft(value, owner)
   }
 
-  function submitDraft(): void {
-    if (!draft.trim() || isGenerating) return
+  function submitDraft(attachments: ChatAttachment[]): boolean {
+    if ((!draft.trim() && !attachments.length) || isGenerating) return false
     preserveChatDraft(draft, owner)
-    if (!user) {
+    if (!user || useAuthStore.getState().auth.user?.id !== owner) {
       setAuthOpen(true)
-      return
+      return false
     }
     if (!canSend) {
       setSelectionNotice(true)
-      return
+      return false
     }
-    conversation.handleSendMessage(draft.trim())
+    const hasImages =
+      attachments.some((file) => file.mediaType.startsWith('image/')) ||
+      messages.some((message) =>
+        messageAttachments.current
+          .get(message.key)
+          ?.some((file) => file.mediaType.startsWith('image/'))
+      )
+    if (hasImages && !supportsImages) {
+      setAttachmentNotice(true)
+      return false
+    }
+    const text = getChatAttachmentText(draft, attachments)
+    const imageNames = attachments
+      .filter((file) => file.mediaType.startsWith('image/'))
+      .map((file) => file.filename)
+    const content = [text, ...imageNames].filter(Boolean).join('\n\n')
+    const next = appendUserMessagePair(messages, content)
+    const images = attachments.filter((file) =>
+      file.mediaType.startsWith('image/')
+    )
+    const sent = next.at(-2)
+    if (images.length && sent) messageAttachments.current.set(sent.key, images)
+    updateMessages(next)
+    guardedSend(next)
     updateDraft('')
     setSelectionNotice(false)
+    setAttachmentNotice(false)
+    return true
   }
 
   return (
@@ -323,7 +406,11 @@ function WorkbenchChatSession() {
                 <SelectTrigger aria-label={t('Select a route')}>
                   <SelectValue placeholder={t('Select a route')} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent
+                  align='start'
+                  alignItemWithTrigger={false}
+                  className='w-max max-w-[calc(100vw-2rem)] min-w-[min(18rem,calc(100vw-2rem))] [&_[data-slot=select-item-text]]:min-w-0 [&_[data-slot=select-item-text]]:shrink [&_[data-slot=select-item-text]]:break-words [&_[data-slot=select-item-text]]:whitespace-normal'
+                >
                   {groups.map((group) => (
                     <SelectItem key={group.value} value={group.value}>
                       {group.label}
@@ -350,7 +437,11 @@ function WorkbenchChatSession() {
                 <SelectTrigger aria-label={t('Select a model')}>
                   <SelectValue placeholder={t('Select a model')} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent
+                  align='start'
+                  alignItemWithTrigger={false}
+                  className='w-max max-w-[calc(100vw-2rem)] min-w-[min(18rem,calc(100vw-2rem))] [&_[data-slot=select-item-text]]:min-w-0 [&_[data-slot=select-item-text]]:shrink [&_[data-slot=select-item-text]]:break-words [&_[data-slot=select-item-text]]:whitespace-normal'
+                >
                   {models.map((model) => (
                     <SelectItem key={model.value} value={model.value}>
                       {model.label}
@@ -424,7 +515,9 @@ function WorkbenchChatSession() {
               messages={messages}
               isGenerating={isGenerating}
               onRegenerateMessage={
-                canSend ? conversation.handleRegenerateMessage : undefined
+                canSend && (!messageAttachments.current.size || supportsImages)
+                  ? conversation.handleRegenerateMessage
+                  : undefined
               }
               onEditMessage={conversation.handleEditMessage}
               onDeleteMessage={conversation.handleDeleteMessage}
@@ -432,21 +525,35 @@ function WorkbenchChatSession() {
               onCancelEdit={conversation.handleEditOpenChange}
               onSaveEdit={(content) => conversation.applyEdit(content, false)}
               onSaveEditAndSubmit={
-                canSend
+                canSend && (!messageAttachments.current.size || supportsImages)
                   ? (content) => conversation.applyEdit(content, true)
                   : undefined
               }
             />
           )}
           <div className='workbench-composer-area'>
-            {!pricing.isPending && !pricing.isError && groups.length === 0 && (
-              <p className='workbench-selection-notice' role='status'>
-                {t(
-                  'No chat models are available yet. You can prepare a draft while models are being configured.'
-                )}
-              </p>
-            )}
+            {!user &&
+              !pricing.isPending &&
+              !pricing.isError &&
+              groups.length === 0 && (
+                <p className='workbench-selection-notice' role='status'>
+                  {t(
+                    'Sign in to see your available routes and models. You can prepare a draft first.'
+                  )}
+                </p>
+              )}
             {user &&
+              !selection.model &&
+              !pricing.isPending &&
+              !userGroups.isPending && (
+                <p className='workbench-selection-notice' role='status'>
+                  {t(
+                    'Choose a route and model to start chatting. Your draft is ready when you are.'
+                  )}
+                </p>
+              )}
+            {user &&
+              selection.model &&
               selection.group &&
               !userGroups.isPending &&
               !userModels.isPending &&
@@ -483,12 +590,24 @@ function WorkbenchChatSession() {
                 </Button>
               </div>
             )}
+            {attachmentNotice && (
+              <p className='workbench-selection-notice' role='alert'>
+                {t(
+                  'This conversation contains images. Choose a model with explicit image input support, or start a new conversation. Nothing has been sent.'
+                )}
+              </p>
+            )}
             <ChatComposer
+              supportsImages={supportsImages}
+              anonymous={!user}
               draft={draft}
               onDraftChange={updateDraft}
               onSubmit={submitDraft}
               isGenerating={isGenerating}
-              onStop={stopGeneration}
+              onStop={() => {
+                stopGeneration()
+                imageChat.stop()
+              }}
             />
             <p className='workbench-cost-note'>
               {t(

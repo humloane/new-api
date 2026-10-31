@@ -23,11 +23,11 @@ import { BotProtectionSection } from './bot-protection-section'
 import { CustomOAuthSection } from './custom-oauth/custom-oauth-section'
 import { OAuthSection } from './oauth-section'
 import { PasskeySection } from './passkey-section'
+import { AUTH_SECTIONS as sectionMetadata } from './section-metadata'
 
 const AUTH_SECTIONS = [
   {
-    id: 'basic-auth',
-    titleKey: 'Basic Authentication',
+    ...sectionMetadata[0],
     build: (settings: AuthSettings) => (
       <BasicAuthSection
         defaultValues={{
@@ -43,8 +43,7 @@ const AUTH_SECTIONS = [
     ),
   },
   {
-    id: 'oauth',
-    titleKey: 'OAuth Integrations',
+    ...sectionMetadata[1],
     build: (settings: AuthSettings) => (
       <OAuthSection
         serverAddress={settings.ServerAddress}
@@ -80,8 +79,7 @@ const AUTH_SECTIONS = [
     ),
   },
   {
-    id: 'passkey',
-    titleKey: 'Passkey Authentication',
+    ...sectionMetadata[2],
     build: (settings: AuthSettings) => (
       <PasskeySection
         defaultValues={{
@@ -103,8 +101,7 @@ const AUTH_SECTIONS = [
     ),
   },
   {
-    id: 'bot-protection',
-    titleKey: 'Bot Protection',
+    ...sectionMetadata[3],
     build: (settings: AuthSettings) => (
       <BotProtectionSection
         defaultValues={{
@@ -116,8 +113,7 @@ const AUTH_SECTIONS = [
     ),
   },
   {
-    id: 'custom-oauth',
-    titleKey: 'Custom OAuth',
+    ...sectionMetadata[4],
     build: (settings: AuthSettings) => (
       <CustomOAuthSection serverAddress={settings.ServerAddress} />
     ),
@@ -133,8 +129,11 @@ const authRegistry = createSectionRegistry<AuthSectionId, AuthSettings>({
   urlStyle: 'path',
 })
 
-export const AUTH_SECTION_IDS = authRegistry.sectionIds
-export const AUTH_DEFAULT_SECTION = authRegistry.defaultSection
-export const getAuthSectionNavItems = authRegistry.getSectionNavItems
 export const getAuthSectionContent = authRegistry.getSectionContent
 export const getAuthSectionMeta = authRegistry.getSectionMeta
+
+export {
+  AUTH_SECTION_IDS,
+  AUTH_DEFAULT_SECTION,
+  getAuthSectionNavItems,
+} from './section-metadata'

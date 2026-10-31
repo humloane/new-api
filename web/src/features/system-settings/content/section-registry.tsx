@@ -24,6 +24,7 @@ import { ChatSettingsSection } from './chat-settings-section'
 import { DashboardSection } from './dashboard-section'
 import { DrawingSettingsSection } from './drawing-settings-section'
 import { FAQSection } from './faq-section'
+import { CONTENT_SECTIONS as sectionMetadata } from './section-metadata'
 import { UptimeKumaSection } from './uptime-kuma-section'
 
 /**
@@ -39,8 +40,7 @@ function validateDataExportDefaultTime(value: string): 'week' | 'hour' | 'day' {
 
 const CONTENT_SECTIONS = [
   {
-    id: 'dashboard',
-    titleKey: 'Data Dashboard',
+    ...sectionMetadata[0],
     build: (settings: ContentSettings) => (
       <DashboardSection
         defaultValues={{
@@ -54,8 +54,7 @@ const CONTENT_SECTIONS = [
     ),
   },
   {
-    id: 'announcements',
-    titleKey: 'Announcements',
+    ...sectionMetadata[1],
     build: (settings: ContentSettings) => (
       <AnnouncementsSection
         enabled={settings['console_setting.announcements_enabled']}
@@ -64,8 +63,7 @@ const CONTENT_SECTIONS = [
     ),
   },
   {
-    id: 'api-info',
-    titleKey: 'API Addresses',
+    ...sectionMetadata[2],
     build: (settings: ContentSettings) => (
       <ApiInfoSection
         enabled={settings['console_setting.api_info_enabled']}
@@ -74,8 +72,7 @@ const CONTENT_SECTIONS = [
     ),
   },
   {
-    id: 'faq',
-    titleKey: 'FAQ',
+    ...sectionMetadata[3],
     build: (settings: ContentSettings) => (
       <FAQSection
         enabled={settings['console_setting.faq_enabled']}
@@ -84,8 +81,7 @@ const CONTENT_SECTIONS = [
     ),
   },
   {
-    id: 'uptime-kuma',
-    titleKey: 'Uptime Kuma',
+    ...sectionMetadata[4],
     build: (settings: ContentSettings) => (
       <UptimeKumaSection
         enabled={settings['console_setting.uptime_kuma_enabled']}
@@ -94,15 +90,13 @@ const CONTENT_SECTIONS = [
     ),
   },
   {
-    id: 'chat',
-    titleKey: 'Chat Presets',
+    ...sectionMetadata[5],
     build: (settings: ContentSettings) => (
       <ChatSettingsSection defaultValue={settings.Chats} />
     ),
   },
   {
-    id: 'drawing',
-    titleKey: 'Drawing',
+    ...sectionMetadata[6],
     build: (settings: ContentSettings) => (
       <DrawingSettingsSection
         defaultValues={{
@@ -130,8 +124,11 @@ const contentRegistry = createSectionRegistry<
   urlStyle: 'path',
 })
 
-export const CONTENT_SECTION_IDS = contentRegistry.sectionIds
-export const CONTENT_DEFAULT_SECTION = contentRegistry.defaultSection
-export const getContentSectionNavItems = contentRegistry.getSectionNavItems
 export const getContentSectionContent = contentRegistry.getSectionContent
 export const getContentSectionMeta = contentRegistry.getSectionMeta
+
+export {
+  CONTENT_SECTION_IDS,
+  CONTENT_DEFAULT_SECTION,
+  getContentSectionNavItems,
+} from './section-metadata'

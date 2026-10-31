@@ -7675,6 +7675,20 @@
     "Canvas recovery failed. Autosave is paused to protect the existing document.": "Không thể khôi phục bảng vẽ. Tự động lưu đã tạm dừng để bảo vệ tài liệu hiện có.",
     "Start a new canvas": "Tạo bảng vẽ mới",
     "Replace the previous canvas?": "Thay thế bảng vẽ trước đó?",
-    "The previous document could not be restored. Starting a new canvas will replace its local save.": "Không thể khôi phục tài liệu trước đó. Tạo bảng vẽ mới sẽ thay thế bản lưu cục bộ."
+    "The previous document could not be restored. Starting a new canvas will replace its local save.": "Không thể khôi phục tài liệu trước đó. Tạo bảng vẽ mới sẽ thay thế bản lưu cục bộ.",
+    "API request error": "Lỗi yêu cầu API",
+    "Sign in to see your available routes and models. You can prepare a draft first.": "Đăng nhập để xem các tuyến và mô hình bạn có thể sử dụng. Bạn có thể soạn bản nháp trước.",
+    "Choose a route and model to start chatting. Your draft is ready when you are.": "Chọn tuyến và mô hình để bắt đầu trò chuyện. Bản nháp được giữ lại để bạn gửi khi sẵn sàng.",
+    "This conversation contains images. Choose a model with explicit image input support, or start a new conversation. Nothing has been sent.": "Cuộc trò chuyện này có hình ảnh. Hãy chọn mô hình được xác nhận hỗ trợ đầu vào hình ảnh hoặc bắt đầu cuộc trò chuyện mới. Chưa có nội dung nào được gửi.",
+    "Reading attachments...": "Đang đọc tệp đính kèm…",
+    "Attach PNG, JPEG, WebP or UTF-8 text files. Images require explicit model support. Attachments stay in this page and are cleared when your account changes.": "Đính kèm ảnh PNG, JPEG, WebP hoặc tệp văn bản UTF-8. Hình ảnh yêu cầu mô hình có hỗ trợ rõ ràng. Tệp đính kèm chỉ được giữ trên trang này và sẽ bị xóa khi bạn đổi tài khoản.",
+    "Limited-time promotion": "Ưu đãi có thời hạn",
+    "New users get ¥5 credit on sign-up": "Người dùng mới nhận ¥5 tín dụng khi đăng ký",
+    "Sign in to see your available image routes and models. You can prepare a prompt first.": "Đăng nhập để xem các tuyến và mô hình hình ảnh bạn có thể sử dụng. Bạn có thể chuẩn bị câu lệnh trước.",
+    "Choose up to 4 PNG, JPEG, WebP or text files. Images must be under 5 MB and text files under 256 KB.": "Chọn tối đa 4 ảnh PNG, JPEG, WebP hoặc tệp văn bản. Ảnh phải nhỏ hơn 5 MB và tệp văn bản phải nhỏ hơn 256 KB.",
+    "Could not read the attachment. Please try again.": "Không thể đọc tệp đính kèm. Vui lòng thử lại.",
+    "Text attachments must contain valid UTF-8 text.": "Tệp văn bản đính kèm phải chứa văn bản UTF-8 hợp lệ.",
+    "Text files are supported. This model has not declared image input support; choose a supported model before sending images.": "Tệp văn bản được hỗ trợ. Mô hình này chưa công bố hỗ trợ đầu vào hình ảnh; hãy chọn mô hình có hỗ trợ trước khi gửi ảnh.",
+    "Attachments added before sign-in must be added again afterward.": "Các tệp đính kèm được thêm trước khi đăng nhập cần được thêm lại sau khi đăng nhập."
   }
 }

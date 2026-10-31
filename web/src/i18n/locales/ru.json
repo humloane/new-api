@@ -7675,6 +7675,20 @@
     "Canvas recovery failed. Autosave is paused to protect the existing document.": "Не удалось восстановить холст. Автосохранение приостановлено для защиты существующего документа.",
     "Start a new canvas": "Создать новый холст",
     "Replace the previous canvas?": "Заменить предыдущий холст?",
-    "The previous document could not be restored. Starting a new canvas will replace its local save.": "Не удалось восстановить предыдущий документ. Новый холст заменит его локальную копию."
+    "The previous document could not be restored. Starting a new canvas will replace its local save.": "Не удалось восстановить предыдущий документ. Новый холст заменит его локальную копию.",
+    "API request error": "Ошибка запроса API",
+    "Sign in to see your available routes and models. You can prepare a draft first.": "Войдите, чтобы увидеть доступные вам маршруты и модели. Пока можно подготовить черновик.",
+    "Choose a route and model to start chatting. Your draft is ready when you are.": "Выберите маршрут и модель, чтобы начать общение. Черновик сохранён и готов к отправке.",
+    "This conversation contains images. Choose a model with explicit image input support, or start a new conversation. Nothing has been sent.": "В этом разговоре есть изображения. Выберите модель с явно заявленной поддержкой изображений на входе или начните новый разговор. Ничего не отправлено.",
+    "Reading attachments...": "Чтение вложений…",
+    "Attach PNG, JPEG, WebP or UTF-8 text files. Images require explicit model support. Attachments stay in this page and are cleared when your account changes.": "Прикрепляйте PNG, JPEG, WebP или текстовые файлы UTF-8. Для изображений нужна явно заявленная поддержка модели. Вложения хранятся только на этой странице и удаляются при смене аккаунта.",
+    "Limited-time promotion": "Акция на ограниченный срок",
+    "New users get ¥5 credit on sign-up": "Новые пользователи получают ¥5 на баланс при регистрации",
+    "Sign in to see your available image routes and models. You can prepare a prompt first.": "Войдите, чтобы увидеть доступные вам маршруты и модели для изображений. Пока можно подготовить запрос.",
+    "Choose up to 4 PNG, JPEG, WebP or text files. Images must be under 5 MB and text files under 256 KB.": "Выберите до 4 файлов PNG, JPEG, WebP или текстовых файлов. Изображения должны быть меньше 5 МБ, текстовые файлы — меньше 256 КБ.",
+    "Could not read the attachment. Please try again.": "Не удалось прочитать вложение. Попробуйте ещё раз.",
+    "Text attachments must contain valid UTF-8 text.": "Текстовые вложения должны содержать корректный текст UTF-8.",
+    "Text files are supported. This model has not declared image input support; choose a supported model before sending images.": "Текстовые файлы поддерживаются. Эта модель не заявляет поддержку изображений на входе; перед отправкой изображений выберите подходящую модель.",
+    "Attachments added before sign-in must be added again afterward.": "Вложения, добавленные до входа, необходимо добавить заново после входа."
   }
 }

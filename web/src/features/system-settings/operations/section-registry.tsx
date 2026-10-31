@@ -25,11 +25,11 @@ import { PerformanceSection } from '../maintenance/performance-section'
 import { UpdateCheckerSection } from '../maintenance/update-checker-section'
 import type { OperationsSettings } from '../types'
 import { createSectionRegistry } from '../utils/section-registry'
+import { OPERATIONS_SECTIONS as sectionMetadata } from './section-metadata'
 
 const OPERATIONS_SECTIONS = [
   {
-    id: 'behavior',
-    titleKey: 'System Behavior',
+    ...sectionMetadata[0],
     build: (settings: OperationsSettings) => (
       <SystemBehaviorSection
         defaultValues={{
@@ -41,8 +41,7 @@ const OPERATIONS_SECTIONS = [
     ),
   },
   {
-    id: 'alerts',
-    titleKey: 'Model performance metrics',
+    ...sectionMetadata[1],
     build: (settings: OperationsSettings) => (
       <MonitoringSettingsSection
         defaultValues={{
@@ -59,8 +58,7 @@ const OPERATIONS_SECTIONS = [
     ),
   },
   {
-    id: 'email',
-    titleKey: 'Email & Notifications',
+    ...sectionMetadata[2],
     build: (settings: OperationsSettings) => (
       <EmailSettingsSection
         defaultValues={{
@@ -84,8 +82,7 @@ const OPERATIONS_SECTIONS = [
     ),
   },
   {
-    id: 'worker',
-    titleKey: 'Worker Proxy',
+    ...sectionMetadata[3],
     build: (settings: OperationsSettings) => (
       <WorkerSettingsSection
         defaultValues={{
@@ -98,8 +95,7 @@ const OPERATIONS_SECTIONS = [
     ),
   },
   {
-    id: 'logs',
-    titleKey: 'Log Maintenance',
+    ...sectionMetadata[4],
     build: (settings: OperationsSettings) => (
       <LogSettingsSection
         defaultValues={{
@@ -113,8 +109,7 @@ const OPERATIONS_SECTIONS = [
     ),
   },
   {
-    id: 'performance',
-    titleKey: 'Performance',
+    ...sectionMetadata[5],
     build: (settings: OperationsSettings) => (
       <PerformanceSection
         defaultValues={{
@@ -139,8 +134,7 @@ const OPERATIONS_SECTIONS = [
     ),
   },
   {
-    id: 'update-checker',
-    titleKey: 'System maintenance',
+    ...sectionMetadata[6],
     build: (
       _settings: OperationsSettings,
       currentVersion?: string | null,
@@ -167,9 +161,11 @@ const operationsRegistry = createSectionRegistry<
   urlStyle: 'path',
 })
 
-export const OPERATIONS_SECTION_IDS = operationsRegistry.sectionIds
-export const OPERATIONS_DEFAULT_SECTION = operationsRegistry.defaultSection
-export const getOperationsSectionNavItems =
-  operationsRegistry.getSectionNavItems
 export const getOperationsSectionContent = operationsRegistry.getSectionContent
 export const getOperationsSectionMeta = operationsRegistry.getSectionMeta
+
+export {
+  OPERATIONS_SECTION_IDS,
+  OPERATIONS_DEFAULT_SECTION,
+  getOperationsSectionNavItems,
+} from './section-metadata'

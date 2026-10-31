@@ -7680,6 +7680,18 @@
     "Canvas recovery failed. Autosave is paused to protect the existing document.": "畫布恢復失敗。已暫停自動儲存，以保護原有文件。",
     "Start a new canvas": "新增畫布",
     "Replace the previous canvas?": "取代原有畫布？",
-    "The previous document could not be restored. Starting a new canvas will replace its local save.": "原有畫布無法恢復，新增畫布將取代本機儲存的文件。"
+    "The previous document could not be restored. Starting a new canvas will replace its local save.": "原有畫布無法恢復，新增畫布將取代本機儲存的文件。",
+    "API request error": "API 請求錯誤",
+    "Sign in to see your available routes and models. You can prepare a draft first.": "登入後可查看你可用的路線和模型，也可以先準備草稿。",
+    "Choose a route and model to start chatting. Your draft is ready when you are.": "請選擇路線和模型後開始聊天。草稿已保留，可隨時傳送。",
+    "This conversation contains images. Choose a model with explicit image input support, or start a new conversation. Nothing has been sent.": "此對話包含圖片。請選擇明確支援圖片輸入的模型，或建立新對話。尚未傳送任何內容。",
+    "Reading attachments...": "正在讀取附件…",
+    "Attach PNG, JPEG, WebP or UTF-8 text files. Images require explicit model support. Attachments stay in this page and are cleared when your account changes.": "可新增 PNG、JPEG、WebP 圖片或 UTF-8 文字檔。傳送圖片需模型明確支援圖片輸入。附件僅保留在目前頁面，切換帳號時會清除。",
+    "Sign in to see your available image routes and models. You can prepare a prompt first.": "登入後可查看你可用的圖片路線和模型，也可以先準備提示詞。",
+    "Choose up to 4 PNG, JPEG, WebP or text files. Images must be under 5 MB and text files under 256 KB.": "最多選擇 4 個 PNG、JPEG、WebP 圖片或文字檔。圖片須小於 5 MB，文字檔須小於 256 KB。",
+    "Could not read the attachment. Please try again.": "無法讀取附件，請重試。",
+    "Text attachments must contain valid UTF-8 text.": "文字附件必須包含有效的 UTF-8 文字。",
+    "Text files are supported. This model has not declared image input support; choose a supported model before sending images.": "支援文字檔。目前模型尚未聲明支援圖片輸入，傳送圖片前請選擇支援的模型。",
+    "Attachments added before sign-in must be added again afterward.": "登入前新增的附件需要在登入後重新新增。"
   }
 }

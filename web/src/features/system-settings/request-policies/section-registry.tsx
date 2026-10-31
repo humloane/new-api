@@ -21,11 +21,11 @@ import { ChannelHealthSection } from './channel-health-section'
 import type { RequestPolicySettings } from './defaults'
 import { RequestChecksSection } from './request-checks-section'
 import { RoutingPolicySection } from './routing-section'
+import { POLICY_SECTIONS as sectionMetadata } from './section-metadata'
 
 const POLICY_SECTIONS = [
   {
-    id: 'filtering',
-    titleKey: 'Request checks',
+    ...sectionMetadata[0],
     build: (settings: RequestPolicySettings) => (
       <RequestChecksSection
         defaultValues={{
@@ -37,13 +37,11 @@ const POLICY_SECTIONS = [
     ),
   },
   {
-    id: 'routing',
-    titleKey: 'Sessions and retries',
+    ...sectionMetadata[1],
     build: () => <RoutingPolicySection />,
   },
   {
-    id: 'health',
-    titleKey: 'Channel health',
+    ...sectionMetadata[2],
     build: (settings: RequestPolicySettings) => (
       <ChannelHealthSection defaultValues={settings} />
     ),
@@ -57,7 +55,11 @@ const registry = createSectionRegistry<PolicySectionId, RequestPolicySettings>({
   basePath: '/system-settings/request-policies',
   urlStyle: 'path',
 })
-export const POLICY_SECTION_IDS = registry.sectionIds
-export const getPolicySectionNavItems = registry.getSectionNavItems
 export const getPolicySectionContent = registry.getSectionContent
 export const getPolicySectionMeta = registry.getSectionMeta
+
+export {
+  POLICY_SECTION_IDS,
+  POLICY_DEFAULT_SECTION,
+  getPolicySectionNavItems,
+} from './section-metadata'

@@ -41,6 +41,33 @@ import {
   WORKBENCH_DRAFT_KEY,
 } from '../selection'
 
+const streamRequests = vi.hoisted(
+  () =>
+    [] as {
+      payload: string
+      listeners: Map<string, (event: { data: string }) => void>
+    }[]
+)
+vi.mock('sse.js', () => ({
+  SSE: class {
+    listeners = new Map<string, (event: { data: string }) => void>()
+    constructor(_url: string, options: { payload: string }) {
+      streamRequests.push({
+        payload: options.payload,
+        listeners: this.listeners,
+      })
+    }
+    addEventListener(
+      name: string,
+      listener: (event: { data: string }) => void
+    ) {
+      this.listeners.set(name, listener)
+    }
+    stream() {}
+    close() {}
+  },
+}))
+
 const pricing: PricingData = {
   success: true,
   data: [
@@ -103,6 +130,15 @@ async function renderChat(): Promise<QueryClient> {
 }
 
 beforeEach(() => {
+  streamRequests.length = 0
+  Object.defineProperty(URL, 'createObjectURL', {
+    configurable: true,
+    value: vi.fn(() => 'blob:chat-preview'),
+  })
+  Object.defineProperty(URL, 'revokeObjectURL', {
+    configurable: true,
+    value: vi.fn(),
+  })
   sessionStorage.clear()
   localStorage.clear()
   useAuthStore.getState().auth.reset()
@@ -317,6 +353,11 @@ describe('public workbench chat', () => {
     expect(
       await screen.findByRole('option', { name: 'chat-retail' })
     ).toBeVisible()
+    const popup = screen
+      .getByRole('listbox')
+      .closest('[data-slot=select-content]')
+    expect(popup).toHaveAttribute('data-align-trigger', 'false')
+    expect(popup).toHaveClass('max-w-[calc(100vw-2rem)]')
     for (const name of [
       'image-only',
       'embeddings',
@@ -509,6 +550,14 @@ test('login refetches owner catalog, keeps default and empty model, then require
     screen.getByRole('textbox', { name: 'Message the assistant' })
   ).toHaveValue('Keep draft only')
   expect(
+    await screen.findByText(
+      'Choose a route and model to start chatting. Your draft is ready when you are.'
+    )
+  ).toBeVisible()
+  expect(
+    screen.queryByText(/unavailable for this account/)
+  ).not.toBeInTheDocument()
+  expect(
     vi.mocked(api.get).mock.calls.filter(([url]) => url === '/api/pricing')
   ).toHaveLength(2)
   await userEvent.click(
@@ -577,4 +626,184 @@ test('authenticated restore keeps the assigned group but never automatically fil
     await screen.findByRole('option', { name: 'assigned-team' })
   ).toBeVisible()
   expect(screen.getByRole('option', { name: 'default' })).toBeVisible()
+})
+
+test('anonymous empty catalog asks for sign-in before selecting available models', async () => {
+  vi.mocked(api.get).mockResolvedValue({
+    data: { ...pricing, data: [], usable_group: {} },
+  })
+  await renderChat()
+  expect(
+    await screen.findByText(
+      'Sign in to see your available routes and models. You can prepare a draft first.'
+    )
+  ).toBeVisible()
+  expect(
+    screen.queryByText(/models are being configured/)
+  ).not.toBeInTheDocument()
+})
+
+async function renderAttachmentChat(vision: boolean): Promise<void> {
+  useAuthStore
+    .getState()
+    .auth.setUser({ id: 31, username: 'file-user', role: 1, group: 'default' })
+  useAuthStore.setState((state) => ({
+    auth: {
+      ...state.auth,
+      accessToken: 'test-token',
+      accessExpiresAt: Math.floor(Date.now() / 1000) + 3600,
+    },
+  }))
+  vi.mocked(api.get).mockImplementation(async (url) => {
+    if (url === '/api/pricing') {
+      return {
+        data: {
+          ...pricing,
+          data: [
+            {
+              ...pricing.data[0],
+              ...(vision ? { input_modalities: ['text', 'image'] } : {}),
+            },
+          ],
+        },
+      }
+    }
+    if (url === '/api/user/self/groups') {
+      return {
+        data: {
+          success: true,
+          data: { default: { ratio: 1 }, '国产-经济': { ratio: 0.2 } },
+        },
+      }
+    }
+    if (url === '/api/user/models') {
+      return { data: { success: true, data: ['chat-retail'] } }
+    }
+    throw new Error(`Unexpected request: ${url}`)
+  })
+  await renderChat()
+  await userEvent.click(
+    screen.getByRole('combobox', { name: 'Select a route' })
+  )
+  await userEvent.click(
+    await screen.findByRole('option', { name: '国产-经济' })
+  )
+  await waitFor(() =>
+    expect(
+      screen.getByRole('combobox', { name: 'Select a model' })
+    ).toHaveTextContent('chat-retail')
+  )
+}
+
+const localPng = new File(
+  [new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10, 1])],
+  'picture.png',
+  { type: 'image/png' }
+)
+
+test('image-only Send reaches vision model as image parts and regenerate keeps those parts', async () => {
+  await renderAttachmentChat(true)
+  await userEvent.upload(screen.getByLabelText('Upload files'), localPng)
+  await screen.findByText('picture.png')
+  await userEvent.click(screen.getByRole('button', { name: 'Send message' }))
+  await waitFor(() => expect(streamRequests).toHaveLength(1))
+  const first = JSON.parse(streamRequests[0].payload)
+  expect(first.messages[0]).toEqual({
+    role: 'user',
+    content: [
+      { type: 'text', text: 'picture.png' },
+      {
+        type: 'image_url',
+        image_url: { url: expect.stringMatching(/^data:image\/png;base64,/) },
+      },
+    ],
+  })
+  await act(async () => {
+    streamRequests[0].listeners.get('message')?.({
+      data: JSON.stringify({ choices: [{ delta: { content: 'A diagram' } }] }),
+    })
+    streamRequests[0].listeners.get('message')?.({ data: '[DONE]' })
+  })
+  await userEvent.click(
+    (await screen.findAllByRole('button', { name: 'Regenerate' }))[0]
+  )
+  await waitFor(() => expect(streamRequests).toHaveLength(2))
+  expect(JSON.parse(streamRequests[1].payload).messages[0]).toEqual(
+    first.messages[0]
+  )
+  await act(async () =>
+    streamRequests[1].listeners.get('message')?.({ data: '[DONE]' })
+  )
+  await userEvent.click(
+    (await screen.findAllByRole('button', { name: /^Edit$/ }))[0]
+  )
+  const editor = await screen.findByRole('textbox', { name: 'Edit' })
+  const content = editor.querySelector<HTMLElement>('[contenteditable=true]')
+  if (!content) throw new Error('Editable message content missing')
+  await userEvent.clear(content)
+  await userEvent.click(content)
+  await userEvent.paste('Explain this image in detail')
+  await userEvent.click(screen.getByRole('button', { name: 'Save & Submit' }))
+  await waitFor(() => expect(streamRequests).toHaveLength(3))
+  expect(JSON.parse(streamRequests[2].payload).messages[0].content).toEqual([
+    { type: 'text', text: 'Explain this image in detail' },
+    first.messages[0].content[1],
+  ])
+  await act(async () =>
+    streamRequests[2].listeners.get('message')?.({ data: '[DONE]' })
+  )
+  await userEvent.click(
+    screen.getAllByRole('button', { name: 'New conversation' })[0]
+  )
+  await userEvent.type(
+    screen.getByRole('textbox', { name: 'Message the assistant' }),
+    'A fresh text question'
+  )
+  await userEvent.click(screen.getByRole('button', { name: 'Send message' }))
+  await waitFor(() => expect(streamRequests).toHaveLength(4))
+  expect(JSON.parse(streamRequests[3].payload).messages).toEqual([
+    { role: 'user', content: 'A fresh text question' },
+  ])
+})
+
+test('image attachment with unknown model capability remains unsent and visible', async () => {
+  await renderAttachmentChat(false)
+  await userEvent.upload(screen.getByLabelText('Upload files'), localPng)
+  await screen.findByText('picture.png')
+  await userEvent.click(screen.getByRole('button', { name: 'Send message' }))
+  expect(await screen.findByRole('alert')).toHaveTextContent(
+    'Choose a model with explicit image input support'
+  )
+  expect(screen.getByText('picture.png')).toBeVisible()
+  expect(streamRequests).toHaveLength(0)
+})
+
+test('text file-only Send includes file text in the existing chat request', async () => {
+  await renderAttachmentChat(false)
+  await userEvent.upload(
+    screen.getByLabelText('Upload files'),
+    new File(['Review these notes'], 'notes.txt', { type: 'text/plain' })
+  )
+  await screen.findByText('notes.txt')
+  await userEvent.click(screen.getByRole('button', { name: 'Send message' }))
+  await waitFor(() => expect(streamRequests).toHaveLength(1))
+  expect(JSON.parse(streamRequests[0].payload).messages[0]).toEqual({
+    role: 'user',
+    content: '--- notes.txt ---\nReview these notes\n---',
+  })
+})
+
+test('anonymous attachment is cleared on sign-in without sending or crossing account boundaries', async () => {
+  await renderChat()
+  await userEvent.upload(screen.getByLabelText('Upload files'), localPng)
+  await screen.findByText('picture.png')
+  vi.mocked(api.get).mockResolvedValue({ data: { success: true, data: [] } })
+  await act(async () =>
+    useAuthStore
+      .getState()
+      .auth.setUser({ id: 32, username: 'new-account', role: 1 })
+  )
+  expect(screen.queryByText('picture.png')).not.toBeInTheDocument()
+  expect(streamRequests).toHaveLength(0)
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:chat-preview')
 })

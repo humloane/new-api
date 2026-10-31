@@ -23,6 +23,7 @@ import { ClaudeSettingsCard } from './claude-settings-card'
 import { GeminiSettingsCard } from './gemini-settings-card'
 import { GlobalSettingsCard } from './global-settings-card'
 import { GrokSettingsCard } from './grok-settings-card'
+import { MODELS_SECTIONS as sectionMetadata } from './section-metadata'
 
 function formatJsonForEditor(value: string, fallback: string) {
   const raw = (value ?? '').toString().trim()
@@ -36,8 +37,7 @@ function formatJsonForEditor(value: string, fallback: string) {
 
 const MODELS_SECTIONS = [
   {
-    id: 'global',
-    titleKey: 'Global Model Configuration',
+    ...sectionMetadata[0],
     build: (settings: ModelSettings) => (
       <GlobalSettingsCard
         defaultValues={{
@@ -65,8 +65,7 @@ const MODELS_SECTIONS = [
   },
 
   {
-    id: 'gemini',
-    titleKey: 'Gemini',
+    ...sectionMetadata[1],
     build: (settings: ModelSettings) => (
       <GeminiSettingsCard
         defaultValues={{
@@ -89,8 +88,7 @@ const MODELS_SECTIONS = [
     ),
   },
   {
-    id: 'claude',
-    titleKey: 'Claude',
+    ...sectionMetadata[2],
     build: (settings: ModelSettings) => (
       <ClaudeSettingsCard
         defaultValues={{
@@ -107,8 +105,7 @@ const MODELS_SECTIONS = [
     ),
   },
   {
-    id: 'grok',
-    titleKey: 'Grok',
+    ...sectionMetadata[3],
     build: (settings: ModelSettings) => (
       <GrokSettingsCard
         defaultValues={{
@@ -122,8 +119,7 @@ const MODELS_SECTIONS = [
   },
 
   {
-    id: 'model-deployment',
-    titleKey: 'Model Deployment',
+    ...sectionMetadata[4],
     build: (settings: ModelSettings) => (
       <IoNetDeploymentSettingsSection
         defaultValues={{
@@ -144,8 +140,11 @@ const modelsRegistry = createSectionRegistry<ModelSectionId, ModelSettings>({
   urlStyle: 'path',
 })
 
-export const MODELS_SECTION_IDS = modelsRegistry.sectionIds
-export const MODELS_DEFAULT_SECTION = modelsRegistry.defaultSection
-export const getModelsSectionNavItems = modelsRegistry.getSectionNavItems
 export const getModelsSectionContent = modelsRegistry.getSectionContent
 export const getModelsSectionMeta = modelsRegistry.getSectionMeta
+
+export {
+  MODELS_SECTION_IDS,
+  MODELS_DEFAULT_SECTION,
+  getModelsSectionNavItems,
+} from './section-metadata'

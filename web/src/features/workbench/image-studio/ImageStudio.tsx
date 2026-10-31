@@ -251,6 +251,20 @@ function ImageStudioSession(props: ImageStudioProps) {
     }
   }
 
+  let emptyDescription = t(
+    'No image models are published for your available groups yet. Keep your prompt here, or upload an image directly to the canvas.'
+  )
+  if (reference) {
+    emptyDescription = t(
+      'Image editing requires explicit model support. Remove the reference image to view generation models, or use the canvas upload and drawing tools.'
+    )
+  }
+  if (!user) {
+    emptyDescription = t(
+      'Sign in to see your available image routes and models. You can prepare a prompt first.'
+    )
+  }
+
   return (
     <section
       aria-label={t('AI image studio')}
@@ -309,7 +323,11 @@ function ImageStudioSession(props: ImageStudioProps) {
                 <SelectTrigger id={`${id}-group`} className='w-full'>
                   <SelectValue placeholder={t('Select a group')} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent
+                  align='start'
+                  alignItemWithTrigger={false}
+                  className='w-max max-w-[calc(100vw-2rem)] min-w-[min(18rem,calc(100vw-2rem))] [&_[data-slot=select-item-text]]:min-w-0 [&_[data-slot=select-item-text]]:shrink [&_[data-slot=select-item-text]]:break-words [&_[data-slot=select-item-text]]:whitespace-normal'
+                >
                   {groups.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
@@ -332,7 +350,11 @@ function ImageStudioSession(props: ImageStudioProps) {
                 <SelectTrigger id={`${id}-model`} className='w-full'>
                   <SelectValue placeholder={t('Select a model')} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent
+                  align='start'
+                  alignItemWithTrigger={false}
+                  className='w-max max-w-[calc(100vw-2rem)] min-w-[min(18rem,calc(100vw-2rem))] [&_[data-slot=select-item-text]]:min-w-0 [&_[data-slot=select-item-text]]:shrink [&_[data-slot=select-item-text]]:break-words [&_[data-slot=select-item-text]]:whitespace-normal'
+                >
                   {models.map((option) => (
                     <SelectItem
                       key={option.model_name}
@@ -507,15 +529,7 @@ function ImageStudioSession(props: ImageStudioProps) {
                 ? t('No image editing models available')
                 : t('No image generation models available')
             }
-            description={
-              reference
-                ? t(
-                    'Image editing requires explicit model support. Remove the reference image to view generation models, or use the canvas upload and drawing tools.'
-                  )
-                : t(
-                    'No image models are published for your available groups yet. Keep your prompt here, or upload an image directly to the canvas.'
-                  )
-            }
+            description={emptyDescription}
             className='min-h-40'
           />
         )

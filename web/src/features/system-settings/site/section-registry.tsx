@@ -28,11 +28,11 @@ import { NoticeSection } from '../maintenance/notice-section'
 import { SidebarModulesSection } from '../maintenance/sidebar-modules-section'
 import type { SiteSettings } from '../types'
 import { createSectionRegistry } from '../utils/section-registry'
+import { SITE_SECTIONS as sectionMetadata } from './section-metadata'
 
 const SITE_SECTIONS = [
   {
-    id: 'system-info',
-    titleKey: 'System Information',
+    ...sectionMetadata[0],
     build: (settings: SiteSettings) => (
       <SystemInfoSection
         defaultValues={{
@@ -55,15 +55,13 @@ const SITE_SECTIONS = [
     ),
   },
   {
-    id: 'notice',
-    titleKey: 'System Notice',
+    ...sectionMetadata[1],
     build: (settings: SiteSettings) => (
       <NoticeSection defaultValue={settings.Notice ?? ''} />
     ),
   },
   {
-    id: 'header-navigation',
-    titleKey: 'Header navigation',
+    ...sectionMetadata[2],
     build: (settings: SiteSettings) => {
       const headerNavConfig = parseHeaderNavModules(settings.HeaderNavModules)
       const headerNavSerialized = serializeHeaderNavModules(headerNavConfig)
@@ -76,8 +74,7 @@ const SITE_SECTIONS = [
     },
   },
   {
-    id: 'sidebar-modules',
-    titleKey: 'Sidebar modules',
+    ...sectionMetadata[3],
     build: (settings: SiteSettings) => {
       const sidebarConfig = parseSidebarModulesAdmin(
         settings.SidebarModulesAdmin
@@ -102,8 +99,11 @@ const siteRegistry = createSectionRegistry<SiteSectionId, SiteSettings>({
   urlStyle: 'path',
 })
 
-export const SITE_SECTION_IDS = siteRegistry.sectionIds
-export const SITE_DEFAULT_SECTION = siteRegistry.defaultSection
-export const getSiteSectionNavItems = siteRegistry.getSectionNavItems
 export const getSiteSectionContent = siteRegistry.getSectionContent
 export const getSiteSectionMeta = siteRegistry.getSectionMeta
+
+export {
+  SITE_SECTION_IDS,
+  SITE_DEFAULT_SECTION,
+  getSiteSectionNavItems,
+} from './section-metadata'

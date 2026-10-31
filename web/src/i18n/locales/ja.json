@@ -7675,6 +7675,20 @@
     "Canvas recovery failed. Autosave is paused to protect the existing document.": "キャンバスを復元できませんでした。既存のデータを保護するため、自動保存を停止しています。",
     "Start a new canvas": "新しいキャンバスを作成",
     "Replace the previous canvas?": "以前のキャンバスを置き換えますか？",
-    "The previous document could not be restored. Starting a new canvas will replace its local save.": "以前のデータを復元できませんでした。新しいキャンバスを作成すると、ローカルの保存データが置き換わります。"
+    "The previous document could not be restored. Starting a new canvas will replace its local save.": "以前のデータを復元できませんでした。新しいキャンバスを作成すると、ローカルの保存データが置き換わります。",
+    "API request error": "API リクエストエラー",
+    "Sign in to see your available routes and models. You can prepare a draft first.": "ログインすると、利用可能なルートとモデルを確認できます。先に下書きを作成することもできます。",
+    "Choose a route and model to start chatting. Your draft is ready when you are.": "ルートとモデルを選択してチャットを始めましょう。下書きは保持されているので、準備ができたら送信できます。",
+    "This conversation contains images. Choose a model with explicit image input support, or start a new conversation. Nothing has been sent.": "この会話には画像が含まれています。画像入力への対応が明示されているモデルを選ぶか、新しい会話を始めてください。まだ何も送信されていません。",
+    "Reading attachments...": "添付ファイルを読み込み中…",
+    "Attach PNG, JPEG, WebP or UTF-8 text files. Images require explicit model support. Attachments stay in this page and are cleared when your account changes.": "PNG、JPEG、WebP 画像または UTF-8 テキストファイルを添付できます。画像の送信には、モデルが画像入力に明示的に対応している必要があります。添付ファイルはこのページ内にのみ保持され、アカウントが変わると消去されます。",
+    "Limited-time promotion": "期間限定キャンペーン",
+    "New users get ¥5 credit on sign-up": "新規登録で ¥5 分のクレジットをプレゼント",
+    "Sign in to see your available image routes and models. You can prepare a prompt first.": "ログインすると、利用可能な画像用ルートとモデルを確認できます。先にプロンプトを作成することもできます。",
+    "Choose up to 4 PNG, JPEG, WebP or text files. Images must be under 5 MB and text files under 256 KB.": "PNG、JPEG、WebP 画像またはテキストファイルを最大 4 個選択できます。画像は 5 MB 未満、テキストファイルは 256 KB 未満にしてください。",
+    "Could not read the attachment. Please try again.": "添付ファイルを読み込めませんでした。もう一度お試しください。",
+    "Text attachments must contain valid UTF-8 text.": "テキストの添付ファイルには、有効な UTF-8 テキストが必要です。",
+    "Text files are supported. This model has not declared image input support; choose a supported model before sending images.": "テキストファイルに対応しています。このモデルは画像入力への対応を明示していません。画像を送信する前に、対応モデルを選択してください。",
+    "Attachments added before sign-in must be added again afterward.": "ログイン前に追加した添付ファイルは、ログイン後にもう一度追加してください。"
   }
 }

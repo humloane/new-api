@@ -128,6 +128,12 @@ export function scheduleRouteChunkPrefetch(
 ): void {
   if (!shouldPrefetch()) return
 
+  // Public pages and the creative workbench should only fetch their own code.
+  // A signed-in visitor is not necessarily visiting the console: warming its
+  // dashboard/chart bundles here otherwise costs megabytes on /chat and /canvas.
+  const pathname = router.state.location.pathname
+  if (!/^\/(dashboard|wallet|keys|usage-logs)(\/|$)/.test(pathname)) return
+
   whenIdle(() => {
     const ids = options.isAuthenticated()
       ? [...AUTHENTICATED_ROUTES, ...PUBLIC_ROUTES]

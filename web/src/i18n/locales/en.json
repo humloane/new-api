@@ -7680,6 +7680,18 @@
     "Canvas recovery failed. Autosave is paused to protect the existing document.": "Canvas recovery failed. Autosave is paused to protect the existing document.",
     "Start a new canvas": "Start a new canvas",
     "Replace the previous canvas?": "Replace the previous canvas?",
-    "The previous document could not be restored. Starting a new canvas will replace its local save.": "The previous document could not be restored. Starting a new canvas will replace its local save."
+    "The previous document could not be restored. Starting a new canvas will replace its local save.": "The previous document could not be restored. Starting a new canvas will replace its local save.",
+    "API request error": "API request error",
+    "Sign in to see your available routes and models. You can prepare a draft first.": "Sign in to see your available routes and models. You can prepare a draft first.",
+    "Choose a route and model to start chatting. Your draft is ready when you are.": "Choose a route and model to start chatting. Your draft is ready when you are.",
+    "This conversation contains images. Choose a model with explicit image input support, or start a new conversation. Nothing has been sent.": "This conversation contains images. Choose a model with explicit image input support, or start a new conversation. Nothing has been sent.",
+    "Reading attachments...": "Reading attachments...",
+    "Attach PNG, JPEG, WebP or UTF-8 text files. Images require explicit model support. Attachments stay in this page and are cleared when your account changes.": "Attach PNG, JPEG, WebP or UTF-8 text files. Images require explicit model support. Attachments stay in this page and are cleared when your account changes.",
+    "Sign in to see your available image routes and models. You can prepare a prompt first.": "Sign in to see your available image routes and models. You can prepare a prompt first.",
+    "Choose up to 4 PNG, JPEG, WebP or text files. Images must be under 5 MB and text files under 256 KB.": "Choose up to 4 PNG, JPEG, WebP or text files. Images must be under 5 MB and text files under 256 KB.",
+    "Could not read the attachment. Please try again.": "Could not read the attachment. Please try again.",
+    "Text attachments must contain valid UTF-8 text.": "Text attachments must contain valid UTF-8 text.",
+    "Text files are supported. This model has not declared image input support; choose a supported model before sending images.": "Text files are supported. This model has not declared image input support; choose a supported model before sending images.",
+    "Attachments added before sign-in must be added again afterward.": "Attachments added before sign-in must be added again afterward."
   }
 }
