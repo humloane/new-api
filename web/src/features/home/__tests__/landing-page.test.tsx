@@ -42,8 +42,8 @@ import { STATUS_QUERY_KEY, type StatusData } from '@/lib/status-query'
 import { useAuthStore } from '@/stores/auth-store'
 import { useSystemConfigStore } from '@/stores/system-config-store'
 
-import { Home } from '..'
 import { HeroTerminalDemo } from '../components/hero-terminal-demo'
+import { LegacyHome as Home } from '../legacy-home'
 
 let client: QueryClient
 let homeContent: string
@@ -119,9 +119,7 @@ it('renders the complete default landing when custom content is empty', async ()
       name: 'Your next idea starts with an API call.',
     })
   ).toBeVisible()
-  expect(
-    main.queryByText(/200 ok|142|\$0\.000/)
-  ).not.toBeInTheDocument()
+  expect(main.queryByText(/200 ok|142|\$0\.000/)).not.toBeInTheDocument()
   // Fork branding: operator branding replaces the header/hero copy, but the
   // built-in footer must still render the protected upstream attribution
   // (copyright line + project link).
@@ -195,9 +193,9 @@ it('shows real footer destinations without enabling demo-site behavior', async (
     'href',
     '#integration'
   )
-  expect(footer.getByRole('link', { name: 'Docs' })).toHaveAttribute(
+  expect(footer.getByRole('link', { name: 'About us' })).toHaveAttribute(
     'href',
-    status.docs_link
+    '/about'
   )
   // Fork branding: the footer reaches the upstream repository through the
   // protected attribution link rather than a dedicated "GitHub" entry.
@@ -349,14 +347,14 @@ it('copies the currently selected protocol with the configured server path intac
   const user = userEvent.setup()
   const writeText = vi.spyOn(navigator.clipboard, 'writeText')
   await renderHome()
-  await user.click(await screen.findByRole('tab', { name: 'Claude' }))
-  const panel = screen.getByRole('tabpanel', { name: 'Claude' })
+  await user.click(await screen.findByRole('tab', { name: 'Responses' }))
+  const panel = screen.getByRole('tabpanel', { name: 'Responses' })
   await user.click(within(panel).getByRole('button', { name: 'Copy code' }))
   const command = await navigator.clipboard.readText()
   expect(writeText).toHaveBeenCalledWith(command)
   expect(command).toContain("API_BASE_URL='https://api.example.com/gateway'")
-  expect(command).toContain('${API_BASE_URL}/v1/messages')
-  expect(command).toContain('x-api-key: $API_KEY')
+  expect(command).toContain('${API_BASE_URL}/v1/responses')
+  expect(command).toContain('Authorization: Bearer')
   expect(command).toContain('Content-Type: application/json')
   expect(command).toContain('YOUR_MODEL_ID')
   expect(
@@ -440,11 +438,11 @@ it('pauses automatic cycling after manual selection and resumes only on request'
     'aria-selected',
     'true'
   )
-  await user.click(screen.getByRole('tab', { name: 'Claude' }))
+  await user.click(screen.getByRole('tab', { name: 'Chat' }))
   act(() => {
     vi.advanceTimersByTime(9000)
   })
-  expect(screen.getByRole('tab', { name: 'Claude' })).toHaveAttribute(
+  expect(screen.getByRole('tab', { name: 'Chat' })).toHaveAttribute(
     'aria-selected',
     'true'
   )
@@ -452,7 +450,7 @@ it('pauses automatic cycling after manual selection and resumes only on request'
   act(() => {
     vi.advanceTimersByTime(4500)
   })
-  expect(screen.getByRole('tab', { name: 'Gemini' })).toHaveAttribute(
+  expect(screen.getByRole('tab', { name: 'Responses' })).toHaveAttribute(
     'aria-selected',
     'true'
   )
@@ -524,7 +522,7 @@ it('updates the heading and actions when the interface language changes', async 
   // Fork branding: zh copy is "各大模型 API，一站式集成" (zh.json), not the
   // original upstream heading.
   expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-    /各大模型 API，一站式集成/,
+    /各大模型 API，一站式集成/
   )
   expect(
     within(screen.getByRole('main')).getAllByRole('link', { name: '立即接入' })

@@ -56,10 +56,15 @@ import { AuthOperationError } from '@/lib/secure-verification'
 import { createServerError } from '@/lib/server-error-message'
 import { cn } from '@/lib/utils'
 
+type SignUpFormProps = React.HTMLAttributes<HTMLFormElement> & {
+  onRegistered?: () => void
+}
+
 export function SignUpForm({
   className,
+  onRegistered,
   ...props
-}: React.HTMLAttributes<HTMLFormElement>) {
+}: SignUpFormProps) {
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [verificationCode, setVerificationCode] = useState('')
@@ -174,7 +179,8 @@ export function SignUpForm({
 
       if (res?.success) {
         toast.success(t('Account created! Please sign in'))
-        redirectToLogin()
+        if (onRegistered) onRegistered()
+        else redirectToLogin()
       } else {
         handleServerError(createServerError(res, t('Failed to create account')))
       }

@@ -654,6 +654,10 @@ func genBaseRelayInfo(c *gin.Context, request dto.Request) *RelayInfo {
 		info.RelayMode = c.GetInt("relay_mode")
 	}
 
+	// Browser image routes canonicalize their path before channel selection.
+	// Retain playground accounting so they charge the authenticated account
+	// without attempting to reserve or settle a nonexistent API token.
+	info.IsPlayground = c.GetBool("playground_image")
 	if strings.HasPrefix(c.Request.URL.Path, "/pg") {
 		info.IsPlayground = true
 		info.RequestURLPath = strings.TrimPrefix(info.RequestURLPath, "/pg")

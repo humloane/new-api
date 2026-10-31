@@ -1,3 +1,7 @@
+import { Link } from '@tanstack/react-router'
+import { Fragment, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
 /*
 Copyright (C) 2023-2026 QuantumNous
 
@@ -16,14 +20,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import { Link } from '@tanstack/react-router'
-import { Fragment, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
-
-import { useStatus } from '@/hooks/use-status'
+import { BrandWordmark } from '@/components/brand-wordmark'
 import { ServiceStatusLink } from '@/components/service-status-link'
-import { DEFAULT_LOGO } from '@/lib/constants'
+import { useStatus } from '@/hooks/use-status'
 import { useSystemConfig } from '@/hooks/use-system-config'
+import { DEFAULT_LOGO } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 interface FooterLink {
@@ -44,7 +45,6 @@ interface FooterProps {
   className?: string
   appearance?: 'default' | 'landing'
 }
-
 
 function FooterLinkItem(props: { link: FooterLink }) {
   const { t } = useTranslation()
@@ -269,14 +269,20 @@ export function Footer(props: FooterProps) {
           {/* Brand column */}
           <div className='shrink-0'>
             <Link to='/' className='group flex items-center gap-2.5'>
-              <img
-                src={displayLogo}
-                alt={displayName}
-                className='size-10 rounded-xl object-contain'
-              />
-              <span className='text-sm font-semibold tracking-tight'>
-                {displayName}
-              </span>
+              {props.appearance === 'landing' ? (
+                <BrandWordmark className='footer-wordmark' />
+              ) : (
+                <>
+                  <img
+                    src={displayLogo}
+                    alt={displayName}
+                    className='size-10 rounded-xl object-contain'
+                  />
+                  <span className='text-sm font-semibold tracking-tight'>
+                    {displayName}
+                  </span>
+                </>
+              )}
             </Link>
             <p className='text-muted-foreground/60 mt-3 max-w-[200px] text-xs leading-relaxed'>
               {t('Powerful API Management Platform')}

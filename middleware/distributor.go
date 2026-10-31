@@ -238,6 +238,9 @@ func pinnedEndpointCandidateForChannel(c *gin.Context, channel *model.Channel, e
 // - application/x-www-form-urlencoded
 // - multipart/form-data
 func getModelFromRequest(c *gin.Context) (*ModelRequest, error) {
+	if form := c.Request.MultipartForm; c.GetBool("playground_image") && form != nil {
+		return &ModelRequest{Model: c.Request.PostForm.Get("model"), Group: c.Request.PostForm.Get("group")}, nil
+	}
 	if cached, exists := c.Get(contextKeyTaskPluginEndpointModel); exists {
 		if modelRequest, ok := cached.(ModelRequest); ok {
 			cachedRequest := modelRequest

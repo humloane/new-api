@@ -19,9 +19,10 @@ For commercial licensing, please contact support@quantumnous.com
 import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { ChatwootWidget } from '@/components/chatwoot-widget'
 import { PublicLayout } from '@/components/layout'
-import { Footer } from '@/components/layout/components/footer'
 import { RichContent } from '@/components/rich-content'
+import { UmamiAnalytics } from '@/components/umami-analytics'
 import { useTheme } from '@/context/theme-provider'
 import { useStatus } from '@/hooks/use-status'
 import { useSystemConfig } from '@/hooks/use-system-config'
@@ -35,18 +36,9 @@ import {
 } from '@/lib/site-seo'
 import { useAuthStore } from '@/stores/auth-store'
 
-import { CTA, Features, Hero, HowItWorks, Stats } from './components'
-import { EcosystemTiles, PlatformBar } from './components/landing-illustrations'
-import { ModelPrices } from './components/sections/model-prices'
-
-import '@/styles/landing.css'
-import {
-  IntegrationGuide,
-  LandingFAQ,
-  ProtocolGuide,
-  UseCases,
-} from './components/sections/developer-guide'
 import { useHomePageContent } from './hooks'
+import { SoleLanding } from './sole-landing'
+import { HomeAnnouncements } from './sole-landing/home-announcements'
 import type { LandingActions } from './types'
 
 export function Home() {
@@ -164,76 +156,12 @@ export function Home() {
   )
 
   return (
-    <PublicLayout
-      showMainContainer={false}
-      headerProps={{ appearance: 'landing' }}
-    >
+    <>
       {schema && <script type='application/ld+json'>{schema}</script>}
-      <main className='aimoxt-landing'>
-        <Hero actions={actions} serverAddress={serverAddress} />
-        <PlatformBar />
-        <ModelPrices />
-        <UseCases />
-        <EcosystemTiles />
-        <Features />
-        <HowItWorks />
-        <ProtocolGuide />
-        <IntegrationGuide serverAddress={serverAddress} />
-        <LandingFAQ />
-        <CTA actions={actions} />
-        <Stats />
-      </main>
-      <Footer
-        appearance='landing'
-        columns={[
-          {
-            title: t('Compatible ecosystems'),
-            links: [
-              { text: 'OpenAI GPT', href: '/pricing' },
-              { text: 'Claude', href: '/pricing' },
-              { text: 'DeepSeek', href: '/pricing' },
-              { text: 'GLM / Kimi / Qwen', href: '/pricing' },
-              { text: 'MiniMax', href: '/pricing' },
-            ],
-          },
-          {
-            title: t('Integration guide'),
-            links: [
-              {
-                text: t('Three steps to get started'),
-                href: '#getting-started',
-              },
-              { text: 'Base URL', href: '#integration' },
-              { text: 'API Key', href: '#integration' },
-              { text: t('Model ID'), href: '#integration' },
-            ],
-          },
-          {
-            title: t('FAQ'),
-            links: [
-              { text: t('FAQ'), href: '#faq' },
-              { text: t('Use cases'), href: '#use-cases' },
-              ...(actions.pricingEnabled
-                ? [
-                    {
-                      text: actions.pricingRequiresAuth
-                        ? t('Sign in to view pricing')
-                        : t('Models & pricing'),
-                      href: '/pricing',
-                    },
-                  ]
-                : []),
-            ],
-          },
-          {
-            title: t('AIMOXT妙信AI'),
-            links: [
-              { text: t('About us'), href: '/about' },
-              { text: t('Contact support'), href: 'https://t.me/moiusr' },
-            ],
-          },
-        ]}
-      />
-    </PublicLayout>
+      <SoleLanding actions={actions} serverAddress={serverAddress} />
+      <HomeAnnouncements />
+      {import.meta.env.PROD && <UmamiAnalytics />}
+      {import.meta.env.PROD && <ChatwootWidget />}
+    </>
   )
 }

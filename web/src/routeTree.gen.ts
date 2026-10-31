@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as CanvasRouteImport } from './routes/canvas'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as TutorialRouteImport } from './routes/tutorial'
 import { Route as UserAgreementRouteImport } from './routes/user-agreement'
@@ -85,6 +87,16 @@ const authRouteRoute = authRouteRouteImport.update({
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CanvasRoute = CanvasRouteImport.update({
+  id: '/canvas',
+  path: '/canvas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
@@ -430,6 +442,8 @@ const AuthenticatedSystemSettingsSiteSectionRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/canvas': typeof CanvasRoute
+  '/chat': typeof ChatRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/tutorial': typeof TutorialRoute
   '/user-agreement': typeof UserAgreementRoute
@@ -494,6 +508,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/canvas': typeof CanvasRoute
+  '/chat': typeof ChatRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/tutorial': typeof TutorialRoute
   '/user-agreement': typeof UserAgreementRoute
@@ -560,6 +576,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/(auth)': typeof authRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/canvas': typeof CanvasRoute
+  '/chat': typeof ChatRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/tutorial': typeof TutorialRoute
   '/user-agreement': typeof UserAgreementRoute
@@ -626,6 +644,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/canvas'
+    | '/chat'
     | '/privacy-policy'
     | '/tutorial'
     | '/user-agreement'
@@ -690,6 +710,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/canvas'
+    | '/chat'
     | '/privacy-policy'
     | '/tutorial'
     | '/user-agreement'
@@ -755,6 +777,8 @@ export interface FileRouteTypes {
     | '/'
     | '/(auth)'
     | '/_authenticated'
+    | '/canvas'
+    | '/chat'
     | '/privacy-policy'
     | '/tutorial'
     | '/user-agreement'
@@ -822,6 +846,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   authRouteRoute: typeof authRouteRouteWithChildren
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  CanvasRoute: typeof CanvasRoute
+  ChatRoute: typeof ChatRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   TutorialRoute: typeof TutorialRoute
   UserAgreementRoute: typeof UserAgreementRoute
@@ -859,6 +885,20 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/canvas': {
+      id: '/canvas'
+      path: '/canvas'
+      fullPath: '/canvas'
+      preLoaderRoute: typeof CanvasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy-policy': {
@@ -1439,6 +1479,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authRouteRoute: authRouteRouteWithChildren,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  CanvasRoute: CanvasRoute,
+  ChatRoute: ChatRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   TutorialRoute: TutorialRoute,
   UserAgreementRoute: UserAgreementRoute,

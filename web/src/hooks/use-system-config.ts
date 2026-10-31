@@ -94,7 +94,7 @@ export function useSystemConfig(options: UseSystemConfigOptions = {}) {
       logo,
       () => {
         setLoadedLogoUrl(logo)
-        applyFaviconToDom(logo)
+        applyFaviconToDom('/brand/favicon.svg?v=5')
       },
       () => {
         if (logo !== DEFAULT_LOGO) {

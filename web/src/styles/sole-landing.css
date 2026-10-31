@@ -1,0 +1,2399 @@
+.sole-landing {
+  --sole-bg: #07090f;
+  --sole-panel: #0d111b;
+  --sole-line: #ffffff12;
+  --sole-muted: #929bad;
+  --sole-blue: #5278ff;
+  --sole-green: #77edc2;
+  --background: #07090f;
+  --foreground: #f3f5fb;
+  --muted-foreground: #929bad;
+  --border: #202635;
+  color-scheme: dark;
+  background: var(--sole-bg);
+  color: #f3f5fb;
+  font-family:
+    'Public Sans Variable', 'Public Sans', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow: visible;
+}
+.sole-landing *,
+.sole-landing *::before,
+.sole-landing *::after {
+  box-sizing: border-box;
+}
+.sole-landing a {
+  text-decoration: none;
+}
+.sole-landing a:focus-visible,
+.sole-landing button:focus-visible,
+.sole-landing pre:focus-visible {
+  outline: 2px solid #94b4ff;
+  outline-offset: 5px;
+}
+.sole-landing svg {
+  flex-shrink: 0;
+}
+.sole-landing .sole-skip-link {
+  position: absolute;
+  z-index: 100;
+  top: -100px;
+  left: 20px;
+  background: #5278ff;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+}
+.sole-landing .sole-skip-link:focus {
+  top: 14px;
+}
+.sole-header-inner {
+  max-width: 1280px;
+  min-height: 64px;
+  padding: 10px 28px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  flex-wrap: nowrap;
+}
+.sole-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  font-size: 22px;
+  font-weight: 780;
+  letter-spacing: -1px;
+  color: white;
+}
+.sole-brand img {
+  object-fit: contain;
+}
+.sole-brand-dot {
+  color: var(--sole-blue);
+}
+.sole-nav {
+  display: flex;
+  align-items: center;
+}
+.sole-nav a {
+  color: #a5adbf;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.sole-nav a:hover {
+  color: white;
+}
+.sole-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.sole-landing .sole-button {
+  height: 46px;
+  border-radius: 999px;
+  padding: 0 24px;
+  gap: 11px;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+.sole-landing .sole-button-primary {
+  background: #4e70f8;
+  border: 1px solid #7891ff55;
+  color: #fff;
+  box-shadow:
+    0 3px 20px #365af02e,
+    inset 0 1px #ffffff29;
+}
+.sole-landing .sole-button-primary:hover {
+  background: #6484ff;
+  box-shadow: 0 3px 30px #365af04f;
+}
+.sole-landing .sole-button-secondary {
+  background: #10141e;
+  border: 1px solid #ffffff1c;
+  color: #dce2ef;
+}
+.sole-landing .sole-button-secondary:hover {
+  background: #1a2130;
+  color: white;
+}
+.sole-header .sole-button {
+  height: 36px;
+  padding: 0 17px;
+  font-size: 12px;
+}
+.sole-hero {
+  position: relative;
+  border-bottom: 1px solid var(--sole-line);
+  background-image:
+    radial-gradient(ellipse at 50% 35%, #1c347529, transparent 56%),
+    radial-gradient(#7a9ace38 0.8px, transparent 0.9px);
+  background-size:
+    auto,
+    12px 12px;
+}
+.sole-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #07090f00 65%, #07090f 98%);
+  pointer-events: none;
+}
+.sole-hero-stage {
+  max-width: 1440px;
+  height: 796px;
+  margin: auto;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.sole-hero-copy {
+  position: absolute;
+  z-index: 5;
+  width: min(850px, 68%);
+  left: 50%;
+  top: 164px;
+  transform: translateX(-50%);
+  text-align: center;
+}
+.sole-eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #bdc7db;
+  border: 1px solid #ffffff16;
+  background: #111722ba;
+  border-radius: 99px;
+  padding: 6px 12px;
+  font-size: 11px;
+  box-shadow: inset 0 1px #ffffff06;
+  animation-delay: 0.09s;
+}
+.sole-eyebrow-pill svg {
+  width: 12px;
+  height: 12px;
+  color: #a8b5d3;
+}
+.sole-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: var(--sole-green);
+  border-radius: 50%;
+  box-shadow: 0 0 10px #77edc25c;
+  flex-shrink: 0;
+  animation: sole-pulse 2s ease-in-out infinite;
+}
+.sole-landing .sole-hero h1 {
+  color: #f3f5fb;
+  margin: 22px -24px 25px;
+  font-size: clamp(36px, 4vw, 60px);
+  font-weight: 750;
+  letter-spacing: -0.055em;
+  line-height: 1.23;
+  text-wrap: balance;
+  animation-delay: 0.18s;
+}
+.sole-underlined {
+  position: relative;
+  display: inline-block;
+  z-index: 0;
+}
+.sole-underlined::after {
+  position: absolute;
+  content: '';
+  left: -3%;
+  right: -3%;
+  bottom: 1px;
+  height: 9px;
+  border-top: 3px solid var(--sole-green);
+  border-radius: 2px;
+  transform: rotate(-2deg);
+  z-index: -1;
+  filter: none;
+  border: 0;
+  background: #18c992;
+  opacity: 0.85;
+}
+.sole-hero-copy > p {
+  color: #a0a9bc;
+  font-size: 14px;
+  line-height: 1.9;
+  margin: 0 0 27px;
+  animation-delay: 0.27s;
+}
+.sole-hero-tools {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 21px 0 14px;
+}
+.sole-hero-tools a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: #b4bed2;
+}
+.sole-hero-tools a:hover {
+  color: white;
+}
+.sole-hero-tools svg {
+  width: 14px;
+  height: 14px;
+}
+.sole-hero-tools > span {
+  height: 12px;
+  width: 1px;
+  background: #ffffff25;
+}
+.sole-hero-note {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  color: #98a6bf;
+  font-size: 10px;
+}
+.sole-hero-note svg {
+  width: 12px;
+  height: 12px;
+  color: #77edc2;
+}
+.sole-glass {
+  position: absolute;
+  z-index: 3;
+  border: 1px solid #8b9ac320;
+  border-radius: 10px;
+  background: linear-gradient(125deg, #283447e8, #192433ed);
+  box-shadow:
+    0 20px 55px #0005,
+    inset 0 1px #c2d7ff0d;
+  backdrop-filter: blur(10px);
+  font-size: 10px;
+  border-color: #8ba3c543;
+  animation: sole-float 6s ease-in-out infinite;
+}
+.sole-widget-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 15px;
+  border-bottom: 1px solid #ffffff0b;
+  color: #d3ddeb;
+  font-size: 12px;
+  border-color: #a1b9df21;
+}
+.sole-widget-heading > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.sole-widget-heading svg {
+  width: 12px;
+  height: 12px;
+}
+.sole-demo {
+  background: #587cff15;
+  border: 1px solid #7090ff27;
+  color: #b9caff;
+  font-size: 9px;
+  line-height: 1.5;
+  padding: 1px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+}
+.sole-model-widget {
+  width: 264px;
+  top: 109px;
+  left: 2.5%;
+  transform: rotate(-8deg);
+  animation-delay: -0.8s;
+}
+.sole-model-row {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  padding: 11px;
+  color: #d4dceb;
+  font-size: 13px;
+  margin: 7px 10px;
+  border-radius: 6px;
+  background: #e0eaff0a;
+}
+.sole-model-icon {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  background: #ffffff05;
+  border: 1px solid #ffffff0c;
+  border-radius: 6px;
+}
+.sole-model-chip {
+  margin-left: auto;
+  color: #a4b5d1;
+  border: 1px solid #ffffff0c;
+  border-radius: 4px;
+  padding: 0 5px;
+  font-size: 9px;
+}
+.sole-widget-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 9px 14px;
+  border-top: 1px solid #ffffff08;
+  color: #a2b0c7;
+  font-size: 9px;
+  border-color: #a1b9df17;
+}
+.sole-widget-foot svg {
+  width: 11px;
+  height: 11px;
+}
+.sole-route-widget {
+  top: 127px;
+  right: 2.5%;
+  width: 282px;
+  transform: rotate(7deg);
+  animation-delay: -2s;
+}
+.sole-route-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 15px 14px;
+  color: #b1bbd1;
+  font-size: 12px;
+  padding-block: 25px 20px;
+}
+.sole-route-line {
+  flex: 1;
+  border-top: 1px dashed #6d87c6;
+}
+.sole-route-node {
+  border: 1px solid #658aff4d;
+  border-radius: 5px;
+  padding: 3px 7px;
+  color: #c7d6ff;
+  background: #4d6fec18;
+  font-size: 9px;
+}
+.sole-route-branches {
+  display: flex;
+  gap: 7px;
+  padding: 0 14px 17px;
+}
+.sole-route-branches span {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ffffff0d;
+  border-radius: 5px;
+  color: #93a1bc;
+  text-align: center;
+  font-size: 10px;
+  animation: sole-scan 4.2s ease-in-out infinite;
+}
+.sole-code-widget {
+  width: 365px;
+  bottom: 60px;
+  left: 2.5%;
+  transform: rotate(-6deg);
+  animation-delay: -3.4s;
+}
+.sole-code-widget .sole-widget-heading {
+  padding-block: 5px;
+}
+.sole-code-widget .sole-widget-heading button {
+  width: 26px;
+  height: 26px;
+  color: #9cabc7;
+}
+.sole-code-widget pre {
+  margin: 0;
+  padding: 17px 14px;
+  font-size: 9px;
+  line-height: 1.9;
+  overflow: auto;
+  scrollbar-width: thin;
+  max-width: 100%;
+  padding-block: 21px;
+}
+.sole-code-purple {
+  color: #b19afa;
+}
+.sole-code-green {
+  color: #8bd8c0;
+}
+.sole-code-amber {
+  color: #dec28d;
+}
+.sole-chart-widget {
+  width: 338px;
+  right: 2.5%;
+  bottom: 62px;
+  transform: rotate(6deg);
+  animation-delay: -4.6s;
+}
+.sole-chart-summary {
+  display: flex;
+  justify-content: space-between;
+  color: #b1bbcf;
+  padding: 13px 13px 4px;
+  font-size: 12px;
+  padding-block: 17px 10px;
+}
+.sole-chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #8796b1;
+  font-size: 9px;
+}
+.sole-chart-legend i {
+  width: 5px;
+  height: 5px;
+  background: var(--sole-blue);
+  border-radius: 50%;
+}
+.sole-chart {
+  display: block;
+  width: calc(100% - 26px);
+  height: 123px;
+  margin: 0 13px 8px;
+}
+.sole-chart-grid {
+  fill: none;
+  stroke: #ffffff0b;
+  stroke-dasharray: 3 5;
+}
+.sole-floating-logo {
+  position: absolute;
+  z-index: 1;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #ffffff0b;
+  background: #1d293bc7;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: #c4cdde;
+  box-shadow: 0 12px 32px #0003;
+  border-color: #a3b8e326;
+  animation: sole-float 5s ease-in-out infinite;
+}
+.sole-logo-openai {
+  top: 45px;
+  left: 32%;
+  transform: rotate(-15deg);
+  animation-delay: -0.6s;
+}
+.sole-logo-claude {
+  top: 51px;
+  right: 29%;
+  transform: rotate(12deg);
+  animation-delay: -2.5s;
+}
+.sole-logo-deepseek {
+  bottom: 58px;
+  left: 33%;
+  transform: rotate(-12deg);
+  animation-delay: -1.3s;
+}
+.sole-logo-qwen {
+  bottom: 45px;
+  right: 30%;
+  transform: rotate(13deg);
+  animation-delay: -3.6s;
+}
+.sole-orbit {
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  top: 84px;
+  left: 50%;
+  width: 720px;
+  height: 590px;
+  transform: translateX(-50%);
+  border: 1px solid #6889e60b;
+  border-radius: 50%;
+}
+.sole-orbit-two {
+  width: 970px;
+  height: 690px;
+  top: 40px;
+}
+.sole-scroll-hint {
+  position: absolute;
+  z-index: 6;
+  left: calc(50% - 15px);
+  bottom: 28px;
+  width: 30px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: #64718d;
+  border: 1px solid #ffffff12;
+  border-radius: 99px;
+}
+.sole-scroll-hint svg {
+  width: 13px;
+  height: 13px;
+}
+.sole-provider-strip {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 1160px;
+  padding: 20px 0 43px;
+  margin: auto;
+}
+.sole-provider-strip > p {
+  color: #7e899e;
+  font-size: 12px;
+  margin: 0 0 25px;
+  margin-bottom: 28px;
+}
+.sole-provider-strip ul {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+.sole-provider-strip li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #aab6cc;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+  flex-shrink: 0;
+  padding-inline: 30px;
+}
+.sole-provider-strip li > span {
+  display: flex;
+}
+.sole-catalog-note {
+  display: block;
+  margin-top: 25px;
+  color: #93a0b8;
+  font-size: 10px;
+  padding-inline: 24px;
+}
+.sole-section {
+  width: min(1100px, calc(100% - 64px));
+  margin: auto;
+  padding: 102px 0 0;
+}
+.sole-section-heading {
+  text-align: center;
+  margin: 0 auto 43px;
+  max-width: 680px;
+}
+.sole-overline {
+  display: block;
+  color: #839dff;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  margin-bottom: 16px;
+}
+.sole-landing h2 {
+  margin: 0 0 17px;
+  font-size: clamp(29px, 3vw, 42px);
+  line-height: 1.23;
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.sole-landing h2 > span {
+  color: #8f9bb4;
+}
+.sole-section-heading > p,
+.sole-faq-intro > p {
+  margin: 0;
+  color: #929bad;
+  font-size: 13px;
+  line-height: 1.9;
+}
+.sole-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.sole-feature-card {
+  position: relative;
+  padding: 0 25px 27px;
+  background: linear-gradient(145deg, #121722aa, #0b0e16);
+  border: 1px solid #ffffff0e;
+  border-radius: 15px;
+  overflow: hidden;
+  transition:
+    border-color 0.25s,
+    background 0.25s,
+    opacity 0.7s,
+    translate 0.7s;
+}
+.sole-feature-icon {
+  display: flex;
+  color: #8099fa;
+  margin: 1px 0 13px;
+}
+.sole-feature-icon svg {
+  width: 19px;
+  height: 19px;
+  stroke-width: 1.6;
+}
+.sole-feature-card h3 {
+  font-size: 15px;
+  font-weight: 580;
+  letter-spacing: -0.3px;
+  margin: 0 0 9px;
+}
+.sole-feature-card > p {
+  font-size: 12px;
+  color: #8f99af;
+  margin: 0;
+  line-height: 1.85;
+}
+.sole-feature-art {
+  height: 157px;
+  display: grid;
+  place-items: center;
+  margin: 0 -25px 13px;
+  padding: 20px 25px;
+  background: radial-gradient(ellipse at center, #3156ac13, transparent 72%);
+  overflow: hidden;
+}
+.sole-mini-terminal {
+  width: 100%;
+  border: 1px solid #ffffff0e;
+  background: #080c14;
+  border-radius: 7px;
+  transform: perspective(500px) rotateY(-6deg) rotateX(5deg);
+  box-shadow: 0 10px 20px #0003;
+}
+.sole-mini-terminal > span {
+  display: flex;
+  gap: 4px;
+  padding: 9px;
+  border-bottom: 1px solid #ffffff0a;
+}
+.sole-mini-terminal i {
+  width: 4px;
+  height: 4px;
+  border-radius: 99px;
+  background: #424b60;
+}
+.sole-mini-terminal code {
+  display: block;
+  padding: 13px 10px;
+  font-size: 9px;
+  color: #94a5c4;
+  line-height: 2;
+}
+.sole-mini-terminal em {
+  color: #df8d8d;
+  font-style: normal;
+}
+.sole-mini-terminal b {
+  color: #70d6ae;
+  font-weight: 400;
+}
+.sole-mini-route {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.sole-mini-route > span {
+  border: 1px solid #ffffff15;
+  background: #121a27;
+  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: #ccc;
+}
+.sole-mini-route i {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #5278ff33, #5278ff);
+}
+.sole-mini-route img {
+  width: 52px;
+  height: 52px;
+  border: 1px solid #5278ff55;
+  border-radius: 13px;
+  padding: 5px;
+  background: #5278ff14;
+  box-shadow: 0 0 28px #365fff25;
+}
+.sole-mini-bars {
+  width: 100%;
+}
+.sole-mini-bars > span {
+  font-size: 8px;
+  color: #8091b2;
+}
+.sole-mini-bars > div {
+  display: flex;
+  gap: 9px;
+  align-items: flex-end;
+  height: 83px;
+  border-bottom: 1px solid #ffffff13;
+}
+.sole-mini-bars i {
+  flex: 1;
+  height: 25%;
+  background: linear-gradient(#6b90ffbb, #3159c92b);
+  border-radius: 3px 3px 0 0;
+  border-top: 1px solid #91afff;
+}
+.sole-mini-bars i:nth-child(2n) {
+  height: 45%;
+}
+.sole-mini-bars i:nth-child(3n) {
+  height: 62%;
+}
+.sole-mini-bars i:nth-child(4n) {
+  height: 74%;
+}
+.sole-mini-bars i:last-child {
+  height: 90%;
+}
+.sole-mini-key {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #ffffff13;
+  border-radius: 8px;
+  background: #101827;
+  box-shadow: 0 10px 20px #0003;
+  transform: rotate(-4deg);
+}
+.sole-mini-key > svg {
+  width: 17px;
+  height: 17px;
+  color: #8099fa;
+}
+.sole-mini-key > svg:last-child {
+  color: #77edc2;
+  width: 13px;
+  height: 13px;
+}
+.sole-mini-key code {
+  font-size: 10px;
+  color: #c2ccdf;
+}
+.sole-mini-chat {
+  width: 100%;
+  border: 1px solid #ffffff10;
+  background: #0b101a;
+  border-radius: 8px;
+  padding: 13px;
+}
+.sole-mini-chat > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  color: #c0cbe0;
+}
+.sole-mini-chat svg {
+  width: 12px;
+  height: 12px;
+  color: #839dff;
+}
+.sole-mini-chat i {
+  display: block;
+  width: 80%;
+  height: 3px;
+  background: #293449;
+  border-radius: 5px;
+  margin: 9px 0;
+}
+.sole-mini-chat i + i {
+  width: 59%;
+}
+.sole-mini-chat > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #7485a5;
+  font-size: 8px;
+  padding: 7px;
+  border: 1px solid #ffffff0c;
+  border-radius: 5px;
+  margin-top: 13px;
+}
+.sole-mini-chat > div > svg:last-child {
+  margin-left: auto;
+}
+.sole-mini-canvas {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-image: radial-gradient(#7b8cab3d 0.7px, transparent 0.7px);
+  background-size: 12px 12px;
+}
+.sole-mini-canvas > span {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  border: 1px solid #748bff55;
+  border-radius: 8px;
+  width: 60px;
+  height: 42px;
+  background: #141d30;
+  color: #839dff;
+  top: 35px;
+  left: 5px;
+  transform: rotate(-6deg);
+}
+.sole-mini-canvas > span svg {
+  width: 20px;
+  height: 20px;
+}
+.sole-mini-canvas > span:nth-of-type(2) {
+  top: 5px;
+  left: 145px;
+  transform: rotate(5deg);
+}
+.sole-mini-canvas > span:nth-of-type(3) {
+  top: 70px;
+  left: 160px;
+  transform: rotate(-3deg);
+  border-color: #6ddfbc55;
+  color: #6ddfbc;
+}
+.sole-mini-canvas i {
+  position: absolute;
+  height: 55px;
+  width: 115px;
+  left: 57px;
+  top: 30px;
+  border-block: 1px solid #537dff77;
+  border-right: 1px solid #537dff77;
+  border-radius: 0 30px 30px 0;
+}
+.sole-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: #91a9ff;
+  margin-top: 17px;
+}
+.sole-text-link svg {
+  width: 13px;
+  height: 13px;
+}
+.sole-text-link:hover {
+  color: #c4d1ff;
+}
+.sole-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+.sole-compare-card {
+  padding: 30px 33px;
+  border: 1px solid #ffffff0e;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #10131c, #0a0d13);
+}
+.sole-compare-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #8c95a8;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  min-height: 23px;
+}
+.sole-compare-label img {
+  width: 24px;
+  height: 24px;
+}
+.sole-compare-card h3 {
+  margin: 16px 0 22px;
+  font-size: 20px;
+  font-weight: 580;
+  letter-spacing: -0.5px;
+}
+.sole-compare-card ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+.sole-compare-card li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  color: #8f99ac;
+  font-size: 12px;
+}
+.sole-compare-card li svg {
+  width: 15px;
+  height: 15px;
+  margin-top: 2px;
+  color: #9d737a;
+}
+.sole-after {
+  border-color: #5b7cfa42;
+  background:
+    radial-gradient(ellipse at top right, #3159d122, transparent 75%), #0c111d;
+}
+.sole-after .sole-compare-label {
+  color: #8da6ff;
+}
+.sole-after li {
+  color: #b0bdd5;
+}
+.sole-after li svg {
+  color: #77edc2;
+}
+.sole-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px;
+}
+.sole-step {
+  position: relative;
+}
+.sole-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 63px;
+  right: 0;
+  top: 24px;
+  border-top: 1px dashed #3c496a;
+}
+.sole-step-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 23px;
+}
+.sole-step-icon {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #1c2c50, #101726);
+  color: #8faaff;
+  border: 1px solid #7297ff35;
+  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  box-shadow: inset 0 1px #ffffff08;
+}
+.sole-step-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.sole-step-number {
+  position: relative;
+  z-index: 1;
+  background: #07090f;
+  color: #64718d;
+  font-family: monospace;
+  font-size: 10px;
+  padding-left: 8px;
+}
+.sole-step h3 {
+  font-size: 14px;
+  font-weight: 580;
+  margin: 0 0 11px;
+}
+.sole-step p {
+  font-size: 12px;
+  color: #8f99af;
+  line-height: 1.85;
+  margin: 0;
+}
+.sole-guide-link {
+  display: flex;
+  justify-content: center;
+  margin-top: 35px;
+}
+.sole-faq {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 80px;
+  padding-top: 120px;
+  padding-bottom: 110px;
+}
+.sole-faq-intro > p {
+  max-width: 290px;
+}
+.sole-accordion {
+  border-top: 1px solid #ffffff13;
+}
+.sole-accordion [data-slot='accordion-item'] {
+  border-color: #ffffff13;
+}
+.sole-accordion [data-slot='accordion-trigger'] {
+  color: #d9dfed;
+  font-size: 12px;
+  padding: 19px 0;
+  gap: 20px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+.sole-accordion [data-slot='accordion-content'] {
+  color: #919db4;
+  font-size: 12px;
+  line-height: 1.9;
+}
+.sole-accordion [data-slot='accordion-content'] > div {
+  padding-bottom: 20px;
+}
+.sole-final-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  text-align: center;
+  border-top: 1px solid #ffffff0d;
+  border-bottom: 1px solid #ffffff0d;
+  padding: 75px 24px 80px;
+  background: radial-gradient(#6375ab25 0.7px, transparent 0.8px);
+  background-size: 20px 20px;
+}
+.sole-cta-glow {
+  position: absolute;
+  z-index: -1;
+  width: 650px;
+  height: 450px;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, #315dff29, transparent 67%);
+}
+.sole-cta-symbol {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #718fff4d;
+  border-radius: 17px;
+  background: linear-gradient(#253665, #111a31);
+  box-shadow:
+    0 5px 35px #5278ff1f,
+    inset 0 1px #ffffff19;
+  margin: 0 auto 28px;
+  transform: rotate(-7deg);
+}
+.sole-cta-symbol img {
+  width: 45px;
+  height: 45px;
+}
+.sole-final-cta h2 {
+  font-size: clamp(32px, 4vw, 48px);
+}
+.sole-final-cta h2 span {
+  color: #e4eaff;
+}
+.sole-final-cta > p {
+  color: #8e9ab2;
+  font-size: 13px;
+  margin: 0 0 28px;
+}
+.sole-cta-assistant {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: #8f9db8;
+  margin-top: 24px;
+}
+.sole-cta-assistant svg {
+  width: 13px;
+  height: 13px;
+}
+.sole-landing .sole-footer {
+  background: #07090f;
+  color: #c7d0e3;
+  border-color: #ffffff0c;
+}
+.sole-landing .sole-footer .text-muted-foreground\/45,
+.sole-landing .sole-footer .text-muted-foreground\/40,
+.sole-landing .sole-footer .text-muted-foreground\/50,
+.sole-landing .sole-footer .text-muted-foreground\/60 {
+  color: #929bad;
+}
+.sole-landing .sole-footer a:hover {
+  color: white;
+}
+.sole-landing .sole-footer .grid {
+  gap: 36px;
+}
+@media (max-width: 959px) {
+  .sole-section {
+    width: calc(100% - 48px);
+    padding-top: 80px;
+  }
+  .sole-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sole-compare-card {
+    padding: 26px 23px;
+  }
+  .sole-compare-card h3 {
+    font-size: 18px;
+  }
+  .sole-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px;
+  }
+  .sole-step:nth-child(2)::after {
+    display: none;
+  }
+  .sole-faq {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-bottom: 75px;
+  }
+  .sole-faq-intro > p {
+    max-width: none;
+  }
+}
+@media (max-width: 599px) {
+  .sole-section {
+    width: calc(100% - 40px);
+    padding-top: 65px;
+  }
+  .sole-section-heading {
+    margin-bottom: 30px;
+  }
+  .sole-overline {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    margin-bottom: 13px;
+  }
+  .sole-landing h2 {
+    font-size: 29px;
+  }
+  .sole-section-heading > p,
+  .sole-faq-intro > p {
+    font-size: 12px;
+  }
+  .sole-feature-grid,
+  .sole-compare-grid,
+  .sole-steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .sole-feature-card {
+    padding-inline: 23px;
+  }
+  .sole-feature-art {
+    margin-inline: -23px;
+    height: 150px;
+    padding-inline: 30px;
+  }
+  .sole-mini-terminal {
+    max-width: 280px;
+  }
+  .sole-mini-route,
+  .sole-mini-bars,
+  .sole-mini-chat,
+  .sole-mini-canvas {
+    max-width: 270px;
+  }
+  .sole-compare-card {
+    padding: 24px;
+  }
+  .sole-compare-card li {
+    font-size: 11px;
+  }
+  .sole-steps {
+    gap: 26px;
+  }
+  .sole-step {
+    padding-left: 68px;
+    min-height: 100px;
+  }
+  .sole-step-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 43px;
+    height: 43px;
+  }
+  .sole-step-top {
+    margin: 0;
+  }
+  .sole-step-number {
+    position: absolute;
+    top: 3px;
+    right: 0;
+  }
+  .sole-step h3 {
+    padding-right: 26px;
+  }
+  .sole-step:not(:last-child)::after {
+    display: block;
+    left: 21px;
+    right: auto;
+    top: 53px;
+    bottom: 0;
+    border-top: 0;
+    border-left: 1px dashed #3c496a;
+  }
+  .sole-step p {
+    font-size: 11px;
+  }
+  .sole-faq {
+    padding-bottom: 65px;
+  }
+  .sole-accordion [data-slot='accordion-trigger'] {
+    font-size: 12px;
+    padding: 17px 0;
+  }
+  .sole-final-cta {
+    padding: 55px 20px 60px;
+  }
+  .sole-final-cta h2 {
+    font-size: 32px;
+  }
+  .sole-final-cta > p {
+    font-size: 12px;
+  }
+  .sole-landing .sole-footer .grid {
+    gap: 20px;
+  }
+}
+/* The hero keeps its floating stage at every breakpoint. */
+.sole-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #b4bfd2;
+}
+.sole-header-controls > button {
+  border-radius: 50%;
+}
+.sole-desktop-action {
+  margin-left: 12px;
+}
+.sole-menu-trigger {
+  display: none;
+}
+.sole-mobile-dialog {
+  background: #111a2a;
+  color: #edf2ff;
+  border: 1px solid #596b8d66;
+  width: calc(100% - 32px);
+  max-width: 430px;
+}
+.sole-menu-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.sole-mobile-links {
+  display: grid;
+  gap: 4px;
+  padding: 8px 0 18px;
+}
+.sole-mobile-links a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  color: #d5def1;
+  text-decoration: none;
+  font-size: 14px;
+}
+.sole-mobile-links a:hover,
+.sole-mobile-links a:focus-visible {
+  background: #253452;
+  outline: 2px solid #94b4ff;
+  outline-offset: -2px;
+}
+.sole-mobile-links svg {
+  width: 18px;
+  height: 18px;
+}
+.sole-mobile-links svg:last-child {
+  margin-left: auto;
+}
+.sole-mobile-dialog .sole-button-primary {
+  width: 100%;
+  background: #5278ff;
+  color: white;
+  border-radius: 9px;
+  height: 44px;
+}
+.sole-landing .sole-center-brand {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 26px;
+  border: 1px solid #9bb6e12b;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #263244b3, #101824d9);
+  box-shadow:
+    0 12px 35px #0005,
+    inset 0 1px #ffffff0d;
+}
+.sole-center-brand img {
+  width: 37px;
+  height: 37px;
+}
+.sole-headline-first,
+.sole-headline-second {
+  display: block;
+}
+.sole-hero .sole-button {
+  height: 48px;
+  border-radius: 9px;
+  padding-inline: 28px;
+}
+.sole-route-branches span + span {
+  animation-delay: 0.7s;
+}
+.sole-chart-line {
+  stroke-dasharray: 1;
+  animation: sole-draw 1.8s ease-out both;
+}
+.sole-eyebrow-pill,
+.sole-hero h1,
+.sole-hero-copy > p,
+.sole-hero-copy > .sole-actions,
+.sole-hero-tools,
+.sole-hero-note {
+  animation: sole-rise 0.7s ease-out both;
+}
+.sole-hero-copy > .sole-actions {
+  animation-delay: 0.45s;
+}
+.sole-hero-tools,
+.sole-hero-note {
+  animation-delay: 0.36s;
+}
+.sole-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+.sole-marquee:focus-visible {
+  outline: 2px solid #94b4ff;
+  outline-offset: 4px;
+}
+.sole-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: sole-marquee 34s linear infinite;
+}
+.sole-marquee:hover .sole-marquee-track,
+.sole-marquee:focus-within .sole-marquee-track {
+  animation-play-state: paused;
+}
+.sole-hero[data-motion-paused='true'] *,
+.sole-hero[data-motion-paused='true'] *::after {
+  animation-play-state: paused;
+}
+.sole-reveal {
+  opacity: 0;
+  translate: 0 22px;
+  transition:
+    opacity 0.7s ease,
+    translate 0.7s cubic-bezier(0.2, 0.65, 0.3, 1);
+}
+.sole-reveal.sole-revealed {
+  opacity: 1;
+  translate: 0;
+}
+.sole-feature-card:nth-child(3n + 2) {
+  transition-delay: 0.08s;
+}
+.sole-feature-card:nth-child(3n) {
+  transition-delay: 0.16s;
+}
+.sole-feature-card:hover {
+  border-color: #6b8acb66;
+  background: linear-gradient(145deg, #1a263baa, #101725);
+}
+@keyframes sole-float {
+  0%,
+  100% {
+    translate: 0;
+  }
+  50% {
+    translate: 0 -7px;
+  }
+}
+@keyframes sole-rise {
+  from {
+    translate: 0 18px;
+    opacity: 0;
+  }
+  to {
+    translate: 0;
+    opacity: 1;
+  }
+}
+@keyframes sole-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes sole-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes sole-scan {
+  0%,
+  30%,
+  100% {
+    background: transparent;
+  }
+  10%,
+  20% {
+    background: #0075ff18;
+  }
+}
+@keyframes sole-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (max-width: 1199px) {
+  .sole-header-inner {
+    padding-inline: 22px;
+    gap: 16px;
+  }
+  .sole-header-controls {
+    gap: 0;
+  }
+  .sole-desktop-action {
+    margin-left: 6px;
+  }
+  .sole-brand {
+    font-size: 20px;
+  }
+  .sole-hero-copy {
+    width: 75%;
+  }
+  .sole-model-widget {
+    left: -56px;
+    top: 130px;
+  }
+  .sole-route-widget {
+    right: -50px;
+    top: 140px;
+  }
+  .sole-code-widget {
+    left: -60px;
+  }
+  .sole-chart-widget {
+    right: -40px;
+  }
+}
+@media (max-width: 959px) {
+  .sole-header-inner {
+    min-height: 56px;
+    height: 56px;
+    padding: 0 20px;
+  }
+  .sole-brand {
+    font-size: 21px;
+    gap: 7px;
+  }
+  .sole-brand img {
+    width: 29px;
+    height: 29px;
+  }
+  .sole-nav,
+  .sole-desktop-action {
+    display: none;
+  }
+  .sole-header-controls {
+    margin-left: auto;
+    gap: 4px;
+  }
+  .sole-header-controls > button {
+    width: 36px;
+    height: 36px;
+  }
+  .sole-menu-trigger {
+    display: inline-flex;
+  }
+  .sole-hero-stage {
+    height: 824px;
+  }
+  .sole-hero-copy {
+    top: 120px;
+    width: calc(100% - 40px);
+    max-width: 650px;
+  }
+  .sole-landing .sole-hero h1 {
+    font-size: 48px;
+    line-height: 1.16;
+    margin-top: 30px;
+  }
+  .sole-landing .sole-center-brand {
+    margin-bottom: 34px;
+  }
+  .sole-model-widget {
+    left: -50px;
+    top: auto;
+    bottom: 27px;
+    width: 250px;
+    transform: rotate(-3deg);
+  }
+  .sole-chart-widget {
+    right: -55px;
+    bottom: -15px;
+    width: 300px;
+    transform: rotate(-5deg);
+  }
+  .sole-route-widget,
+  .sole-code-widget,
+  .sole-floating-logo,
+  .sole-scroll-hint,
+  .sole-orbit {
+    display: none;
+  }
+  .sole-hero::after {
+    background: linear-gradient(180deg, transparent 82%, #07090f 100%);
+  }
+  .sole-provider-strip {
+    padding-top: 25px;
+  }
+}
+@media (max-width: 599px) {
+  .sole-hero-stage {
+    height: 856px;
+  }
+  .sole-hero-copy {
+    top: 118px;
+    width: calc(100% - 40px);
+  }
+  .sole-landing .sole-center-brand {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 28px;
+  }
+  .sole-eyebrow-pill {
+    font-size: 10px;
+    padding: 5px 11px;
+  }
+  .sole-landing .sole-hero h1 {
+    font-size: 40px;
+    margin: 24px -4px 22px;
+    line-height: 1.13;
+    letter-spacing: -0.055em;
+  }
+  .sole-headline-second {
+    max-width: 330px;
+    margin: auto;
+  }
+  .sole-headline-connect,
+  .sole-headline-second .sole-underlined {
+    display: block;
+    width: fit-content;
+    margin-inline: auto;
+  }
+  .sole-underlined::after {
+    height: 7px;
+    bottom: 0;
+  }
+  .sole-hero-copy > p {
+    font-size: 12px;
+    line-height: 1.8;
+    margin: 0 5px 22px;
+  }
+  .sole-hero-copy > .sole-actions {
+    width: 100%;
+    gap: 10px;
+  }
+  .sole-hero-copy > .sole-actions .sole-button-primary {
+    width: 100%;
+    height: 48px;
+    font-size: 14px;
+    border-radius: 999px;
+  }
+  .sole-hero-copy > .sole-actions .sole-button-secondary {
+    height: 30px;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+    padding-inline: 12px;
+    color: #a9b9db;
+    font-size: 11px;
+  }
+  .sole-hero-copy > .sole-actions .sole-button-secondary svg {
+    width: 12px;
+    height: 12px;
+  }
+  .sole-hero-tools {
+    margin: 13px 0 0;
+    gap: 13px;
+  }
+  .sole-hero-tools a {
+    font-size: 11px;
+    gap: 5px;
+  }
+  .sole-hero-tools svg {
+    width: 13px;
+    height: 13px;
+  }
+  .sole-hero-note {
+    display: none;
+  }
+  .sole-model-widget {
+    left: -80px;
+    bottom: 16px;
+    width: 235px;
+  }
+  .sole-model-row {
+    font-size: 12px;
+    padding: 9px 10px;
+  }
+  .sole-model-widget .sole-widget-foot {
+    display: none;
+  }
+  .sole-chart-widget {
+    width: 252px;
+    right: -55px;
+    bottom: -24px;
+  }
+  .sole-chart-summary {
+    font-size: 10px;
+    padding-top: 12px;
+  }
+  .sole-chart {
+    height: 105px;
+  }
+  .sole-chart-widget .sole-widget-foot {
+    font-size: 8px;
+  }
+  .sole-widget-heading {
+    font-size: 11px;
+  }
+  .sole-provider-strip {
+    padding: 26px 0 34px;
+  }
+  .sole-provider-strip > p {
+    font-size: 11px;
+    margin-bottom: 23px;
+  }
+  .sole-provider-strip li {
+    font-size: 18px;
+    padding-inline: 23px;
+  }
+  .sole-catalog-note {
+    font-size: 9px;
+    max-width: 350px;
+    margin: 22px auto 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sole-landing *,
+  .sole-landing *::before,
+  .sole-landing *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .sole-reveal {
+    opacity: 1;
+    translate: none;
+  }
+  .sole-marquee-track {
+    transform: none;
+  }
+}
+
+.sole-menu-trigger svg {
+  width: 20px;
+  height: 20px;
+  color: #c6d2e6;
+}
+
+/* Secondary experiences stay below the primary integration CTA. */
+.sole-landing .sole-experience-tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 10px;
+  width: min(100%, 430px);
+  margin: 16px auto 14px;
+}
+.sole-landing .sole-experience-card {
+  display: flex;
+  gap: 9px;
+  height: 42px;
+  min-height: 42px;
+  padding: 9px 12px;
+  box-sizing: border-box;
+  border: 1px solid #7396ff35;
+  border-radius: 11px;
+  background: #152442a6;
+  box-shadow: inset 0 1px #ffffff07;
+  text-align: left;
+  color: #f1f5ff;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    box-shadow 0.2s;
+}
+.sole-landing .sole-experience-canvas {
+  border-color: #a593f035;
+  background: #241f38a6;
+}
+.sole-landing .sole-experience-card:hover {
+  border-color: #a7c0ff;
+  box-shadow: 0 10px 32px #365ba433;
+}
+.sole-landing .sole-experience-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #7d9dff21;
+}
+.sole-landing .sole-experience-icon svg {
+  width: 17px;
+  height: 17px;
+}
+.sole-landing .sole-experience-copy {
+  display: block;
+  min-width: 0;
+  flex: 1;
+}
+.sole-landing .sole-experience-copy strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.sole-landing .sole-experience-copy small {
+  display: none;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #b6c7e5;
+}
+.sole-landing .sole-experience-card > svg {
+  width: 16px;
+  height: 16px;
+}
+@media (min-width: 600px) {
+  .sole-landing .sole-hero-copy > .sole-actions .sole-button {
+    width: 154px;
+    min-width: 154px;
+  }
+  .sole-landing .sole-experience-tools {
+    width: 294px;
+    grid-template-columns: repeat(2, 142px);
+  }
+  .sole-landing .sole-experience-card {
+    width: 142px;
+    gap: 6px;
+    padding: 7px 9px;
+    background: #101b2c;
+    box-shadow: none;
+  }
+  .sole-landing .sole-experience-canvas {
+    background: #1b1929;
+  }
+  .sole-landing .sole-experience-copy strong {
+    font-size: 12px;
+  }
+  .sole-landing .sole-experience-card > svg {
+    width: 12px;
+    height: 12px;
+  }
+  .sole-landing .sole-experience-icon {
+    width: 20px;
+    height: 24px;
+    background: transparent;
+  }
+}
+@media (max-width: 959px) {
+  .sole-landing .sole-hero-stage {
+    height: 940px;
+  }
+}
+@media (max-width: 599px) {
+  .sole-landing .sole-experience-card {
+    flex-wrap: wrap;
+    gap: 5px;
+    height: 94px;
+    min-height: 94px;
+    padding: 10px;
+    align-content: start;
+  }
+  .sole-landing .sole-experience-icon {
+    width: 25px;
+    height: 25px;
+  }
+  .sole-landing .sole-experience-copy {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .sole-landing .sole-experience-copy strong {
+    font-size: 14px;
+  }
+  .sole-landing .sole-experience-copy small {
+    display: block;
+    margin-top: 3px;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+  .sole-landing .sole-experience-card > svg {
+    margin-left: auto;
+  }
+}
+
+/* Light surfaces are scoped to the landing page and its portalled navigation. */
+html.light .sole-landing {
+  --sole-bg: #ffffff;
+  --sole-panel: #f6f8fc;
+  --sole-line: #e4e9f2;
+  --sole-muted: #59677e;
+  --sole-blue: #365fee;
+  --sole-green: #138660;
+  --background: #ffffff;
+  --foreground: #17243b;
+  --muted-foreground: #59677e;
+  --border: #dce3ee;
+  --accent: #edf2fc;
+  --accent-foreground: #17243b;
+  --ring: #365fee;
+  color-scheme: light;
+  color: var(--foreground);
+}
+html.light .sole-landing .sole-brand,
+html.light .sole-landing .sole-hero h1,
+html.light .sole-landing .sole-nav a:hover,
+html.light .sole-landing .sole-hero-tools a:hover {
+  color: #17243b;
+}
+html.light .sole-landing .sole-nav a,
+html.light .sole-landing .sole-header-controls,
+html.light .sole-landing .sole-menu-trigger svg,
+html.light .sole-landing .sole-hero-copy > p,
+html.light .sole-landing .sole-hero-tools a,
+html.light .sole-landing .sole-hero-note,
+html.light .sole-landing .sole-provider-strip > p,
+html.light .sole-landing .sole-catalog-note,
+html.light .sole-landing .sole-section-heading > p,
+html.light .sole-landing .sole-faq-intro > p,
+html.light .sole-landing .sole-feature-card > p,
+html.light .sole-landing .sole-step p,
+html.light .sole-landing .sole-final-cta > p,
+html.light .sole-landing .sole-cta-assistant {
+  color: var(--sole-muted);
+}
+html.light .sole-landing .sole-button-primary,
+html.light .sole-mobile-dialog .sole-button-primary {
+  background: #365fee;
+  border-color: #365fee;
+  color: #ffffff;
+  box-shadow: 0 4px 16px #365fee24;
+}
+html.light .sole-landing .sole-button-primary:hover,
+html.light .sole-mobile-dialog .sole-button-primary:hover {
+  background: #274bd1;
+  box-shadow: 0 6px 22px #365fee33;
+}
+html.light .sole-landing .sole-button-secondary {
+  background: #ffffff;
+  border-color: #d9e1ed;
+  color: #394b68;
+}
+html.light .sole-landing .sole-button-secondary:hover {
+  background: #edf2fc;
+  color: #17243b;
+}
+html.light .sole-landing .sole-hero {
+  background-image:
+    radial-gradient(ellipse at 50% 35%, #eaf0ff80, transparent 56%),
+    radial-gradient(#a9b9d24d 0.8px, transparent 0.9px);
+}
+html.light .sole-landing .sole-hero::after {
+  background: linear-gradient(180deg, #ffffff00 65%, #ffffff 98%);
+}
+html.light .sole-landing .sole-eyebrow-pill {
+  color: #43536c;
+  border-color: #dde5f1;
+  background: #ffffffd9;
+  box-shadow: 0 2px 8px #233e7410;
+}
+html.light .sole-landing .sole-eyebrow-pill svg {
+  color: #546c99;
+}
+html.light .sole-landing .sole-dot {
+  box-shadow: 0 0 10px #13866025;
+}
+html.light .sole-landing .sole-underlined::after {
+  background: #56dfae;
+}
+html.light .sole-landing .sole-hero-note svg,
+html.light .sole-landing .sole-mini-key > svg:last-child,
+html.light .sole-landing .sole-after li svg {
+  color: var(--sole-green);
+}
+html.light .sole-landing .sole-hero-tools > span {
+  background: #d5deec;
+}
+html.light .sole-landing .sole-glass {
+  border-color: #d8e2f0;
+  background: linear-gradient(125deg, #ffffffed, #f1f5fbed);
+  box-shadow:
+    0 20px 55px #2d46771a,
+    inset 0 1px #ffffff;
+}
+html.light .sole-landing .sole-widget-heading {
+  border-color: #dfe7f2;
+  color: #344764;
+}
+html.light .sole-landing .sole-demo {
+  background: #eaf0ff;
+  border-color: #d6e1ff;
+  color: #3658ad;
+}
+html.light .sole-landing .sole-model-row {
+  color: #283b58;
+  background: #e8eef780;
+}
+html.light .sole-landing .sole-model-icon {
+  background: #ffffff;
+  border-color: #dce4ef;
+}
+html.light .sole-landing .sole-model-chip,
+html.light .sole-landing .sole-route-branches span {
+  color: #566985;
+  border-color: #d9e2ef;
+}
+html.light .sole-landing .sole-widget-foot {
+  color: #5c6c84;
+  border-color: #dfe7f2;
+}
+html.light .sole-landing .sole-route-row,
+html.light .sole-landing .sole-chart-summary {
+  color: #435773;
+}
+html.light .sole-landing .sole-route-line {
+  border-color: #97afe0;
+}
+html.light .sole-landing .sole-route-node {
+  color: #3152b0;
+  border-color: #bfcef3;
+  background: #eaf0ff;
+}
+html.light .sole-landing .sole-code-widget pre {
+  color: #354963;
+}
+html.light .sole-landing .sole-code-widget .sole-widget-heading button,
+html.light .sole-landing .sole-chart-legend {
+  color: #5d6e87;
+}
+html.light .sole-landing .sole-code-purple {
+  color: #7540b6;
+}
+html.light .sole-landing .sole-code-green {
+  color: #16734f;
+}
+html.light .sole-landing .sole-code-amber {
+  color: #90600b;
+}
+html.light .sole-landing .sole-chart-grid {
+  stroke: #d7e1f0;
+}
+html.light .sole-landing .sole-chart-line {
+  stroke: #365fee;
+}
+html.light .sole-landing .sole-floating-logo {
+  border-color: #dae3ef;
+  background: #f6f8fce6;
+  color: #34445f;
+  box-shadow: 0 12px 32px #29447414;
+}
+html.light .sole-landing .sole-center-brand {
+  border-color: #d9e3f2;
+  background: linear-gradient(145deg, #ffffff, #edf3fc);
+  box-shadow:
+    0 12px 35px #2d46771a,
+    inset 0 1px #ffffff;
+}
+html.light .sole-landing .sole-orbit {
+  border-color: #7392cc14;
+}
+html.light .sole-landing .sole-scroll-hint {
+  color: #63738d;
+  border-color: #dce4ef;
+}
+html.light .sole-landing .sole-provider-strip li {
+  color: #445773;
+}
+html.light .sole-landing .sole-overline,
+html.light .sole-landing .sole-feature-icon,
+html.light .sole-landing .sole-mini-key > svg,
+html.light .sole-landing .sole-mini-chat svg {
+  color: #365fee;
+}
+html.light .sole-landing h2 > span {
+  color: #687891;
+}
+html.light .sole-landing .sole-feature-card {
+  background: linear-gradient(145deg, #fafbfe, #f3f6fb);
+  border-color: #e0e7f1;
+}
+html.light .sole-landing .sole-feature-card:hover {
+  background: linear-gradient(145deg, #f5f8ff, #edf2fc);
+  border-color: #a9bee8;
+}
+html.light .sole-landing .sole-feature-art {
+  background: radial-gradient(ellipse at center, #dce7ff66, transparent 72%);
+}
+html.light .sole-landing .sole-mini-terminal,
+html.light .sole-landing .sole-mini-key {
+  background: #ffffff;
+  border-color: #dce4ef;
+  box-shadow: 0 10px 20px #29447412;
+}
+html.light .sole-landing .sole-mini-terminal > span {
+  border-color: #e5ebf4;
+}
+html.light .sole-landing .sole-mini-terminal i {
+  background: #c0ccdc;
+}
+html.light .sole-landing .sole-mini-terminal code,
+html.light .sole-landing .sole-mini-key code {
+  color: #405674;
+}
+html.light .sole-landing .sole-mini-terminal em {
+  color: #b1414c;
+}
+html.light .sole-landing .sole-mini-terminal b {
+  color: #16734f;
+}
+html.light .sole-landing .sole-mini-route > span {
+  border-color: #d9e3f1;
+  background: #ffffff;
+  color: #34445f;
+}
+html.light .sole-landing .sole-mini-bars > span,
+html.light .sole-landing .sole-mini-chat > div {
+  color: #5c6e89;
+}
+html.light .sole-landing .sole-mini-bars > div {
+  border-color: #d5dfee;
+}
+html.light .sole-landing .sole-mini-bars i {
+  background: linear-gradient(#6486f5, #dce6ff);
+  border-color: #5276e4;
+}
+html.light .sole-landing .sole-mini-chat {
+  border-color: #dce4ef;
+  background: #ffffff;
+}
+html.light .sole-landing .sole-mini-chat > span {
+  color: #405674;
+}
+html.light .sole-landing .sole-mini-chat i {
+  background: #dae3f1;
+}
+html.light .sole-landing .sole-mini-chat > div {
+  border-color: #e0e7f1;
+  background: #f6f8fc;
+}
+html.light .sole-landing .sole-mini-canvas {
+  background-image: radial-gradient(#9bacc94d 0.7px, transparent 0.7px);
+}
+html.light .sole-landing .sole-mini-canvas > span {
+  border-color: #bfcef3;
+  background: #edf2ff;
+  color: #365fee;
+}
+html.light .sole-landing .sole-mini-canvas > span:nth-of-type(3) {
+  border-color: #a8dcc9;
+  background: #edf9f4;
+  color: #138660;
+}
+html.light .sole-landing .sole-text-link {
+  color: #365fee;
+}
+html.light .sole-landing .sole-text-link:hover {
+  color: #2745b2;
+}
+html.light .sole-landing .sole-compare-card {
+  border-color: #e0e7f1;
+  background: linear-gradient(145deg, #fafbfe, #f3f6fb);
+}
+html.light .sole-landing .sole-compare-label,
+html.light .sole-landing .sole-compare-card li {
+  color: #596a83;
+}
+html.light .sole-landing .sole-compare-card li svg {
+  color: #ac5a68;
+}
+html.light .sole-landing .sole-after {
+  border-color: #c5d3f7;
+  background:
+    radial-gradient(ellipse at top right, #dbe6ff80, transparent 75%), #f7f9ff;
+}
+html.light .sole-landing .sole-after .sole-compare-label {
+  color: #3658b2;
+}
+html.light .sole-landing .sole-after li {
+  color: #405674;
+}
+html.light .sole-landing .sole-after li svg {
+  color: #138660;
+}
+html.light .sole-landing .sole-step:not(:last-child)::after {
+  border-color: #c8d5eb;
+}
+html.light .sole-landing .sole-step-icon {
+  background: linear-gradient(145deg, #edf3ff, #e3ecff);
+  color: #365fee;
+  border-color: #c9d8fa;
+  box-shadow: inset 0 1px #ffffff;
+}
+html.light .sole-landing .sole-step-number {
+  background: #ffffff;
+  color: #63738d;
+}
+html.light .sole-landing .sole-accordion,
+html.light .sole-landing .sole-accordion [data-slot='accordion-item'] {
+  border-color: #dfe6f0;
+}
+html.light .sole-landing .sole-accordion [data-slot='accordion-trigger'] {
+  color: #2e405c;
+}
+html.light .sole-landing .sole-accordion [data-slot='accordion-content'] {
+  color: #596a83;
+}
+html.light .sole-landing .sole-final-cta {
+  border-color: #e4e9f2;
+  background-image: radial-gradient(#9aafd33d 0.7px, transparent 0.8px);
+}
+html.light .sole-landing .sole-cta-glow {
+  background: radial-gradient(ellipse, #dce7ffb3, transparent 67%);
+}
+html.light .sole-landing .sole-cta-symbol {
+  border-color: #c9d8f8;
+  background: linear-gradient(#f4f7ff, #e5edff);
+  box-shadow:
+    0 5px 35px #5278ff1a,
+    inset 0 1px #ffffff;
+}
+html.light .sole-landing .sole-final-cta h2 span {
+  color: #304b80;
+}
+html.light .sole-landing .sole-footer {
+  background: #ffffff;
+  color: #344764;
+  border-color: #e4e9f2;
+}
+html.light .sole-landing .sole-footer .text-muted-foreground\/45,
+html.light .sole-landing .sole-footer .text-muted-foreground\/40,
+html.light .sole-landing .sole-footer .text-muted-foreground\/50,
+html.light .sole-landing .sole-footer .text-muted-foreground\/60 {
+  color: #59677e;
+}
+html.light .sole-landing .sole-footer a:hover {
+  color: #274bd1;
+}
+html.light .sole-landing .sole-experience-card {
+  background: #edf3ff;
+  border-color: #cedcf8;
+  color: #294a93;
+  box-shadow: none;
+}
+html.light .sole-landing .sole-experience-canvas {
+  background: #f3f0fc;
+  border-color: #e1d7f4;
+  color: #634794;
+}
+html.light .sole-landing .sole-experience-card:hover {
+  border-color: #8ea9e8;
+  box-shadow: 0 5px 16px #365fee12;
+}
+html.light .sole-landing .sole-experience-icon {
+  background: #dce7ff;
+}
+html.light .sole-landing .sole-experience-canvas .sole-experience-icon {
+  background: #e7def8;
+}
+html.light .sole-landing .sole-experience-copy small {
+  color: #566885;
+}
+html.light .sole-mobile-dialog {
+  --background: #ffffff;
+  --foreground: #17243b;
+  --muted-foreground: #59677e;
+  --border: #dce3ee;
+  --accent: #edf2fc;
+  --accent-foreground: #17243b;
+  --ring: #365fee;
+  color-scheme: light;
+  background: #ffffff;
+  color: #17243b;
+  border-color: #dce3ee;
+  box-shadow: 0 20px 70px #233e7426;
+}
+html.light .sole-mobile-dialog .sole-mobile-links a {
+  color: #394b68;
+}
+html.light .sole-mobile-dialog .sole-mobile-links a:hover,
+html.light .sole-mobile-dialog .sole-mobile-links a:focus-visible {
+  background: #edf2fc;
+  outline-color: #365fee;
+}
+html.light .sole-landing a:focus-visible,
+html.light .sole-landing button:focus-visible,
+html.light .sole-landing pre:focus-visible,
+html.light .sole-landing .sole-marquee:focus-visible {
+  outline-color: #365fee;
+}
+@media (max-width: 959px) {
+  html.light .sole-landing .sole-hero::after {
+    background: linear-gradient(180deg, #ffffff00 82%, #ffffff 100%);
+  }
+}
+@media (max-width: 599px) {
+  html.light
+    .sole-landing
+    .sole-hero-copy
+    > .sole-actions
+    .sole-button-secondary {
+    background: transparent;
+    color: #435b84;
+  }
+}
+html.light .sole-landing .sole-hero-tools .sole-experience-card {
+  color: #294a93;
+}
+html.light .sole-landing .sole-hero-tools .sole-experience-canvas {
+  color: #634794;
+}
+
+/* Complete artwork includes the AIMOXT subline; preserve its 410:164 aspect. */
+.sole-landing .sole-brand .brand-wordmark {
+  width: 150px;
+  height: 60px;
+  object-fit: contain;
+}
+.sole-landing .footer-wordmark {
+  width: 190px;
+  height: 76px;
+  object-fit: contain;
+}
+@media (max-width: 959px) {
+  .sole-landing .sole-brand .brand-wordmark {
+    width: 120px;
+    height: 48px;
+  }
+}
+
+/* One sticky navigation, transparent at the top and frosted after scrolling. */
+.sole-landing .sole-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.sole-landing .sole-header[data-scrolled='true'] {
+  background: rgba(8, 12, 21, 0.78);
+  border-bottom-color: rgba(151, 173, 211, 0.17);
+  backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+html.light .sole-landing .sole-header {
+  background: transparent;
+  border-bottom-color: transparent;
+}
+html.light .sole-landing .sole-header[data-scrolled='true'] {
+  background: rgba(255, 255, 255, 0.78);
+  border-bottom-color: rgba(140, 157, 185, 0.2);
+  box-shadow: 0 4px 22px rgba(40, 65, 104, 0.06);
+}
+.sole-landing .sole-nav {
+  font-size: 14px;
+  font-weight: 550;
+  gap: 22px;
+}
+.sole-landing .sole-nav a {
+  padding-block: 10px;
+}
+.sole-landing .sole-section,
+.sole-landing #integration,
+.sole-landing #faq,
+.sole-landing #capabilities {
+  scroll-margin-top: 100px;
+}
+@media (max-width: 1200px) and (min-width: 960px) {
+  .sole-landing .sole-nav {
+    font-size: 13px;
+    gap: 12px;
+  }
+  .sole-landing .sole-header-inner {
+    gap: 14px;
+    padding-inline: 22px;
+  }
+}
+@media (max-width: 959px) {
+  .sole-landing .sole-section,
+  .sole-landing #integration,
+  .sole-landing #faq,
+  .sole-landing #capabilities {
+    scroll-margin-top: 76px;
+  }
+}
